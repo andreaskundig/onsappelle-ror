@@ -2,20 +2,23 @@
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
 
 * steps
+
+[[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
 #+begin_src bash
 
 $ rails new onsappelle-ror
 $ cd onsappelle-ror
 
 $ bin/rails generate model User email:string
-
+$ bin/rails generate model Reminder title:string
 #+end_src
 
 * passwordless authentication by email
+gem
+https://github.com/mikker/passwordless
+
 handrolled
 https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
 with token
 https://dev.to/phawk/password-less-auth-in-rails-4ah
 
-gem
-https://github.com/mikker/passwordless
