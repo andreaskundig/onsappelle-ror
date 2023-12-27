@@ -1,0 +1,21 @@
+#+title: Onsap Ror
+[[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
+
+* steps
+#+begin_src bash
+
+$ rails new onsappelle-ror
+$ cd onsappelle-ror
+
+$ bin/rails generate model User email:string
+
+#+end_src
+
+* passwordless authentication by email
+handrolled
+https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
+with token
+https://dev.to/phawk/password-less-auth-in-rails-4ah
+
+gem
+https://github.com/mikker/passwordless
