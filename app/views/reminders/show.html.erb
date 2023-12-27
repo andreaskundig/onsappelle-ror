@@ -1,3 +1,11 @@
 <h1><%= @reminder.date %></h1>
 
 <p><%= @reminder.id %></p>
+
+<ul>
+  <li><%= link_to "Edit", edit_reminder_path(@reminder) %></li>
+  <li><%= link_to "Destroy", reminder_path(@reminder), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+          } %></li>
+</ul>
