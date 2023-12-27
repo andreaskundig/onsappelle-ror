@@ -1,7 +1,13 @@
 <h1><%= @reminder.date %></h1>
 
 <p><%= @reminder.id %></p>
-
+<h2>Users</h2>
+<% @reminder.users.each do |user| %>
+  <p>
+    <strong>Email</strong>
+    <%= user.email %>
+  </p>
+<% end %>
 <ul>
   <li><%= link_to "Edit", edit_reminder_path(@reminder) %></li>
   <li><%= link_to "Destroy", reminder_path(@reminder), data: {
