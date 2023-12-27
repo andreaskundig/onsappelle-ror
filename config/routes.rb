@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
   root "reminders#index"
 
-  get "/reminders", to: "reminders#index"
-
-  get "up" => "rails/health#show", as: :rails_health_check
-
+  # https://api.rubyonrails.org/v7.1.2/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
+  resources :reminders
 end
