@@ -10,7 +10,8 @@ $ rails new onsappelle-ror
 $ cd onsappelle-ror
 
 $ bin/rails generate model User email:string
-$ bin/rails generate model Reminder title:string
+$ bin/rails generate model Reminder date:datetime
+$ bin/rails generate model UserReminder user:references reminder:references
 #+end_src
 
 * passwordless authentication by email
