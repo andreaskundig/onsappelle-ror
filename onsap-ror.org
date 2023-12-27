@@ -23,3 +23,11 @@ https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in
 with token
 https://dev.to/phawk/password-less-auth-in-rails-4ah
 
+* language server: solargraph
+https://emacs-lsp.github.io/lsp-mode/page/lsp-solargraph/
+https://github.com/castwide/solargraph
+https://github.com/iftheshoefritz/solargraph-rails/
+#+begin_src bash
+gem install solargraph
+gem install solargraph-rails
+#+end_src
