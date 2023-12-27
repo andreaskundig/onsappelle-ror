@@ -1,0 +1,15 @@
+<h1>New Reminder</h1>
+
+<%= form_with model: @reminder do |form| %>
+  <div>
+    <%= form.label :date %>
+    <%= form.date_field :date %>
+    <% @reminder.errors.full_messages_for(:date).each do |message| %>
+      <div><%= message %></div>
+      <% end %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
