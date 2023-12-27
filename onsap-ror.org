@@ -12,6 +12,11 @@ $ cd onsappelle-ror
 $ bin/rails generate model User email:string
 $ bin/rails generate model Reminder date:datetime
 $ bin/rails generate model UserReminder user:references reminder:references
+
+$ bin/rails db:migrate
+
+$ bin/rails generate controller Reminders index
+$ bin/rails generate controller Reminders index
 #+end_src
 
 * passwordless authentication by email

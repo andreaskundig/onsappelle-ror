@@ -1,13 +1,6 @@
 <h1><%= @reminder.date %></h1>
 
 <p><%= @reminder.id %></p>
-<h2>Users</h2>
-<% @reminder.users.each do |user| %>
-  <p>
-    <strong>Email</strong>
-    <%= user.email %>
-  </p>
-<% end %>
 <ul>
   <li><%= link_to "Edit", edit_reminder_path(@reminder) %></li>
   <li><%= link_to "Destroy", reminder_path(@reminder), data: {
@@ -15,3 +8,22 @@
                     turbo_confirm: "Are you sure?"
           } %></li>
 </ul>
+
+<h2>Users</h2>
+<% @reminder.users.each do |user| %>
+  <p>
+    <strong>Email</strong>
+    <%= user.email %>
+  </p>
+<% end %>
+
+<h2>Add a user:</h2>
+<%= form_with model: [ @reminder, @reminder.users.build ] do |form| %>
+  <p>
+    <%= form.label :email %><br>
+    <%= form.text_field :email %>
+  </p>
+  <p>
+    <%= form.submit %>
+  </p>
+<% end %>
