@@ -1,6 +1,30 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
+* TODO navigation: reminder creation paths
 
+** /reminders/new
+- date input
+- existing emails (own?)  [remove] -> create -> edit
+- email input [add]] -> create  -> edit
+
+[save] -> create (status :active) -> show
+
+** /reminders/edit/:id
+
+same form as for creation
+
+
+** /reminders/show/:id
+
+- date
+- existing emails
+
+[update]
+* TODO rename reminder.users to .recipients
+* TODO write tests
+* TODO send emails at reminder date
+* TODO refactor: remove unused routes controller methods
+* TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
 * steps
 
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
@@ -16,10 +40,10 @@ $ bin/rails generate model UserReminder user:references reminder:references
 $ bin/rails db:migrate
 
 $ bin/rails generate controller Reminders index
-$ bin/rails generate controller Reminders index
+$ bin/rails generate controller Users
 #+end_src
 
-* passwordless authentication by email
+* TODO passwordless authentication by email
 gem
 https://github.com/mikker/passwordless
 

@@ -1,29 +1,21 @@
-<h1><%= @reminder.date %></h1>
+<h1>Reminder <%= @reminder.id %></h1>
+<h3>Date</h3>
+<div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
 
-<p><%= @reminder.id %></p>
-<ul>
-  <li><%= link_to "Edit", edit_reminder_path(@reminder) %></li>
-  <li><%= link_to "Destroy", reminder_path(@reminder), data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-          } %></li>
-</ul>
 
-<h2>Users</h2>
+<h3>Recipients</h3>
 <% @reminder.users.each do |user| %>
-  <p>
+  <div>
     <strong>Email</strong>
     <%= user.email %>
-  </p>
+  </div>
 <% end %>
 
-<h2>Add a user:</h2>
-<%= form_with model: [ @reminder, @reminder.users.build ] do |form| %>
-  <p>
-    <%= form.label :email %><br>
-    <%= form.text_field :email %>
-  </p>
-  <p>
-    <%= form.submit %>
-  </p>
-<% end %>
+<p>
+  <%= button_to "Edit", edit_reminder_path(@reminder),
+      :method => "get" %>
+ <%= button_to "Destroy", reminder_path(@reminder), data: {
+                    turbo_method: :delete,
+                    turbo_confirm: "Are you sure?"
+          } %>
+</p>

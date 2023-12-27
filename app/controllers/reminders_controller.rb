@@ -1,4 +1,6 @@
 class RemindersController < ApplicationController
+  include ReminderFactory
+
   def index
     @reminders = Reminder.all
   end
@@ -13,6 +15,9 @@ class RemindersController < ApplicationController
 
   def create
     @reminder = Reminder.new(reminder_params)
+    email = params[:reminder][:users][:email]
+    if email
+    then add_reminder_recipients(@reminder, [email]) end
 
     if @reminder.save # saves to db
       # save has worked
@@ -27,10 +32,14 @@ class RemindersController < ApplicationController
 
   def edit
     @reminder = Reminder.find(params[:id])
+    logger.info("editing #{@reminder}")
   end
 
   def update
     @reminder = Reminder.find(params[:id])
+    email = params[:reminder][:users][:email]
+    if email
+    then add_reminder_recipients(@reminder, [email]) end
 
     if @reminder.update(reminder_params)
       redirect_to @reminder
@@ -48,6 +57,6 @@ class RemindersController < ApplicationController
 
   private
     def reminder_params
-      params.require(:reminder).permit(:date)
+      params.require(:reminder).permit(:date, :email)
     end
 end

@@ -1,13 +1,27 @@
-<%= form_with model: reminder do |form| %>
+<%= form_with model: reminder do |r_form| %>
+  <h3>Date</h3>
   <div>
-    <%= form.label :date %>
-    <%= form.date_field :date %>
+    <%= r_form.date_field :date %>
     <% reminder.errors.full_messages_for(:date).each do |message| %>
       <div><%= message %></div>
       <% end %>
   </div>
 
+  <h3>Recipients</h3>
+  <% @reminder.users.each do |user| %>
+    <div>
+        <strong>Email</strong>
+        <%= user.email %>
+    </div>
+  <% end %>
+
+  <%= r_form.fields_for :users do |u_form| %>
+    <div>
+        <%= u_form.label :email %>
+        <%= u_form.text_field :email %>
+    </div>
+  <% end %>
   <div>
-    <%= form.submit %>
+    <%= r_form.submit %>
   </div>
 <% end %>
