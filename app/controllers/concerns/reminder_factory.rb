@@ -9,13 +9,19 @@ module ReminderFactory
     reminder.save
   end
 
+  def reminder_has_email(reminder, email)
+    email and reminder.users.find { |u| u.email == email }
+  end
+
   def add_reminder_recipients(reminder, emails)
     emails.each{ |email|
-      if email
+      unless reminder_has_email(reminder, email)
         email.strip!
         user = User.find_by(email: email)
-        unless user
-            user = reminder.users.build(email: email)
+        if user
+          reminder.users << user
+        else user
+          reminder.users.build(email: email)
         end
       end
     }

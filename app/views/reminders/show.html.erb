@@ -2,15 +2,13 @@
 <h3>Date</h3>
 <div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
 
-
 <h3>Recipients</h3>
 <% @reminder.users.each do |user| %>
   <div>
     <strong>Email</strong>
-    <%= user.email %>
+    <span><%= user.email %></span>
   </div>
 <% end %>
-
 <p>
   <%= button_to "Edit", edit_reminder_path(@reminder),
       :method => "get" %>
