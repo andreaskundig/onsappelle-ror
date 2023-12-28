@@ -10,12 +10,13 @@ module ReminderFactory
   end
 
   def reminder_has_email(reminder, email)
-    email and reminder.users.find { |u| u.email == email }
+     reminder.users.find { |u| u.email == email }
   end
 
   def add_reminder_recipients(reminder, emails)
     emails.each{ |email|
-      unless reminder_has_email(reminder, email)
+      invalid = (email.nil? or email.empty?)
+      unless invalid or reminder_has_email(reminder, email)
         email.strip!
         user = User.find_by(email: email)
         if user

@@ -98,6 +98,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_equal 1, reminder_1.users.length
     assert_equal the_email, reminder_1.users[0].email
   end
+
   test "can update a reminder" do
     the_email = 'update@updaty.com'
     the_date = '2221-02-01'
@@ -128,5 +129,26 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", "Reminder #{new_reminder.id}"
     assert_select "span", the_email
+  end
+
+  test "can update a reminder with empty email" do
+    the_date = '2221-02-01'
+
+    reminder = Reminder.first
+    original_date = reminder.date.strftime('%Y-%m-%d')
+    assert_not_equal the_date, original_date
+
+    get "/reminders/#{reminder.id}/edit"
+    assert_response :success
+    assert_select "h1", "Edit Reminder"
+
+    patch "/reminders/#{reminder.id}",
+         params: { reminder: { date: the_date,
+                               users: { email: '' }} }
+    assert_response :redirect
+
+    new_reminder = Reminder.find(reminder.id)
+    new_date = new_reminder.date.strftime('%Y-%m-%d')
+    assert_equal the_date, new_date
   end
 end

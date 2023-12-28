@@ -39,8 +39,7 @@ class RemindersController < ApplicationController
   def update
     @reminder = Reminder.find(params[:id])
     email = params[:reminder]&.dig(:users, :email)
-    if email
-    then add_reminder_recipients(@reminder, [email]) end
+    add_reminder_recipients(@reminder, [email])
 
     if @reminder.update(reminder_params)
       redirect_to @reminder
@@ -52,6 +51,7 @@ class RemindersController < ApplicationController
   def destroy
     @reminder = Reminder.find(params[:id])
     @reminder.destroy
+    logger.debug("destroy rem #{params[:id]}")
 
     redirect_to root_path, status: :see_other
   end
@@ -59,7 +59,7 @@ class RemindersController < ApplicationController
   private
     def reminder_params
       # params.require(:reminder).permit!
-      params.require(:reminder).permit(:date,
-                                       users_attributes: [:email])
+      params.require(:reminder)
+      .permit(:date, users_attributes: [:email])
     end
 end
