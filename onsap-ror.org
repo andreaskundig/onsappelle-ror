@@ -9,6 +9,9 @@
 
 [save] -> create (status :active) -> show
 
+currently
+date, create reminders -> Reminder.new(date)
+
 ** /reminders/edit/:id
 
 same form as for creation
@@ -20,11 +23,14 @@ same form as for creation
 - existing emails
 
 [update]
+
+
+
 * TODO rename reminder.users to .recipients
 * TODO write tests
 * TODO send emails at reminder date
 * TODO refactor: remove unused routes controller methods
-* TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
+* [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
 * steps
 
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]

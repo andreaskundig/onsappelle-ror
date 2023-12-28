@@ -11,11 +11,12 @@ class RemindersController < ApplicationController
 
   def new
     @reminder = Reminder.new
+    @reminder.users.build
   end
 
   def create
     @reminder = Reminder.new(reminder_params)
-    email = params[:reminder][:users][:email]
+    email = params[:reminder]&.dig(:users, :email)
     if email
     then add_reminder_recipients(@reminder, [email]) end
 
@@ -37,7 +38,7 @@ class RemindersController < ApplicationController
 
   def update
     @reminder = Reminder.find(params[:id])
-    email = params[:reminder][:users][:email]
+    email = params[:reminder]&.dig(:users, :email)
     if email
     then add_reminder_recipients(@reminder, [email]) end
 
@@ -57,6 +58,8 @@ class RemindersController < ApplicationController
 
   private
     def reminder_params
-      params.require(:reminder).permit(:date, :email)
+      # params.require(:reminder).permit!
+      params.require(:reminder).permit(:date,
+                                       users_attributes: [:email])
     end
 end
