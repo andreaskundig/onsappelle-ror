@@ -3,4 +3,5 @@ class Reminder < ApplicationRecord
   has_many :users, through: :user_reminders
 
   validates :date, presence: true
+  validates :users,  presence: true
 end

@@ -4,7 +4,7 @@
     <%= r_form.date_field :date %>
     <% reminder.errors.full_messages_for(:date).each do |message| %>
       <div><%= message %></div>
-      <% end %>
+    <% end %>
   </div>
 
   <h3>Recipients</h3>
@@ -20,6 +20,9 @@
         <%= u_form.label :email %>
         <%= u_form.text_field :email %>
     </div>
+    <% reminder.errors.full_messages_for(:users).each do |message| %>
+      <div><%= message %></div>
+    <% end %>
   <% end %>
   <div>
     <%= r_form.submit %>

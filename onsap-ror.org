@@ -29,7 +29,6 @@ same form as for creation
 
 
 * TODO rename reminder.users to .recipients
-* TODO accept empty date for reminder
 * TODO send emails at reminder date
 * TODO refactor: remove unused routes controller methods
 * TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
