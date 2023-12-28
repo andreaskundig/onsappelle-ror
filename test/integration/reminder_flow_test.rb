@@ -28,7 +28,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
     assert_response :success
-    assert_select "h1", "Reminder #{new_reminder.id}"
+    assert_select "h1", "Edit Reminder"
     assert_select "span", the_email
   end
 
@@ -127,7 +127,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
     assert_response :success
-    assert_select "h1", "Reminder #{new_reminder.id}"
+    assert_select "h1", "Edit Reminder"
     assert_select "span", the_email
   end
 

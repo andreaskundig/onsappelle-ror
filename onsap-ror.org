@@ -12,6 +12,8 @@
 currently
 date, create reminders -> Reminder.new(date)
 
+
+
 ** /reminders/edit/:id
 
 same form as for creation
@@ -27,10 +29,19 @@ same form as for creation
 
 
 * TODO rename reminder.users to .recipients
-* TODO write tests
+* TODO accept empty date for reminder
 * TODO send emails at reminder date
 * TODO refactor: remove unused routes controller methods
-* [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
+* TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
+* TODO passwordless authentication by email
+gem
+https://github.com/mikker/passwordless
+
+handrolled
+https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
+with token
+https://dev.to/phawk/password-less-auth-in-rails-4ah
+
 * steps
 
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
@@ -48,15 +59,6 @@ $ bin/rails db:migrate
 $ bin/rails generate controller Reminders index
 $ bin/rails generate controller Users
 #+end_src
-
-* TODO passwordless authentication by email
-gem
-https://github.com/mikker/passwordless
-
-handrolled
-https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
-with token
-https://dev.to/phawk/password-less-auth-in-rails-4ah
 
 * language server: solargraph
 https://emacs-lsp.github.io/lsp-mode/page/lsp-solargraph/

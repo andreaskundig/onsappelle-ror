@@ -17,13 +17,12 @@ class RemindersController < ApplicationController
   def create
     @reminder = Reminder.new(reminder_params)
     email = params[:reminder]&.dig(:users, :email)
-    if email
-    then add_reminder_recipients(@reminder, [email]) end
+    add_reminder_recipients(@reminder, [email])
 
     if @reminder.save # saves to db
       # save has worked
       # makes a new request to end this one
-      redirect_to @reminder
+      redirect_to edit_reminder_path(@reminder)
     else
       # just renders the view new.html.erb,
       # with an error, and without a new request
@@ -42,7 +41,7 @@ class RemindersController < ApplicationController
     add_reminder_recipients(@reminder, [email])
 
     if @reminder.update(reminder_params)
-      redirect_to @reminder
+      redirect_to edit_reminder_path(@reminder)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -53,7 +52,8 @@ class RemindersController < ApplicationController
     @reminder.destroy
     logger.debug("destroy rem #{params[:id]}")
 
-    redirect_to root_path, status: :see_other
+    # redirect_to root_path, status: :see_other
+    redirect_to reminders_path, status: :see_other
   end
 
   private

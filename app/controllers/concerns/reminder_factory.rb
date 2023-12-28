@@ -26,6 +26,5 @@ module ReminderFactory
         end
       end
     }
-    reminder.save
   end
 end
