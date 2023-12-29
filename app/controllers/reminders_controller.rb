@@ -32,7 +32,6 @@ class RemindersController < ApplicationController
 
   def edit
     @reminder = Reminder.find(params[:id])
-    logger.info("editing #{@reminder}")
   end
 
   def update
@@ -50,10 +49,21 @@ class RemindersController < ApplicationController
   def destroy
     @reminder = Reminder.find(params[:id])
     @reminder.destroy
-    logger.debug("destroy rem #{params[:id]}")
 
     # redirect_to root_path, status: :see_other
     redirect_to reminders_path, status: :see_other
+  end
+
+  def remove_user
+    @reminder = Reminder.find(params[:reminder_id])
+    @user = @reminder.users.find(params[:id])
+
+    if @reminder.users.delete(@user)
+      redirect_to reminder_path(@reminder)
+    else
+      render :edit, status: :unprocessable_entity
+    end
+
   end
 
   private

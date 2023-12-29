@@ -2,16 +2,20 @@
 <h3>Date</h3>
 <div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
 
-<h3>Recipients</h3>
+<h3>Recipients
+  <%= link_to "[+]", new_reminder_user_path(@reminder) %>
+</h3>
 <% @reminder.users.each do |user| %>
   <div>
     <strong>Email</strong>
     <span><%= user.email %></span>
-  </div>
+    <%= link_to '[-]', remove_reminder_user_path(@reminder, user),
+     method: :delete,
+     data: {
+       turbo_method: :delete,
+       turbo_confirm: "Are you sure?"
+     } %>  </div>
 <% end %>
-<p>
-  <%= link_to "Add recipient", new_reminder_user_path(@reminder) %>
-</p>
 
 <p>
   <%= button_to "Edit", edit_reminder_path(@reminder),
