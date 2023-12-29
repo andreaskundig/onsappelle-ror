@@ -1,0 +1,12 @@
+<%= turbo_frame_tag user do %>
+    <div>
+        <strong>Email</strong>
+        <span><%= user.email %></span>
+        <%= link_to '[-]', remove_reminder_user_path(reminder, user),
+         method: :delete,
+         data: {
+             turbo_method: :delete,
+             turbo_confirm: "Are you sure?"
+         } %>
+    </div>
+<% end %>

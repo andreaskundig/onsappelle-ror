@@ -1,13 +1,15 @@
-<%= form_with model: [@reminder,
-         @reminder.users.build] do |form| %>
-    <div>
-        <%= form.label :email %>
-        <%= form.text_field :email %>
-    </div>
-    <% @reminder.errors.full_messages_for(:users).each do |message| %>
-    <div><%= message %></div>
+<%= turbo_frame_tag "user_form_turbo_frame" do %>
+    <%= form_with model: [@reminder,
+                          @reminder.users.build] do |form| %>
+        <div>
+            <%= form.label :email %>
+            <%= form.text_field :email %>
+        </div>
+        <% @reminder.errors.full_messages_for(:users).each do |message| %>
+            <div><%= message %></div>
+        <% end %>
+        <div>
+            <%= form.submit %>
+        </div>
     <% end %>
-  <div>
-    <%= form.submit %>
-  </div>
 <% end %>

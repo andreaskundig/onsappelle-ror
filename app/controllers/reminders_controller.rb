@@ -59,7 +59,10 @@ class RemindersController < ApplicationController
     @user = @reminder.users.find(params[:id])
 
     if @reminder.users.delete(@user)
-      redirect_to reminder_path(@reminder)
+      respond_to do |format|
+        format.html { redirect_to reminder_path(@reminder) }
+        format.turbo_stream
+      end
     else
       render :edit, status: :unprocessable_entity
     end

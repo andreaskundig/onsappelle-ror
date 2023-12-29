@@ -3,29 +3,25 @@
 <div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
 
 <h3>Recipients
-  <%= link_to "[+]", new_reminder_user_path(@reminder) %>
+  <%= turbo_frame_tag "add_user_turbo_frame" do %>
+    <%= link_to "[+]", new_reminder_user_path(@reminder),
+     data: {turbo_frame: 'user_form_turbo_frame'}%>
+  <% end %>
 </h3>
+
+<%= turbo_frame_tag "user_form_turbo_frame" do %>
+<% end %>
 <% @reminder.users.each do |user| %>
-  <div>
-    <strong>Email</strong>
-    <span><%= user.email %></span>
-    <%= link_to '[-]', remove_reminder_user_path(@reminder, user),
-     method: :delete,
-     data: {
-       turbo_method: :delete,
-       turbo_confirm: "Are you sure?"
-     } %>  </div>
+  <%= render 'users/show', reminder: @reminder, user: user %>
 <% end %>
 
 <p>
   <%= button_to "Edit", edit_reminder_path(@reminder),
-      :method => "get" %>
+   :method => "get" %>
   <%= button_to "Destroy", reminder_path(@reminder),
    method: :delete,
-   data: {
-                    turbo_method: :delete,
-                    turbo_confirm: "Are you sure?"
-          } %>
+   data: {turbo_method: :delete,
+          turbo_confirm: "Are you sure?"} %>
 </p>
 
 <p>
