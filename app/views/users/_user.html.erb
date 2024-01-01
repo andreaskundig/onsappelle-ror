@@ -2,7 +2,8 @@
     <div>
         <strong>Email</strong>
         <span><%= user.email %></span>
-        <%= link_to '[-]', remove_reminder_user_path(reminder, user),
+        <%= link_to '[-]',
+         remove_reminder_user_path(reminder, user),
          method: :delete,
          data: {
              turbo_method: :delete,

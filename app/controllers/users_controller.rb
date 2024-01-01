@@ -17,10 +17,17 @@ class UsersController < ApplicationController
 
   def create
     @reminder = Reminder.find(params[:reminder_id])
-    email = params[:user][:email]
-    add_reminder_recipients(@reminder, [email])
-    @reminder.save
-    redirect_to reminder_path(@reminder)
+    @user = @reminder.users.build(user_params)
+    # email = params[:user][:email]
+    # add_reminder_recipients(@reminder, [email])
+    if @reminder.save
+      respond_to do |format|
+        format.html { redirect_to reminder_path(@reminder) }
+        format.turbo_stream
+      end
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   private

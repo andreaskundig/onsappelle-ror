@@ -5,14 +5,15 @@
 <h3>Recipients
   <%= turbo_frame_tag "add_user_turbo_frame" do %>
     <%= link_to "[+]", new_reminder_user_path(@reminder),
-     data: {turbo_frame: 'user_form_turbo_frame'}%>
+     data: {turbo_frame: 'new_user'}%>
   <% end %>
 </h3>
 
-<%= turbo_frame_tag "user_form_turbo_frame" do %>
-<% end %>
-<% @reminder.users.each do |user| %>
-  <%= render 'users/show', reminder: @reminder, user: user %>
+<%= turbo_frame_tag 'new_user' %><%# same as User.new %>
+<%= turbo_frame_tag "users" do %>
+  <% @reminder.users.each do |user| %>
+    <%= render 'users/user', reminder: @reminder, user: user %>
+  <% end %>
 <% end %>
 
 <p>

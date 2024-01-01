@@ -1,0 +1,4 @@
+<%= turbo_stream.prepend "users",
+    partial: "users/user",
+    locals: { reminder: @reminder, user: @user } %>
+<%= turbo_stream.update 'new_user', "" %>
