@@ -1,5 +1,34 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
+
+* turbo_frames
+
+/reminders/17 -> reminders/show.html.erb
+[[file:app/views/reminders/show.html.erb::<h3>Recipients][adding recipient]] to reminder
+#+begin_src erb
+    <%= link_to "[+]", new_reminder_user_path(@reminder),
+     data: {turbo_frame: 'new_user'}%>
+#+end_src
+reminders/show.html.erb has [[file:app/views/reminders/show.html.erb::<%= link_to "\[+\]", new_reminder_user_path(@reminder),][[+] link]] to add recipients
+which goes to new_reminder_user_path
+which is configured in [[file:config/routes.rb::resources :users do][routes.rb]]
+to trigger users_controller.rb [[file:app/controllers/users_controller.rb::def create][create]]
+which adds a user to the reminder and saves it
+and responds with create.turbo_stream.erb
+which [[file:app/views/users/create.turbo_stream.erb::partial: "users/user",][returns]] html generated from [[file:app/views/users/_user.html.erb::<%= turbo_frame_tag user do %>][_user.html.erb]]
+and causes turbo to
+- prepend the generated user html to the user list
+- delete the user adding form
+
+every user on reminders/show.html.erb has a [[file:app/views/users/_user.html.erb::<%= link_to '\[-\]',][[-] link]]
+which goes to remove_reminder_user_path
+which is configured in [[file:config/routes.rb::delete 'remove', to: 'reminders#remove_user'][routes.rb]]
+to trigger reminders_controller.rb [[file:app/controllers/reminders_controller.rb::def remove_user][remove_user]]
+which deletes the relation in the db
+and returns [[file:app/views/reminders/remove_user.turbo_stream.erb::<%= turbo_stream.remove @user %>][remove_user.turbo_stream.erb]]
+which causes turbo to remove that user's turbo_frame
+which reminders/show.html.erb got from [[file:app/views/users/_user.html.erb::<%= turbo_frame_tag user do %>][users/_user.html.rb]]
+
 * TODO navigation: reminder creation paths
 
 ** /reminders/new

@@ -3,10 +3,8 @@
 <div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
 
 <h3>Recipients
-  <%= turbo_frame_tag "add_user_turbo_frame" do %>
     <%= link_to "[+]", new_reminder_user_path(@reminder),
      data: {turbo_frame: 'new_user'}%>
-  <% end %>
 </h3>
 
 <%= turbo_frame_tag 'new_user' %><%# same as User.new %>
