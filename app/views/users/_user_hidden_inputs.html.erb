@@ -1,11 +1,12 @@
-<%= turbo_frame_tag "recipient_#{email_code}" do %>
+<%= turbo_frame_tag "recipient_#{email_to_code(user.email)}" do %>
     <% if user.errors.full_messages_for(:email).length == 0  %>
         <div>
             <strong>Email</strong>
             <span><%= user.email %></span>
             <%= hidden_field_tag 'reminder[user][][email]', user.email, id: user.id  %>
             <%= link_to '[-]',
-             remove_user_inputs_path(email_code: email_code),
+             remove_user_inputs_path(email_code:
+                                     email_to_code(user.email)),
              data: { turbo_stream: true, turbo_method: :delete},
              method: :delete %>
         </div>

@@ -14,7 +14,6 @@ class UsersController < ApplicationController
   def new_inputs
     email = params[:user][:email]
     @user = User.find_by(email: email)
-    @email_code = email_to_code(email)
     unless @user
       @user = User.new(user_params)
       @user.validate
