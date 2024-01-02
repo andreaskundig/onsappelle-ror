@@ -18,7 +18,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
 
     post "/reminders/",
          params: { reminder: { date: "2023-12-21",
-                               users: { email: the_email }} }
+                               user: [{ email: the_email }]} }
     assert_response :redirect
 
     assert_equal reminder_count + 1, Reminder.count
@@ -28,7 +28,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
     assert_response :success
-    assert_select "h1", "Edit Reminder"
+    assert_select "h1", "Reminder #{new_reminder.id}"
     assert_select "span", the_email
   end
 
@@ -42,7 +42,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     date_0 = datetime_0.strftime('%Y-%m-%d')
     post "/reminders/",
          params: { reminder: { date: date_0,
-                               users: { email: email_0 }} }
+                               user: [{ email: email_0 }]} }
     assert_response :redirect
 
     assert_equal reminder_count + 1, Reminder.count
@@ -57,7 +57,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     date_1 = datetime_1.strftime('%Y-%m-%d')
     post "/reminders/",
          params: { reminder: { date: date_1,
-                               users: { email: email_1 }} }
+                               user: [{ email: email_1 }]} }
     assert_response :redirect
     assert_equal reminder_count + 2, Reminder.count
     reminder_1 = Reminder.last
@@ -76,7 +76,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     date_0 = datetime_0.strftime('%Y-%m-%d')
     post "/reminders/",
          params: { reminder: { date: date_0,
-                               users: { email: the_email }} }
+                               user: [{ email: the_email }]} }
     assert_response :redirect
 
     assert_equal reminder_count + 1, Reminder.count
@@ -90,7 +90,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     date_1 = datetime_1.strftime('%Y-%m-%d')
     post "/reminders/",
          params: { reminder: { date: date_1,
-                               users: { email: the_email }} }
+                               user: [{ email: the_email }]} }
     assert_response :redirect
     assert_equal reminder_count + 2, Reminder.count
     reminder_1 = Reminder.last

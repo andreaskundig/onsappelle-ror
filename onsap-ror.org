@@ -1,50 +1,20 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
 
+* TODO landing page
+
+** button/link to remove user
+
+** create users during reminder creation
+users are created when add user is pressed
+it would be better to create them only after
+create reminder is pressed.
+
+It was first done this way and unfortunately they all had the same id, which prevented displaying several of them
+** should there be only one email input?
+added users could be hidden inputs + just text
+
 * doc for pages (+ turbo_frames)
-** landing page
-reminders/new.html.erb <- _form.html.erb
-- date input field / (preferably no set date button)
-- email input field / add user button
-- create reminder button
-
-possibility to add user
-add user button turbo
-- adds a user and a hidden input field (?)
-
-*** implementation ideas
-we start with a Reminder.new, without date or user
-
-add user:
-- creates or finds user
-- creates reminder with user but without date
-- redirects to show page
-
-
-set date:
-- create reminder with date but no user
-- redirects to show
-
-Problems
- Missing in show page
- - date input
- - validate users and date
-
-date input or not?
-no input but clicking on it turns it into input
- - click on date display: input turbo render edit,
- - click somewhere else: close inputs COMPLICATED
-
-
-
-*** random notes
-adding a recipient or a date should create a reminder
-redirect to show
-
-[+] needs to link to new_reminder_path
-
-stimulus can be used to trigger a form submission when a date is chosen
-https://stackoverflow.com/questions/68624668/how-can-i-submit-a-form-on-input-change-with-turbo-streams
 
 ** add recipient to existing reminder
 /reminders/17 -> reminders/show.html.erb
@@ -77,39 +47,11 @@ and returns [[file:app/views/reminders/remove_user.turbo_stream.erb::<%= turbo_s
 which causes turbo to remove that user's turbo_frame
 which reminders/show.html.erb got from [[file:app/views/users/_user.html.erb::<%= turbo_frame_tag user do %>][users/_user.html.rb]]
 
-* TODO show page
+* TODO show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
 
-- activate button
-
-* TODO navigation: reminder creation paths
-
-** /reminders/new
-- date input
-- existing emails (own?)  [remove] -> create -> edit
-- email input [add]] -> create  -> edit
-
-[save] -> create (status :active) -> show
-
-currently
-date, create reminders -> Reminder.new(date)
-
-
-
-** /reminders/edit/:id
-
-same form as for creation
-
-
-** /reminders/show/:id
-
-- date
-- existing emails
-
-[update]
-
-
+* TODO active/inactive reminders ?
 
 * TODO rename reminder.users to .recipients
 * TODO send emails at reminder date
