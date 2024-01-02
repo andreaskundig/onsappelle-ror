@@ -1,8 +1,52 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
 
-* turbo_frames
+* doc for pages (+ turbo_frames)
+** landing page
+reminders/new.html.erb <- _form.html.erb
+- date input field / (preferably no set date button)
+- email input field / add user button
+- create reminder button
 
+possibility to add user
+add user button turbo
+- adds a user and a hidden input field (?)
+
+*** implementation ideas
+we start with a Reminder.new, without date or user
+
+add user:
+- creates or finds user
+- creates reminder with user but without date
+- redirects to show page
+
+
+set date:
+- create reminder with date but no user
+- redirects to show
+
+Problems
+ Missing in show page
+ - date input
+ - validate users and date
+
+date input or not?
+no input but clicking on it turns it into input
+ - click on date display: input turbo render edit,
+ - click somewhere else: close inputs COMPLICATED
+
+
+
+*** random notes
+adding a recipient or a date should create a reminder
+redirect to show
+
+[+] needs to link to new_reminder_path
+
+stimulus can be used to trigger a form submission when a date is chosen
+https://stackoverflow.com/questions/68624668/how-can-i-submit-a-form-on-input-change-with-turbo-streams
+
+** add recipient to existing reminder
 /reminders/17 -> reminders/show.html.erb
 [[file:app/views/reminders/show.html.erb::<h3>Recipients][adding recipient]] to reminder
 #+begin_src erb
@@ -23,6 +67,7 @@ and causes turbo to
 - prepend the generated user html to the user list
 - delete the user adding form
 
+** delete recipient
 every user on reminders/show.html.erb has a [[file:app/views/users/_user.html.erb::<%= link_to '\[-\]',][[-] link]]
 which goes to remove_reminder_user_path
 which is configured in [[file:config/routes.rb::delete 'remove', to: 'reminders#remove_user'][routes.rb]]
@@ -31,6 +76,12 @@ which deletes the relation in the db
 and returns [[file:app/views/reminders/remove_user.turbo_stream.erb::<%= turbo_stream.remove @user %>][remove_user.turbo_stream.erb]]
 which causes turbo to remove that user's turbo_frame
 which reminders/show.html.erb got from [[file:app/views/users/_user.html.erb::<%= turbo_frame_tag user do %>][users/_user.html.rb]]
+
+* TODO show page
+activate reminder
+- validation: date + emails > 0
+
+- activate button
 
 * TODO navigation: reminder creation paths
 

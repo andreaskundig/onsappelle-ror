@@ -1,30 +1,41 @@
-<%= form_with model: reminder do |r_form| %>
+<%= form_with model: reminder, id: 'reminder_form' do |r_form| %>
   <h3>Date</h3>
   <div>
     <%= r_form.date_field :date %>
     <% reminder.errors.full_messages_for(:date).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
+        <div><mark><%= message %></mark></div>
+    <% end %><!-- end errors -->
   </div>
 
   <h3>Recipients</h3>
-  <% @reminder.users.each do |user| %>
-    <div>
-        <strong>Email</strong>
-        <span><%= user.email %></span>
-    </div>
-  <% end %>
-  
-  <%= r_form.fields_for :users do |u_form| %>
-    <div>
-        <%= u_form.label :email %>
-        <%= u_form.text_field :email %>
-    </div>
+
+  <%= turbo_frame_tag 'recipient_errors' do %>
     <% reminder.errors.full_messages_for(:users).each do |message| %>
-      <div><%= message %></div>
-    <% end %>
+        <div><mark><%= message %></mark></div>
+    <% end %><!-- end errors -->
+  <% end %><!-- end turbo_frame -->
+  <%= turbo_frame_tag 'recipients' %>
+  <% @reminder.users.each do |user| %>
+    <%= r_form.fields_for user, index: user.id  do |u_form| %>
+      <div>
+          <%= u_form.label :email %>
+          <%= u_form.text_field :email %>
+      </div>
+    <% end %><!-- end fieds_for -->
+  <% end %><!-- end turbo_frame -->
+<% end %><!-- end form -->
+
+<%= turbo_frame_tag 'new_recipient' do %>
+  <%= form_tag new_user_inputs_path do %>
+    <div>
+      <%= label_tag 'user[email]', 'Email' %>
+      <%= text_field_tag 'user[email]'  %>
+    </div>
+    <div>
+      <%= submit_tag "Add recipient" %>
+    </div>
   <% end %>
-  <div>
-    <%= r_form.submit %>
-  </div>
 <% end %>
+<p>
+      <%= submit_tag "Create reminder", form: 'reminder_form' %>
+</p>

@@ -1,0 +1,12 @@
+<%= form_tag new_user_inputs_path do %>
+    <% user.errors.full_messages_for(:email).each do |message| %>
+        <div><mark><%= message %></mark></div>
+    <% end %>
+    <div>
+      <%= label_tag 'user[email]', 'Email' %>
+      <%= text_field_tag 'user[email]', ''  %>
+    </div>
+    <div>
+      <%= submit_tag "Add user" %>
+    </div>
+  <% end %>

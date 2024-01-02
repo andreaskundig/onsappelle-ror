@@ -1,0 +1,3 @@
+<% if user.errors.full_messages_for(:email).length == 0  %>
+    <%= text_field_tag 'reminder[user][][email]', user.email, id: user.id  %>
+<% end %>

@@ -14,7 +14,7 @@ module ReminderFactory
   end
 
   def add_reminder_recipients(reminder, emails)
-    emails.each{ |email|
+    emails&.each{ |email|
       invalid = (email.nil? or email.empty?)
       unless invalid or reminder_has_email(reminder, email)
         email.strip!

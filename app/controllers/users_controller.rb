@@ -15,6 +15,15 @@ class UsersController < ApplicationController
     # @user = @reminder.users.build
   end
 
+  def new_inputs
+    email = params[:user][:email]
+    @user = User.find_by(email: email)
+    unless @user
+      @user = User.create(user_params)
+    end
+    respond_to :turbo_stream
+  end
+
   def create
     @reminder = Reminder.find(params[:reminder_id])
     @user = @reminder.users.build(user_params)

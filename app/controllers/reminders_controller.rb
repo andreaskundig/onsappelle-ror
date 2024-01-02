@@ -11,18 +11,17 @@ class RemindersController < ApplicationController
 
   def new
     @reminder = Reminder.new
-    @reminder.users.build
   end
 
   def create
     @reminder = Reminder.new(reminder_params)
-    email = params[:reminder]&.dig(:users, :email)
-    add_reminder_recipients(@reminder, [email])
+    emails = params[:reminder]&.dig(:user)&.map {|u| u[:email]}
+    add_reminder_recipients(@reminder, emails)
 
     if @reminder.save # saves to db
       # save has worked
       # makes a new request to end this one
-      redirect_to edit_reminder_path(@reminder)
+      redirect_to reminder_path(@reminder)
     else
       # just renders the view new.html.erb,
       # with an error, and without a new request

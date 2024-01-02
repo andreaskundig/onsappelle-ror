@@ -1,0 +1,9 @@
+<%= turbo_stream.append "recipients",
+    partial: "users/user_hidden_inputs",
+    locals: { user: @user }
+%>
+<%= turbo_stream.update 'new_recipient',
+    partial: "users/user_inputs",
+    locals: { user: @user }
+%>
+<%= turbo_stream.update 'recipient_errors', "" %>
