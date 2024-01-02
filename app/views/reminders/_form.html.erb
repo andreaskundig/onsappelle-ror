@@ -26,15 +26,7 @@
 <% end %><!-- end form -->
 
 <%= turbo_frame_tag 'new_recipient' do %>
-  <%= form_tag new_user_inputs_path do %>
-    <div>
-      <%= label_tag 'user[email]', 'Email' %>
-      <%= text_field_tag 'user[email]'  %>
-    </div>
-    <div>
-      <%= submit_tag "Add recipient" %>
-    </div>
-  <% end %>
+  <%= render 'users/user_inputs', {user: User.new} %>
 <% end %>
 <p>
       <%= submit_tag "Create reminder", form: 'reminder_form' %>
