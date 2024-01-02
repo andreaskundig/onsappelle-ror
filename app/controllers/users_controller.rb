@@ -20,6 +20,7 @@ class UsersController < ApplicationController
     @user = User.find_by(email: email)
     unless @user
       @user = User.new(user_params)
+      @user.validate
     end
     respond_to :turbo_stream
   end
