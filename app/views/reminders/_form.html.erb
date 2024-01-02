@@ -15,14 +15,6 @@
     <% end %><!-- end errors -->
   <% end %><!-- end turbo_frame -->
   <%= turbo_frame_tag 'recipients' %>
-  <% @reminder.users.each do |user| %>
-    <%= r_form.fields_for user, index: user.id  do |u_form| %>
-      <div>
-          <%= u_form.label :email %>
-          <%= u_form.text_field :email %>
-      </div>
-    <% end %><!-- end fieds_for -->
-  <% end %><!-- end turbo_frame -->
 <% end %><!-- end form -->
 
 <%= turbo_frame_tag 'new_recipient' do %>
