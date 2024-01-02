@@ -15,10 +15,13 @@
     <% end %><!-- end errors -->
   <% end %><!-- end turbo_frame -->
   <%= turbo_frame_tag 'recipients' %>
+  <% @reminder.users.each do |user| %>
+    <%= render 'users/user_hidden_inputs', user: user %>
+  <% end %><!-- end form -->
 <% end %><!-- end form -->
 
 <%= turbo_frame_tag 'new_recipient' do %>
-  <%= render 'users/user_inputs', {user: User.new} %>
+  <%= render 'users/user_inputs', user: User.new %>
 <% end %>
 <p>
   <%= submit_tag "Create reminder", form: 'reminder_form' %>

@@ -1,18 +1,6 @@
 <h1>Reminder <%= @reminder.id %></h1>
-<h3>Date</h3>
 <div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
-
-<h3>Recipients
-    <%= link_to "[+]", new_reminder_user_path(@reminder),
-     data: {turbo_frame: 'new_user'}%>
-</h3>
-
-<%= turbo_frame_tag 'new_user' %><%# same as User.new %>
-<%= turbo_frame_tag "users" do %>
-  <% @reminder.users.each do |user| %>
-    <%= render 'users/user', reminder: @reminder, user: user %>
-  <% end %>
-<% end %>
+<%= render 'form', reminder: @reminder %>
 
 <p>
   <%= button_to "Edit", edit_reminder_path(@reminder),
