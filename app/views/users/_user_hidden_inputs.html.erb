@@ -1,3 +1,13 @@
-<% if user.errors.full_messages_for(:email).length == 0  %>
-    <%= text_field_tag 'reminder[user][][email]', user.email, id: user.id  %>
+<%= turbo_frame_tag "recipient_#{email_code}" do %>
+    <% if user.errors.full_messages_for(:email).length == 0  %>
+        <div>
+            <strong>Email</strong>
+            <span><%= user.email %></span>
+            <%= hidden_field_tag 'reminder[user][][email]', user.email, id: user.id  %>
+            <%= link_to '[-]',
+             remove_user_inputs_path(email_code: email_code),
+             data: { turbo_stream: true, turbo_method: :delete},
+             method: :delete %>
+        </div>
+    <% end %>
 <% end %>

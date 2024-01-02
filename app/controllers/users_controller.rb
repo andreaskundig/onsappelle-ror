@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   include ReminderFactory
+  include UsersHelper
 
   def index
     @reminder = Reminder.find(params[:reminder_id])
@@ -10,19 +11,25 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
-  def new
-    @reminder = Reminder.find(params[:reminder_id])
-    # @user = @reminder.users.build
-  end
-
   def new_inputs
     email = params[:user][:email]
     @user = User.find_by(email: email)
+    @email_code = email_to_code(email)
     unless @user
       @user = User.new(user_params)
       @user.validate
     end
     respond_to :turbo_stream
+  end
+
+  def remove_inputs
+    @email_code = params[:email_code]
+    respond_to :turbo_stream
+  end
+
+  def new
+    @reminder = Reminder.find(params[:reminder_id])
+    # @user = @reminder.users.build
   end
 
   def create
@@ -44,5 +51,4 @@ class UsersController < ApplicationController
     def user_params
       params.require(:user).permit(:email)
     end
-
 end

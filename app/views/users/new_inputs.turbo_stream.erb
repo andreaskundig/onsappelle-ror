@@ -1,6 +1,6 @@
 <%= turbo_stream.append "recipients",
     partial: "users/user_hidden_inputs",
-    locals: { user: @user }
+    locals: { user: @user, email_code: @email_code }
 %>
 <%= turbo_stream.update 'new_recipient',
     partial: "users/user_inputs",
