@@ -19,7 +19,7 @@ class UsersController < ApplicationController
     email = params[:user][:email]
     @user = User.find_by(email: email)
     unless @user
-      @user = User.create(user_params)
+      @user = User.new(user_params)
     end
     respond_to :turbo_stream
   end
