@@ -84,7 +84,12 @@ gem install solargraph
 gem install solargraph-rails
 #+end_src
 * deployment
-** deployment on fly.io (ah, no free plan)
+** ovh 3.50/month
+https://www.ovhcloud.com/fr/vps/compare/
+** digitalocean 4$/month
+https://www.digitalocean.com/pricing/droplets#basic-droplets
+
+** deployment on fly.io (5$ /month)
 https://fly.io/docs/hands-on/launch-app/
 
 generate fly.toml
@@ -128,8 +133,13 @@ https://fly.io/docs/about/pricing/
 We don’t offer a “free tier.” Instead, we offer some free resource allowances that apply to all plans, including the Hobby plan
 
 Hobby plan is 5$ /month, which you only find out after creating an account :P
-** deployment on render.com
+** render.com, free but expires (7$ month)
+
+postgres mandatory but free version expires after 90 days
+
 found them on this blog [[https://dev.to/render/deploying-your-rails-6-app-4an4][here]]
+
+
 
 https://render.com/pricing
 
@@ -145,6 +155,7 @@ bundle install
 configure pg for production in [[file:config/database.yml::production:][database.yml]]
 
 But it should be possible to have an sqlite on disk
+disk is for paid plan 7$ /month
 https://docs.render.com/disks
 ** google cloud
 https://cloud.google.com/ruby/rails/
