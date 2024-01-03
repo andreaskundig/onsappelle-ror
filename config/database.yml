@@ -24,9 +24,9 @@ test:
 #   <<: *default
 #   database: storage/production.sqlite3
 production:
-  database: onsap_production
-  username: onsap
-  password: <%= ENV['ONSAP_DATABASE_PASSWORD'] %>
+  database: mysite_production
+  username: mysite
+  password: <%= ENV['MYSITE_DATABASE_PASSWORD'] %>
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
