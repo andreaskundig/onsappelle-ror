@@ -1,17 +1,16 @@
 <h1>Reminder <%= @reminder.id %></h1>
-<div><%= @reminder.date.strftime("%d-%m-%Y") %></div>
 <%= render 'form', reminder: @reminder %>
 
 <p>
-  <%= submit_tag "Update reminder", form: 'reminder_form' %>
-</p>
-<p>
-  <%= button_to "Edi.", edit_reminder_path(@reminder),
-   :method => "get" %>
-  <%= button_to "Destroy", reminder_path(@reminder),
-   method: :delete,
-   data: {turbo_method: :delete,
-          turbo_confirm: "Are you sure?"} %>
+    <%= submit_tag "Update reminder", form: 'reminder_form' %>
+    <%= button_to "Cancel", reminder_path(@reminder),
+     :method => "get" %>
+    <%= button_to "Edi.", edit_reminder_path(@reminder),
+     :method => "get" %>
+    <%= button_to "Destroy", reminder_path(@reminder),
+     method: :delete,
+     data: {turbo_method: :delete,
+            turbo_confirm: "Are you sure?"} %>
 </p>
 
 <p>
