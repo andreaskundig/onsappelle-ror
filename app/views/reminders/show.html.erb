@@ -3,7 +3,10 @@
 <%= render 'form', reminder: @reminder %>
 
 <p>
-  <%= button_to "Edit", edit_reminder_path(@reminder),
+  <%= submit_tag "Update reminder", form: 'reminder_form' %>
+</p>
+<p>
+  <%= button_to "Edi.", edit_reminder_path(@reminder),
    :method => "get" %>
   <%= button_to "Destroy", reminder_path(@reminder),
    method: :delete,

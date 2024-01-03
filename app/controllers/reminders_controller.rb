@@ -15,8 +15,7 @@ class RemindersController < ApplicationController
 
   def create
     @reminder = Reminder.new(reminder_params)
-    emails = params[:users]&.map {|u| u[:email]}
-    add_reminder_recipients(@reminder, emails)
+    add_reminder_recipients(@reminder, params[:users])
 
     if @reminder.save # saves to db
       # save has worked
@@ -35,13 +34,12 @@ class RemindersController < ApplicationController
 
   def update
     @reminder = Reminder.find(params[:id])
-    email = params[:reminder]&.dig(:users, :email)
-    add_reminder_recipients(@reminder, [email])
+    add_reminder_recipients(@reminder, params[:users])
 
     if @reminder.update(reminder_params)
-      redirect_to edit_reminder_path(@reminder)
+      redirect_to reminder_path(@reminder)
     else
-      render :edit, status: :unprocessable_entity
+      render :show, status: :unprocessable_entity
     end
   end
 

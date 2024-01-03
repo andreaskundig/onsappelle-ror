@@ -23,6 +23,3 @@
 <%= turbo_frame_tag 'new_recipient' do %>
   <%= render 'users/user_inputs', user: User.new %>
 <% end %>
-<p>
-  <%= submit_tag "Create reminder", form: 'reminder_form' %>
-</p>
