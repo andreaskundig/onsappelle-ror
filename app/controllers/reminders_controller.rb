@@ -51,21 +51,6 @@ class RemindersController < ApplicationController
     redirect_to reminders_path, status: :see_other
   end
 
-  def remove_user
-    @reminder = Reminder.find(params[:reminder_id])
-    @user = @reminder.users.find(params[:id])
-
-    if @reminder.users.delete(@user)
-      respond_to do |format|
-        format.html { redirect_to reminder_path(@reminder) }
-        format.turbo_stream
-      end
-    else
-      render :edit, status: :unprocessable_entity
-    end
-
-  end
-
   private
     def reminder_params
       # params.require(:reminder).permit!
