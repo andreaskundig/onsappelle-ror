@@ -15,7 +15,7 @@ class RemindersController < ApplicationController
 
   def create
     @reminder = Reminder.new(reminder_params)
-    emails = params[:reminder]&.dig(:user)&.map {|u| u[:email]}
+    emails = params[:users]&.map {|u| u[:email]}
     add_reminder_recipients(@reminder, emails)
 
     if @reminder.save # saves to db
@@ -72,6 +72,6 @@ class RemindersController < ApplicationController
     def reminder_params
       # params.require(:reminder).permit!
       params.require(:reminder)
-      .permit(:date, users_attributes: [:email])
+      .permit(:date)
     end
 end

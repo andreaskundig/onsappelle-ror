@@ -3,7 +3,7 @@
         <div>
             <strong>Email</strong>
             <span><%= user.email %></span>
-            <%= hidden_field_tag 'reminder[user][][email]', user.email, id: user.id  %>
+            <%= hidden_field_tag 'users[][email]', user.email, id: user.id  %>
             <%= link_to '[-]',
              remove_user_inputs_path(email_code:
                                      email_to_code(user.email)),
