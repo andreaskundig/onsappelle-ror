@@ -150,9 +150,22 @@ How to continue using [[https://medium.com/@codetrouble/how-to-deploy-your-rails
 
 add pg to [[file:Gemfile::add postgres for render.com][Gemfile]]
 #+begin_src bash
-bundle install
+$ bundle install
+Unable to find PostgreSQL client library.
+
+Please install libpq or postgresql client package like so:
+  sudo apt install libpq-dev
+
 #+end_src
 configure pg for production in [[file:config/database.yml::production:][database.yml]]
+
+set the RAILS_MASTER_KEY env variable.
+If you don't have a file config/master.key
+generate one with
+#+begin_src bash
+VISUAL="vi" bin/rails credentials:edit
+#+end_src
+see [[https://stackoverflow.com/questions/54064347/rails-during-asset-precompile-throws-error-key-must-be-16-bytes][stackoverflow]]
 
 But it should be possible to have an sqlite on disk
 disk is for paid plan 7$ /month
