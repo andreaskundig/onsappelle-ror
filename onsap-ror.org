@@ -83,3 +83,68 @@ https://github.com/iftheshoefritz/solargraph-rails/
 gem install solargraph
 gem install solargraph-rails
 #+end_src
+* deployment
+** deployment on fly.io (ah, no free plan)
+https://fly.io/docs/hands-on/launch-app/
+
+generate fly.toml
+#+begin_src bash
+$ fly launch --image flyio/hellofly:latest
+Using image flyio/hellofly:latest
+Creating app in /home/andre/workspace/onsappelle-ror
+We're about to launch your app on Fly.io. Here's what you're getting:
+
+Organization: Andreas                (fly launch defaults to the personal org)
+Name:         onsappelle-ror         (derived from your directory name)
+Region:       Paris, France          (this is the fastest region for you)
+App Machines: shared-cpu-1x, 1GB RAM (most apps need about 1GB of RAM)
+Postgres:     <none>                 (not requested)
+Redis:        <none>                 (not requested)
+
+X Sorry, your reply was invalid: "N¨" is not a valid answer, please try again.
+? Do you want to tweak these settings before proceeding? No
+Created app 'onsappelle-ror' in organization 'personal'
+Admin URL: https://fly.io/apps/onsappelle-ror
+Hostname: onsappelle-ror.fly.dev
+Wrote config file fly.toml
+Validating /home/andre/workspace/onsappelle-ror/fly.toml
+Platform: machines
+✓ Configuration is valid
+==> Building image
+Searching for image 'flyio/hellofly:latest' remotely...
+image found: img_z1nr0lpjz9v5q98w
+
+Watch your deployment at https://fly.io/apps/onsappelle-ror/monitoring
+
+Provisioning ips for onsappelle-ror
+  Dedicated ipv6: 2a09:8280:1::4e:d937
+  Shared ipv4: 66.241.124.227
+  Add a dedicated ipv4 with: fly ips allocate-v4
+
+Error: input:3: createRelease We need your payment information to continue! Add a credit card or buy credit: https://fly.io/dashboard/andreas-58/billing
+#+end_src
+
+https://fly.io/docs/about/pricing/
+We don’t offer a “free tier.” Instead, we offer some free resource allowances that apply to all plans, including the Hobby plan
+
+Hobby plan is 5$ /month, which you only find out after creating an account :P
+** deployment on render.com
+found them on this blog [[https://dev.to/render/deploying-your-rails-6-app-4an4][here]]
+
+https://render.com/pricing
+
+https://docs.render.com/deploy-rails
+
+They tell to switch from sqlite to postgres
+How to continue using [[https://medium.com/@codetrouble/how-to-deploy-your-rails-app-with-both-sqlite-and-postgresql-on-render-7369ab50d04b][sqlite in development]]
+
+add pg to [[file:Gemfile::add postgres for render.com][Gemfile]]
+#+begin_src bash
+bundle install
+#+end_src
+configure pg for production in [[file:config/database.yml::production:][database.yml]]
+
+But it should be possible to have an sqlite on disk
+https://docs.render.com/disks
+** google cloud
+https://cloud.google.com/ruby/rails/

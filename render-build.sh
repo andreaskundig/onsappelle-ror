@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# https://docs.render.com/deploy-rails#3-update-your-app-for-render
+# exit on error
+set -o errexit
+
+bundle install
+./bin/rails assets:precompile
+./bin/rails assets:clean
+./bin/rails db:migrate
