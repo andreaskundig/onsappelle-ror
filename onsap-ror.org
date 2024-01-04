@@ -57,7 +57,7 @@ https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in
 with token
 https://dev.to/phawk/password-less-auth-in-rails-4ah
 
-* steps
+* first steps
 
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
 #+begin_src bash
@@ -75,7 +75,9 @@ $ bin/rails generate controller Reminders index
 $ bin/rails generate controller Users
 #+end_src
 
-* language server: solargraph
+* language server
+** finally chose ruby-lsp
+** solargraph
 https://emacs-lsp.github.io/lsp-mode/page/lsp-solargraph/
 https://github.com/castwide/solargraph
 https://github.com/iftheshoefritz/solargraph-rails/
@@ -84,6 +86,7 @@ gem install solargraph
 gem install solargraph-rails
 #+end_src
 * deployment
+https://www.hostingadvice.com/how-to/best-ruby-on-rails-hosting/
 ** ovh 3.50/month
 https://www.ovhcloud.com/fr/vps/compare/
 ** digitalocean 4$/month
@@ -133,7 +136,8 @@ https://fly.io/docs/about/pricing/
 We don’t offer a “free tier.” Instead, we offer some free resource allowances that apply to all plans, including the Hobby plan
 
 Hobby plan is 5$ /month, which you only find out after creating an account :P
-** render.com, free but expires (7$ month)
+** render.com, free but db wipes (or 7$ month)
+https://mysite-1psl.onrender.com/
 
 postgres mandatory but free version expires after 90 days
 
