@@ -43,7 +43,8 @@ activate reminder
 - validation: date + emails > 0
 
 * TODO active/inactive reminders ?
-
+* TODO ensure email field is empty at page load
+find out how this is filled...
 * TODO rename reminder.users to .recipients
 * TODO send emails at reminder date
 * TODO refactor: remove unused routes controller methods
@@ -56,6 +57,8 @@ handrolled
 https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
 with token
 https://dev.to/phawk/password-less-auth-in-rails-4ah
+* TODO Active Job adapter w persistent backend (sidekiq resque)
+as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
 
 * first steps
 
@@ -74,7 +77,13 @@ $ bin/rails db:migrate
 $ bin/rails generate controller Reminders index
 $ bin/rails generate controller Users
 #+end_src
+[[https://guides.rubyonrails.org/action_mailer_basics.html][generating a mailer]]
+#+begin_src bash
+bin/rails generate mailer User
+#+end_src
 
+** gmail
+choose 2 factor authentication and use app password
 * language server
 ** finally chose ruby-lsp
 ** solargraph

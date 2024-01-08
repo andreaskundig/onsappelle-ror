@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+      <h1>Reminder</h1>
+      <p>
+          On the <%= @reminder.date.strftime('%Y-%m-%d') %>, I will send a reminder to:
+          <ul>
+              <% @reminder.users.each do |recipient| %>
+                  <li><%= recipient.email %></li>
+              <% end %>
+          </ul>
+      </p>
+  </body>
+</html>

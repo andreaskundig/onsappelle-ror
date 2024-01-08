@@ -15,10 +15,18 @@ class RemindersController < ApplicationController
 
   def create
     @reminder = Reminder.new(reminder_params)
-    add_reminder_recipients(@reminder, params[:users])
+    update_reminder_recipients(@reminder, params[:users])
 
     if @reminder.save # saves to db
       # save has worked
+
+      # email confirmation
+      # TODO email to several instead of several emails
+      @reminder.users.each do |recipient|
+        UserMailer.with(user: recipient, reminder: @reminder)
+          .added_to_reminder_email.deliver_later
+      end
+
       # makes a new request to end this one
       redirect_to reminder_path(@reminder)
     else
@@ -34,7 +42,8 @@ class RemindersController < ApplicationController
 
   def update
     @reminder = Reminder.find(params[:id])
-    add_reminder_recipients(@reminder, params[:users])
+    changed_recipients =
+      update_reminder_recipients(@reminder, params[:users])
 
     if @reminder.update(reminder_params)
       redirect_to reminder_path(@reminder)

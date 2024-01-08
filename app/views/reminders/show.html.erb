@@ -5,14 +5,14 @@
     <%= submit_tag "Update reminder", form: 'reminder_form' %>
     <%= button_to "Cancel", reminder_path(@reminder),
      :method => "get" %>
-    <%= button_to "Edi.", edit_reminder_path(@reminder),
-     :method => "get" %>
     <%= button_to "Destroy", reminder_path(@reminder),
      method: :delete,
      data: {turbo_method: :delete,
             turbo_confirm: "Are you sure?"} %>
+    <%= link_to "edit", edit_reminder_path(@reminder) %>
 </p>
 
 <p>
-  <%= link_to "All reminders", reminders_path %>
+    <%= link_to "New", new_reminder_path %>
+    <%= link_to "All", reminders_path %>
 </p>

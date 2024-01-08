@@ -1,37 +1,37 @@
 module ReminderFactory
   extend ActiveSupport::Concern
 
-  def upsert_reminder(reminder_id, date, emails)
-    reminder = Reminder.find(reminder_id)
-    unless reminder
-      reminder = Reminder.new(date: date)
-    end
-    reminder.save
-  end
-
   def reminder_has_email(reminder, email)
      reminder.users.find { |u| u.email == email }
   end
 
-  def add_reminder_recipients(reminder, user_params)
+  def update_reminder_recipients(reminder, user_params)
     emails = user_params&.map {|u| u[:email]}
     return unless emails
+    # TODO check validity centrally and tell user
+    valid_emails = emails.map {|e| e.strip}
+                     .filter {|e| not (e.nil? or e.empty?)}
+    recipient_emails = reminder.users.map {|u| u.email}
+    to_remove = recipient_emails - valid_emails
+    to_add = valid_emails - recipient_emails
+    changes = {:removed => [], :added => [] }
+    # remove
     reminder.users.each do |user|
-      unless emails.include? user.email
+      if to_remove.include? user.email
         reminder.users.delete(user)
+        changes[:removed] << user
       end
     end
-    emails&.each{ |email|
-      invalid = (email.nil? or email.empty?)
-      unless invalid or reminder_has_email(reminder, email)
-        email.strip!
+    # add
+    to_add.each { |email|
         user = User.find_by(email: email)
         if user
           reminder.users << user
         else user
           reminder.users.build(email: email)
         end
-      end
+        changes[:added] << user
     }
+    changes
   end
 end
