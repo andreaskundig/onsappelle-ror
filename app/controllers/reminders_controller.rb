@@ -21,11 +21,9 @@ class RemindersController < ApplicationController
       # save has worked
 
       # email confirmation
-      # TODO email to several instead of several emails
-      @reminder.users.each do |recipient|
-        UserMailer.with(user: recipient, reminder: @reminder)
-          .added_to_reminder_email.deliver_later
-      end
+      UserMailer.with(emails: @reminder.users.pluck(:email),
+                      reminder: @reminder)
+        .added_to_reminder_email.deliver_later
 
       # makes a new request to end this one
       redirect_to reminder_path(@reminder)
@@ -42,10 +40,14 @@ class RemindersController < ApplicationController
 
   def update
     @reminder = Reminder.find(params[:id])
-    changed_recipients =
+    changes =
       update_reminder_recipients(@reminder, params[:users])
 
     if @reminder.update(reminder_params)
+      # email confirmation
+      UserMailer.with(emails: changes[:added].map {|u| u.email},
+                      reminder: @reminder)
+        .added_to_reminder_email.deliver_later
       redirect_to reminder_path(@reminder)
     else
       render :show, status: :unprocessable_entity
