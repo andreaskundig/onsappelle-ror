@@ -201,7 +201,7 @@ in fly.toml
   source="onsapvol"
   destination="/data"
 #+end_src
-**** deploy fails
+**** deploy fails: Unable to find PostgreSQL client library
 
 #+begin_src bash
 fly deploy
@@ -497,7 +497,7 @@ Problem seems to be
 
 https://www.fly.io/docs/rails/cookbooks/databases/
 
-**** deploy fails again
+**** deploy fails: release_command failed
 #+begin_src bash$ fly deploy
 ==> Verifying app config
 Validating /home/andre/workspace/onsappelle-ror/fly.toml
@@ -623,6 +623,9 @@ Check its logs: here's the last 100 lines below, or run 'fly logs -i 5683210c677
 Error: release command failed - aborting deployment. error release_command machine 5683210c6776d8 exited with non-zero status of 1
 
 #+end_src
+**** rails db:system:change --to=postgresql
+and then set db back to sqlite for dev
+added, and keep installing libbsqlite in prod
 *** first failed try (hello world)
 https://fly.io/docs/hands-on/launch-app/
 generate fly.toml

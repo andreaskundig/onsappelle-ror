@@ -262,7 +262,7 @@ DEPENDENCIES
   dockerfile-rails (>= 1.6)
   importmap-rails
   jbuilder
-  pg
+  pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 7.1.2)
   ruby-lsp-rails
