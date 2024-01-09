@@ -61,7 +61,7 @@ https://dev.to/phawk/password-less-auth-in-rails-4ah
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
 
 * first steps
-
+** rails generate stuff
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
 #+begin_src bash
 
@@ -84,6 +84,68 @@ bin/rails generate mailer User
 
 ** gmail
 choose 2 factor authentication and use app password
+** use postgres for local development
+[[https://www.digitalocean.com/community/tutorials/how-to-use-postgresql-with-your-ruby-on-rails-application-on-ubuntu-20-04][guide on digitalocean]]
+#+begin_src bash
+sudo apt update
+sudo apt install postgresql postgresql-contrib libpq-dev
+#+end_src
+*** fix some ubuntu problems...
+#+begin_src bash
+# installation fails
+Setting up sysstat (12.5.2-2ubuntu0.2) ...
+dpkg: error processing package sysstat (--configure):
+ installed sysstat package post-installation script subprocess returned error exit status 10
+ ...
+
+sudo apt upgrade
+# gah
+sudo apt upgrade --fix-missing
+
+# must have tried install again
+...
+Setting up ufw (0.36.1-4ubuntu0.1) ...
+dpkg: error processing package ufw (--configure):
+ installed ufw package post-installation script subprocess returned error exit status 10
+Setting up postgresql-common (238) ...
+dpkg: error processing package postgresql-common (--configure):
+ installed postgresql-common package post-installation script subprocess returned error exit status 10
+Setting up sysstat (12.5.2-2ubuntu0.2) ...
+
+            rrors were encountered while processing:
+ ufw
+ postgresql-common
+ sysstat
+ postgresql-14
+ postgresql-contrib
+ postgresql
+#+end_src
+https://askubuntu.com/questions/1241362/fix-package-post-installation-script-subprocess-returned-error-exit-status-10-fo
+#+begin_src
+sudo rm /var/lib/dpkg/info/ufw*
+sudo dpkg --configure -D 777 ufw
+sudo apt -f install
+
+sudo rm /var/lib/dpkg/info/postgresql-common*
+sudo dpkg --configure -D 777 postgresql-common
+sudo apt -f install
+
+sudo rm /var/lib/dpkg/info/sysstat*
+sudo dpkg --configure -D 777 sysstat
+sudo apt -f install
+#+end_src
+*** set up postgres
+[[https://www.cybertec-postgresql.com/en/postgresql-on-wsl2-for-windows-install-and-setup/][postgres on wsl2]]
+#+begin_src bash
+# not using systemctl because WSL2 doesn’t use systemd to operate:
+sudo service postgresql start
+sudo -u postgres createuser -s andre -P
+#+end_src
+set password for test and development dbs in [[file:config/database.yml::password: ENV\['DEV_DATABASE_PASSWORD'\]][database.yml]]
+#+begin_src bash
+bin/rails db:create
+bin/rails db:migrate
+#+end_src
 * language server
 ** finally chose ruby-lsp
 ** solargraph
@@ -96,8 +158,6 @@ gem install solargraph-rails
 #+end_src
 * deployment
 https://www.hostingadvice.com/how-to/best-ruby-on-rails-hosting/
-** ovh 3.50/month
-https://www.ovhcloud.com/fr/vps/compare/
 ** deployment on fly.io (5$ /month)
 *** existing rails app
 https://fly.io/docs/rails/getting-started/existing/
@@ -626,6 +686,15 @@ Error: release command failed - aborting deployment. error release_command machi
 **** rails db:system:change --to=postgresql
 and then set db back to sqlite for dev
 added, and keep installing libbsqlite in prod
+**** fly deploy works! better than it should :(
+it even sends emails, which means the docker image
+includes the app_env_vars.rb not in git
+**** fly secrets
+in case a deployment is done from somewhere without an app_env_vars.rb
+
+fly secrets set MAILER_EMAIL=appelonsnous@gmail.com
+fly secrets set MAILER_PASSWORD=...
+https://fly.io/docs/reference/secrets/#setting-secrets
 *** first failed try (hello world)
 https://fly.io/docs/hands-on/launch-app/
 generate fly.toml
@@ -669,6 +738,8 @@ https://fly.io/docs/about/pricing/
 We don’t offer a “free tier.” Instead, we offer some free resource allowances that apply to all plans, including the Hobby plan
 
 Hobby plan is 5$ /month, which you only find out after creating an account :P
+** ovh 3.50/month
+https://www.ovhcloud.com/fr/vps/compare/
 ** digitalocean 4$/month
 https://www.digitalocean.com/pricing/droplets#basic-droplets
 
