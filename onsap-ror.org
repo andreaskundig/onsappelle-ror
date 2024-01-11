@@ -55,8 +55,13 @@ https://github.com/mikker/passwordless
 
 handrolled
 https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
-with token
+with token (handrolled)
 https://dev.to/phawk/password-less-auth-in-rails-4ah
+
+with devise
+https://github.com/abevoelker/devise-passwordless
+devise seems pretty heavy for something
+that doesn't include passwordless...
 * TODO Active Job adapter w persistent backend (sidekiq resque)
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
 
@@ -695,6 +700,22 @@ in case a deployment is done from somewhere without an app_env_vars.rb
 fly secrets set MAILER_EMAIL=appelonsnous@gmail.com
 fly secrets set MAILER_PASSWORD=...
 https://fly.io/docs/reference/secrets/#setting-secrets
+**** change postgres password
+#+begin_src bash
+fly ssh console
+psql &DATABASE_URL
+
+ALTER ROLE onsappelle_ror
+WITH PASSWORD 'password';
+
+# direct accss to psql
+ fly postgres connect -a onsappelle-ror-db
+#+end_src
+
+#+begin_src bash
+
+fly secrets set DATABASE_URL=postgres://onsappelle_ror:password@onsappelle-ror-db.flycast:5432/onsappelle_ror?sslmode=disable
+#+end_src
 *** first failed try (hello world)
 https://fly.io/docs/hands-on/launch-app/
 generate fly.toml
