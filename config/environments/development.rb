@@ -43,6 +43,7 @@ Rails.application.configure do
 
   # https://guides.rubyonrails.org/action_mailer_basics.html#action-mailer-configuration-for-gmail
   config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address:         'smtp.gmail.com',
     port:            587,
@@ -53,6 +54,12 @@ Rails.application.configure do
     enable_starttls: true,
     open_timeout:    5,
     read_timeout:    5 }
+
+  # https://github.com/mikker/passwordless#urls-and-links
+  config.action_mailer.default_url_options =
+    { host: "localhost", port: "3000"}
+  routes.default_url_options[:host] ||= "localhost"
+  routes.default_url_options[:port] ||= "3000"
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

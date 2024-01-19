@@ -6,12 +6,13 @@
   <body>
       <h1>Reminder</h1>
       <p>
-          On the <%= @reminder.date.strftime('%Y-%m-%d') %>, I will send a reminder to:
-          <ul>
+        On the <%= @reminder.date.strftime('%Y-%m-%d') %>, I will send a reminder to:
+        <ul>
               <% @reminder.users.each do |recipient| %>
                   <li><%= recipient.email %></li>
               <% end %>
           </ul>
+          <a href="<%= @passwordless_link %>">login link</a>
       </p>
   </body>
 </html>

@@ -1,6 +1,69 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
 
+* TODO passwordless authentication by email
+gem
+https://github.com/mikker/passwordless
+** magic link
+There is an issue
+[[https://github.com/mikker/passwordless/issues/70][Create auth token links for email]]
+the readme once had a section
+[[https://github.com/mikker/passwordless/blob/5b971d24e141aa6699eb510b051fb00ca4d463e2/README.md#generate-your-own-magic-links][generate your own magic links]]
+The section disappeared with
+[[https://github.com/mikker/passwordless/pull/153/files][this pull request]]
+** alternatives
+handrolled
+https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
+with token (handrolled)
+https://dev.to/phawk/password-less-auth-in-rails-4ah
+
+with devise
+https://github.com/abevoelker/devise-passwordless
+devise seems pretty heavy for something
+that doesn't include passwordless...
+** steps
+#+begin_src bash
+bundle add passwordless
+bin/rails passwordless_engine:install:migrations
+bin/rails db:migrate
+#+end_src
+** logic
+no auth for homepage/new reminder
+if current user is not among recipients
+-> auth needed by one of them
+
+
+validate reminder
+
+everyone gets a link to unsubscribe
+
+auth needed for show and list page
+*** generate your own magic links
+issue [[https://github.com/mikker/passwordless/issues/70][Create auth token links for email]]
+This [[https://github.com/mikker/passwordless/pull/69/files/d490ec2829ebab25b65e44d0c74859c08ee1fe56][pull request]] added "Generate your own magic links"
+to the [[https://github.com/mikker/passwordless/blob/5b971d24e141aa6699eb510b051fb00ca4d463e2/README.md#generate-your-own-magic-links][readme]]:
+**** old readme
+Currently there is not an officially supported way to generate your own magic links to send in your own mailers.
+
+However, you can accomplish this with the following snippet of code.
+#+begin_src ruby
+session = Passwordless::Session.new({
+  authenticatable: @manager,
+  user_agent: 'Command Line',
+  remote_addr: 'unknown',
+})
+session.save!
+@magic_link = send(Passwordless.mounted_as).token_sign_in_url(session.token)
+#+end_src
+
+You can further customize this URL by specifying the destination path to be redirected to after the user has logged in. You can do this by adding the destination_path query parameter to the end of the URL. For example
+
+#+begin_src ruby
+@magic_link = "#{@magic_link}?destination_path=/your-custom-path"
+#+end_src
+**** pull request that removed it
+presumably because user_agent and remote_addr
+args were removed from Session.new
 * TODO landing page
 
 ** button/link to remove user
@@ -48,21 +111,9 @@ find out how this is filled...
 * TODO rename reminder.users to .recipients
 * TODO send emails at reminder date
 * TODO refactor: remove unused routes controller methods
-* TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
-* TODO passwordless authentication by email
-gem
-https://github.com/mikker/passwordless
-
-handrolled
-https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
-with token (handrolled)
-https://dev.to/phawk/password-less-auth-in-rails-4ah
-
-with devise
-https://github.com/abevoelker/devise-passwordless
-devise seems pretty heavy for something
-that doesn't include passwordless...
+* TODO [#B] [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
 * TODO Active Job adapter w persistent backend (sidekiq resque)
+
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
 
 * first steps
@@ -161,646 +212,3 @@ https://github.com/iftheshoefritz/solargraph-rails/
 gem install solargraph
 gem install solargraph-rails
 #+end_src
-* deployment
-https://www.hostingadvice.com/how-to/best-ruby-on-rails-hosting/
-** deployment on fly.io (5$ /month)
-*** existing rails app
-https://fly.io/docs/rails/getting-started/existing/
-
-**** launch
-#+begin_src bash
-$ fly launch
-Scanning source code
-Detected a Rails app
-Creating app in /home/andre/workspace/onsappelle-ror
-We're about to launch your Rails app on Fly.io. Here's what you're getting:
-
-Organization: Andreas                                               (fly launch defaults to the personal org)
-Name:         onsappelle-ror                                        (derived from your directory name)
-Region:       Paris, France                                         (this is the fastest region for you)
-App Machines: shared-cpu-1x, 1GB RAM                                (most apps need about 1GB of RAM)
-Postgres:     1 Node, shared-cpu-1x, 256MB RAM (1GB RAM), 10GB disk (determined from app source)
-Redis:        <none>                                                (not requested)
-
-? Do you want to tweak these settings before proceeding? No
-Created app 'onsappelle-ror' in organization 'personal'
-Admin URL: https://fly.io/apps/onsappelle-ror
-Hostname: onsappelle-ror.fly.dev
-Set secrets on onsappelle-ror: RAILS_MASTER_KEY
-Creating postgres cluster in organization personal
-Creating app...
-Setting secrets on app onsappelle-ror-db...
-Provisioning 1 of 1 machines with image flyio/postgres-flex:15.3@sha256:44b698752cf113110f2fa72443d7fe452b48228aafbb0d93045ef1e3282360a6
-Waiting for machine to start...
-Machine 28663ddf72de58 is created
-==> Monitoring health checks
-  Waiting for 28663ddf72de58 to become healthy (started, 3/3)
-
-Postgres cluster onsappelle-ror-db created
-  Username:    postgres
-  Password:    yopIE9f3G0ev5yI
-  Hostname:    onsappelle-ror-db.internal
-  Flycast:     fdaa:4:faa2:0:1::3
-  Proxy port:  5432
-  Postgres port:  5433
-  Connection string: postgres://postgres:yopIE9f3G0ev5yI@onsappelle-ror-db.flycast:5432
-
-Save your credentials in a secure place -- you won't be able to see them again!
-
-Connect to postgres
-Any app within the Andreas  organization can connect to this Postgres using the above connection string
-
-Now that you've set up Postgres, here's what you need to understand: https://fly.io/docs/postgres/getting-started/what-you-should-know/
-Checking for existing attachments
-Registering attachment
-Creating database
-Creating user
-
-Postgres cluster onsappelle-ror-db is now attached to onsappelle-ror
-The following secret was added to onsappelle-ror:
-  DATABASE_URL=postgres://onsappelle_ror:kRBKiDKsQl34mXs@onsappelle-ror-db.flycast:5432/onsappelle_ror?sslmode=disable
-Postgres cluster onsappelle-ror-db is now attached to onsappelle-ror
-Fetching gem metadata from https://rubygems.org/.........
-Resolving dependencies...
-installing: ./bin/rails generate dockerfile --label=fly_launch_runtime:rails --skip --postgresql --no-prepare
-        skip  Dockerfile
-   identical  .dockerignore
-        skip  bin/docker-entrypoint
-      create  config/dockerfile.yml
-Wrote config file fly.toml
-Validating /home/andre/workspace/onsappelle-ror/fly.toml
-Platform: machines
-✓ Configuration is valid
-
-Your Rails app is prepared for deployment.
-
-Before proceeding, please review the posted Rails FAQ:
-https://fly.io/docs/rails/getting-started/dockerfiles/.
-
-Once ready: run 'fly deploy' to deploy your Rails app.
-#+end_src
-**** volumes
-#+begin_src bash
-$ fly volumes create onsapvol
-
-            Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/reference/volumes/
-? Do you still want to use the volumes feature? Yes
-Some regions require a Launch plan or higher (bom, fra).
-See https://fly.io/plans to set up a plan.
-
-? Select region: Paris, France (cdg)
-                  ID: vol_zrew0go635oe791r
-                Name: onsapvol
-                 App: onsappelle-ror
-              Region: cdg
-                Zone: 88d2
-             Size GB: 3
-           Encrypted: true
-          Created at: 08 Jan 24 23:03 UTC
-  Snapshot retention: 5
-#+end_src
-
-in fly.toml
-#+begin_src toml
-[mounts]
-  source="onsapvol"
-  destination="/data"
-#+end_src
-**** deploy fails: Unable to find PostgreSQL client library
-
-#+begin_src bash
-fly deploy
-==> Verifying app config
-Validating /home/andre/workspace/onsappelle-ror/fly.toml
-Platform: machines
-✓ Configuration is valid
---> Verified app config
-==> Building image
-Waiting for remote builder fly-builder-summer-glade-9387... 🌎WARN The running flyctl agent (v0.1.138) is older than the current flyctl (v0.1.139).
-WARN The out-of-date agent will be shut down along with existing wireguard connections. The new agent will start automatically as needed.
-Remote builder fly-builder-summer-glade-9387 ready
-Remote builder fly-builder-summer-glade-9387 ready
-==> Building image with Docker
---> docker host: 20.10.12 linux x86_64
-[+] Building 115.5s (13/20)
- => [internal] load build definition from Dockerfile                                                        0.2s
- => => transferring dockerfile: 1.91kB                                                                      0.2s
- => [internal] load .dockerignore                                                                           0.1s
- => => transferring context: 35B                                                                            0.1s
- => resolve image config for docker.io/docker/dockerfile:1                                                  0.6s
- => CACHED docker-image://docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab2021  0.0s
- => [internal] load build definition from Dockerfile                                                        0.0s
- => [internal] load metadata for registry.docker.com/library/ruby:3.3.0-slim                                0.7s
- => [internal] load .dockerignore                                                                           0.0s
- => [internal] load build context                                                                           0.2s
- => => transferring context: 32.14kB                                                                        0.1s
- => [base 1/2] FROM registry.docker.com/library/ruby:3.3.0-slim@sha256:763422273a15e307b044fcb3ad6b1ef6c29  0.0s
- => CACHED [base 2/2] WORKDIR /rails                                                                        0.0s
- => CACHED [build 1/6] RUN apt-get update -qq &&     apt-get install --no-install-recommends -y build-esse  0.0s
- => CACHED [build 2/6] COPY Gemfile Gemfile.lock ./                                                         0.0s
- => ERROR [build 3/6] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr  113.7s
-------
- > [build 3/6] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr/local/bundle"/ruby/*/bundler/gems/*/.git &&     bundle exec bootsnap precompile --gemfile:
-#0 3.773 Fetching gem metadata from https://rubygems.org/.........
-#0 6.185 Fetching rake 13.1.0
-#0 6.284 Installing rake 13.1.0
-#0 6.303 Fetching concurrent-ruby 1.2.2
-#0 6.304 Fetching connection_pool 2.4.1
-#0 6.304 Fetching minitest 5.20.0
-#0 6.304 Fetching builder 3.2.4
-#0 6.320 Installing connection_pool 2.4.1
-#0 6.326 Installing builder 3.2.4
-#0 6.335 Installing minitest 5.20.0
-#0 6.337 Fetching erubi 1.12.0
-#0 6.345 Installing erubi 1.12.0
-#0 6.356 Fetching mini_portile2 2.8.5
-#0 6.368 Installing concurrent-ruby 1.2.2
-#0 6.372 Fetching racc 1.7.3
-#0 6.373 Installing mini_portile2 2.8.5
-#0 6.450 Installing racc 1.7.3 with native extensions
-#0 6.454 Fetching crass 1.0.6
-#0 6.465 Installing crass 1.0.6
-#0 6.490 Fetching rack 3.0.8
-#0 6.492 Fetching nio4r 2.7.0
-#0 6.523 Installing rack 3.0.8
-#0 6.538 Installing nio4r 2.7.0 with native extensions
-#0 6.591 Fetching websocket-extensions 0.1.5
-#0 6.602 Installing websocket-extensions 0.1.5
-#0 6.617 Fetching zeitwerk 2.6.12
-#0 6.629 Installing zeitwerk 2.6.12
-#0 6.640 Fetching marcel 1.0.2
-#0 6.657 Installing marcel 1.0.2
-#0 6.670 Fetching mini_mime 1.1.5
-#0 6.675 Fetching public_suffix 5.0.4
-#0 6.680 Installing mini_mime 1.1.5
-#0 6.693 Fetching msgpack 1.7.2
-#0 6.696 Installing public_suffix 5.0.4
-#0 6.704 Installing msgpack 1.7.2 with native extensions
-#0 6.714 Fetching matrix 0.4.2
-#0 6.724 Installing matrix 0.4.2
-#0 6.733 Fetching regexp_parser 2.8.3
-#0 6.750 Installing regexp_parser 2.8.3
-#0 6.773 Fetching webrick 1.8.1
-#0 6.781 Installing webrick 1.8.1
-#0 6.797 Fetching thor 1.3.0
-#0 6.805 Installing thor 1.3.0
-#0 6.827 Fetching pg 1.5.4
-#0 6.839 Installing pg 1.5.4 with native extensions
-#0 7.309 Fetching rexml 3.2.6
-#0 7.321 Installing rexml 3.2.6
-#0 7.378 Fetching rubyzip 2.3.2
-#0 7.410 Fetching websocket 1.2.10
-#0 7.418 Installing rubyzip 2.3.2
-#0 7.435 Installing websocket 1.2.10
-#0 7.522 Fetching sqlite3 1.6.9
-#0 7.531 Fetching rack-session 2.0.0
-#0 7.560 Installing rack-session 2.0.0
-#0 7.572 Fetching rack-test 2.1.0
-#0 7.582 Installing rack-test 2.1.0
-#0 7.624 Fetching websocket-driver 0.7.6
-#0 7.633 Installing websocket-driver 0.7.6 with native extensions
-#0 7.650 Installing sqlite3 1.6.9 with native extensions
-#0 8.002 Fetching i18n 1.14.1
-#0 8.009 Installing i18n 1.14.1
-#0 8.034 Fetching tzinfo 2.0.6
-#0 8.050 Installing tzinfo 2.0.6
-#0 8.064 Fetching sprockets 4.2.1
-#0 8.074 Installing sprockets 4.2.1
-#0 8.094 Fetching addressable 2.8.6
-#0 8.103 Installing addressable 2.8.6
-#0 8.113 Fetching rackup 2.1.0
-#0 8.118 Installing rackup 2.1.0
-#0 8.125 Fetching nokogiri 1.15.5
-#0 8.265 Installing nokogiri 1.15.5 with native extensions
-#0 11.24 Fetching selenium-webdriver 4.16.0
-#0 11.55 Installing selenium-webdriver 4.16.0
-#0 11.92 Fetching activesupport 7.1.2
-#0 11.94 Installing activesupport 7.1.2
-#0 12.01 Fetching net-imap 0.4.9
-#0 12.02 Installing net-imap 0.4.9
-#0 12.04 Fetching net-pop 0.1.2
-#0 12.04 Installing net-pop 0.1.2
-#0 12.05 Fetching net-smtp 0.4.0
-#0 12.06 Installing net-smtp 0.4.0
-#0 12.06 Fetching puma 6.4.0
-#0 12.08 Installing puma 6.4.0 with native extensions
-#0 12.92 Fetching globalid 1.2.1
-#0 12.93 Installing globalid 1.2.1
-#0 12.93 Fetching activemodel 7.1.2
-#0 12.94 Installing activemodel 7.1.2
-#0 12.96 Fetching mail 2.8.1
-#0 12.98 Installing mail 2.8.1
-#0 13.02 Fetching bootsnap 1.17.0
-#0 13.03 Installing bootsnap 1.17.0 with native extensions
-#0 13.64 Fetching activejob 7.1.2
-#0 13.65 Installing activejob 7.1.2
-#0 13.67 Fetching activerecord 7.1.2
-#0 13.69 Installing activerecord 7.1.2
-#0 13.80 Fetching debug 1.9.1
-#0 13.80 Installing debug 1.9.1 with native extensions
-#0 90.32 Fetching rails-dom-testing 2.2.0
-#0 90.32 Fetching loofah 2.22.0
-#0 90.32 Fetching xpath 3.2.0
-#0 90.34 Installing xpath 3.2.0
-#0 90.34 Installing loofah 2.22.0
-#0 90.35 Installing rails-dom-testing 2.2.0
-#0 90.37 Fetching capybara 3.39.2
-#0 90.41 Fetching rails-html-sanitizer 1.6.0
-#0 90.42 Installing rails-html-sanitizer 1.6.0
-#0 90.43 Fetching actionview 7.1.2
-#0 90.45 Installing capybara 3.39.2
-#0 90.47 Installing actionview 7.1.2
-#0 90.55 Fetching actionpack 7.1.2
-#0 90.55 Fetching jbuilder 2.11.5
-#0 90.58 Installing jbuilder 2.11.5
-#0 90.60 Installing actionpack 7.1.2
-#0 90.78 Fetching actioncable 7.1.2
-#0 90.78 Fetching activestorage 7.1.2
-#0 90.78 Fetching actionmailer 7.1.2
-#0 90.79 Installing actioncable 7.1.2
-#0 90.81 Fetching railties 7.1.2
-#0 90.84 Installing actionmailer 7.1.2
-#0 90.84 Installing activestorage 7.1.2
-#0 90.86 Installing railties 7.1.2
-#0 90.87 Fetching sprockets-rails 3.4.2
-#0 90.89 Installing sprockets-rails 3.4.2
-#0 90.92 Fetching actionmailbox 7.1.2
-#0 90.92 Fetching actiontext 7.1.2
-#0 90.94 Installing actionmailbox 7.1.2
-#0 90.95 Installing actiontext 7.1.2
-#0 91.03 Fetching importmap-rails 1.2.3
-#0 91.03 Fetching rails 7.1.2
-#0 91.03 Fetching stimulus-rails 1.3.0
-#0 91.05 Installing rails 7.1.2
-#0 91.05 Installing importmap-rails 1.2.3
-#0 91.05 Fetching turbo-rails 1.5.0
-#0 91.06 Installing stimulus-rails 1.3.0
-#0 91.07 Installing turbo-rails 1.5.0
-#0 113.6 Gem::Ext::BuildError: ERROR: Failed to build gem native extension.
-#0 113.6
-#0 113.6     current directory: /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4/ext
-#0 113.6 /usr/local/bin/ruby extconf.rb
-#0 113.6 Calling libpq with GVL unlocked
-#0 113.6 checking for pg_config... no
-#0 113.6 checking for libpq per pkg-config... no
-#0 113.6 Using libpq from
-#0 113.6 checking for libpq-fe.h... no
-#0 113.6 Can't find the 'libpq-fe.h header
-#0 113.6 *****************************************************************************
-#0 113.6
-#0 113.6 Unable to find PostgreSQL client library.
-#0 113.6
-#0 113.6 Please install libpq or postgresql client package like so:
-#0 113.6   sudo apt install libpq-dev
-#0 113.6   sudo yum install postgresql-devel
-#0 113.6   sudo zypper in postgresql-devel
-#0 113.6   sudo pacman -S postgresql-libs
-#0 113.6
-#0 113.6 or try again with:
-#0 113.6   gem install pg -- --with-pg-config=/path/to/pg_config
-#0 113.6
-#0 113.6 or set library paths manually with:
-#0 113.6 gem install pg -- --with-pg-include=/path/to/libpq-fe.h/
-#0 113.6 --with-pg-lib=/path/to/libpq.so/
-#0 113.6
-#0 113.6 *** extconf.rb failed ***
-#0 113.6 Could not create Makefile due to some reason, probably lack of necessary
-#0 113.6 libraries and/or headers.  Check the mkmf.log file for more details.  You may
-#0 113.6 need configuration options.
-#0 113.6
-#0 113.6 Provided configuration options:
-#0 113.6        --with-opt-dir
-#0 113.6        --without-opt-dir
-#0 113.6        --with-opt-include=${opt-dir}/include
-#0 113.6        --without-opt-include
-#0 113.6        --with-opt-lib=${opt-dir}/lib
-#0 113.6        --without-opt-lib
-#0 113.6        --with-make-prog
-#0 113.6        --without-make-prog
-#0 113.6        --srcdir=.
-#0 113.6        --curdir
-#0 113.6        --ruby=/usr/local/bin/$(RUBY_BASE_NAME)
-#0 113.6        --with-pg
-#0 113.6        --without-pg
-#0 113.6        --enable-gvl-unlock
-#0 113.6        --disable-gvl-unlock
-#0 113.6        --enable-windows-cross
-#0 113.6        --disable-windows-cross
-#0 113.6        --with-pg-config
-#0 113.6        --without-pg-config
-#0 113.6        --with-pg_config
-#0 113.6        --without-pg_config
-#0 113.6        --with-libpq-dir
-#0 113.6        --without-libpq-dir
-#0 113.6        --with-libpq-include=${libpq-dir}/include
-#0 113.6        --without-libpq-include
-#0 113.6        --with-libpq-lib=${libpq-dir}/lib
-#0 113.6        --without-libpq-lib
-#0 113.6        --with-libpq-config
-#0 113.6        --without-libpq-config
-#0 113.6        --with-pkg-config
-#0 113.6        --without-pkg-config
-#0 113.6        --with-pg-dir
-#0 113.6        --without-pg-dir
-#0 113.6        --with-pg-include=${pg-dir}/include
-#0 113.6        --without-pg-include
-#0 113.6        --with-pg-lib=${pg-dir}/lib
-#0 113.6        --without-pg-lib
-#0 113.6
-#0 113.6 To see why this extension failed to compile, please check the mkmf.log which can
-#0 113.6 be found here:
-#0 113.6
-#0 113.6   /usr/local/bundle/ruby/3.3.0/extensions/x86_64-linux/3.3.0/pg-1.5.4/mkmf.log
-#0 113.6
-#0 113.6 extconf failed, exit code 1
-#0 113.6
-#0 113.6 Gem files will remain installed in /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4
-#0 113.6 for inspection.
-#0 113.6 Results logged to
-#0 113.6 /usr/local/bundle/ruby/3.3.0/extensions/x86_64-linux/3.3.0/pg-1.5.4/gem_make.out
-#0 113.6
-#0 113.6   /usr/local/lib/ruby/3.3.0/rubygems/ext/builder.rb:125:in `run'
-#0 113.6   /usr/local/lib/ruby/3.3.0/rubygems/ext/ext_conf_builder.rb:28:in `build'
-#0 113.6   /usr/local/lib/ruby/3.3.0/rubygems/ext/builder.rb:193:in `build_extension'
-#0 113.6 /usr/local/lib/ruby/3.3.0/rubygems/ext/builder.rb:227:in `block in
-#0 113.6 build_extensions'
-#0 113.6   /usr/local/lib/ruby/3.3.0/rubygems/ext/builder.rb:224:in `each'
-#0 113.6   /usr/local/lib/ruby/3.3.0/rubygems/ext/builder.rb:224:in `build_extensions'
-#0 113.6   /usr/local/lib/ruby/3.3.0/rubygems/installer.rb:852:in `build_extensions'
-#0 113.6 /usr/local/lib/ruby/3.3.0/bundler/rubygems_gem_installer.rb:76:in
-#0 113.6 `build_extensions'
-#0 113.6   /usr/local/lib/ruby/3.3.0/bundler/rubygems_gem_installer.rb:28:in `install'
-#0 113.6   /usr/local/lib/ruby/3.3.0/bundler/source/rubygems.rb:205:in `install'
-#0 113.6   /usr/local/lib/ruby/3.3.0/bundler/installer/gem_installer.rb:54:in `install'
-#0 113.6 /usr/local/lib/ruby/3.3.0/bundler/installer/gem_installer.rb:16:in
-#0 113.6 `install_from_spec'
-#0 113.6 /usr/local/lib/ruby/3.3.0/bundler/installer/parallel_installer.rb:132:in
-#0 113.6 `do_install'
-#0 113.6 /usr/local/lib/ruby/3.3.0/bundler/installer/parallel_installer.rb:123:in
-#0 113.6 `block in worker_pool'
-#0 113.6   /usr/local/lib/ruby/3.3.0/bundler/worker.rb:62:in `apply_func'
-#0 113.6   /usr/local/lib/ruby/3.3.0/bundler/worker.rb:57:in `block in process_queue'
-#0 113.6   <internal:kernel>:187:in `loop'
-#0 113.6   /usr/local/lib/ruby/3.3.0/bundler/worker.rb:54:in `process_queue'
-#0 113.6 /usr/local/lib/ruby/3.3.0/bundler/worker.rb:90:in `block (2 levels) in
-#0 113.6 create_threads'
-#0 113.6
-#0 113.6 An error occurred while installing pg (1.5.4), and Bundler cannot continue.
-#0 113.6
-#0 113.6 In Gemfile:
-#0 113.6   pg
-------
-Error: failed to fetch an image or build from source: error building: failed to solve: executor failed running [/bin/sh -c bundle install &&     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git &&     bundle exec bootsnap precompile --gemfile]: exit code: 5
-#+end_src
-
-**** postgres client
-Problem seems to be
-#+begin_src bash
-0 113.6 Please install libpq or postgresql client package like so:
-0 113.6   sudo apt install libpq-dev
-#+end_src
-
-https://www.fly.io/docs/rails/cookbooks/databases/
-
-**** deploy fails: release_command failed
-#+begin_src bash$ fly deploy
-==> Verifying app config
-Validating /home/andre/workspace/onsappelle-ror/fly.toml
-Platform: machines
-✓ Configuration is valid
---> Verified app config
-==> Building image
-Remote builder fly-builder-summer-glade-9387 ready
-Remote builder fly-builder-summer-glade-9387 ready
-==> Building image with Docker
---> docker host: 20.10.12 linux x86_64
-[+] Building 171.3s (21/21) FINISHED
- => [internal] load build definition from Dockerfile                                                        0.1s
- => => transferring dockerfile: 1.92kB                                                                      0.1s
- => [internal] load .dockerignore                                                                           0.1s
- => => transferring context: 35B                                                                            0.1s
- => resolve image config for docker.io/docker/dockerfile:1                                                  0.6s
- => CACHED docker-image://docker.io/docker/dockerfile:1@sha256:ac85f380a63b13dfcefa89046420e1781752bab2021  0.0s
- => [internal] load build definition from Dockerfile                                                        0.0s
- => [internal] load metadata for registry.docker.com/library/ruby:3.3.0-slim                                1.2s
- => [internal] load .dockerignore                                                                           0.0s
- => [internal] load build context                                                                           0.2s
- => => transferring context: 34.93kB                                                                        0.2s
- => [base 1/2] FROM registry.docker.com/library/ruby:3.3.0-slim@sha256:540e94266a7509bba7b50d5194eb63f5119  1.7s
- => => resolve registry.docker.com/library/ruby:3.3.0-slim@sha256:540e94266a7509bba7b50d5194eb63f51197ffbe  0.0s
- => => sha256:83eae5c32d4840988b797ceec845541347f31db3293d51943c5adf7d9f3b9d4b 144B / 144B                  0.4s
- => => sha256:540e94266a7509bba7b50d5194eb63f51197ffbe5c203c5c81aa956c377ec4e8 7.68kB / 7.68kB              0.0s
- => => sha256:a2770954b0b40f5c516a63a562195949d751657ec5c34eca60625a44484f0a61 1.63kB / 1.63kB              0.0s
- => => sha256:85786e53e6c384a1768dc8b55ceec79a0916b32c4e1272a5025f944132adbe44 6.12kB / 6.12kB              0.0s
- => => sha256:17e6b30056af98faa856abf2cc6ed27dd02854cd7ecb1d1933cb8a02b83ac7d3 13.85MB / 13.85MB            0.2s
- => => sha256:08e0b775844e5b7422ba6ae21ac3f7784ee7f2aac78bf644b58cea84786b8538 198B / 198B                  0.2s
- => => sha256:45f4174cafe2ce0f47210160e4da22a5f59dd05abed2cdf663429de4d4db13cc 36.27MB / 36.27MB            0.6s
- => => extracting sha256:17e6b30056af98faa856abf2cc6ed27dd02854cd7ecb1d1933cb8a02b83ac7d3                   0.6s
- => => extracting sha256:08e0b775844e5b7422ba6ae21ac3f7784ee7f2aac78bf644b58cea84786b8538                   0.0s
- => => extracting sha256:45f4174cafe2ce0f47210160e4da22a5f59dd05abed2cdf663429de4d4db13cc                   0.6s
- => => extracting sha256:83eae5c32d4840988b797ceec845541347f31db3293d51943c5adf7d9f3b9d4b                   0.0s
- => [base 2/2] WORKDIR /rails                                                                               0.1s
- => [build 1/6] RUN apt-get update -qq &&     apt-get install --no-install-recommends -y build-essential   23.6s
- => [stage-2 1/4] RUN apt-get update -qq &&     apt-get install --no-install-recommends -y curl libsqlite  16.6s
- => [build 2/6] COPY Gemfile Gemfile.lock ./                                                                0.0s
- => [build 3/6] RUN bundle install &&     rm -rf ~/.bundle/ "/usr/local/bundle"/ruby/*/cache "/usr/local  122.4s
- => [build 4/6] COPY . .                                                                                    0.0s
- => [build 5/6] RUN bundle exec bootsnap precompile app/ lib/                                               0.7s
- => [build 6/6] RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile                                   1.8s
- => [stage-2 2/4] COPY --from=build /usr/local/bundle /usr/local/bundle                                     1.0s
- => [stage-2 3/4] COPY --from=build /rails /rails                                                           0.6s
- => [stage-2 4/4] RUN useradd rails --create-home --shell /bin/bash &&     chown -R rails:rails db log sto  2.2s
- => exporting to image                                                                                      1.2s
- => => exporting layers                                                                                     1.2s
- => => writing image sha256:e1f432619d43dd990939de708d0d4d3c76ff10e34633c18d98bc31427a321274                0.0s
- => => naming to registry.fly.io/onsappelle-ror:deployment-01HKP52TNE8Y29ZG3J4NS6GMRZ                       0.0s
---> Building image done
-==> Pushing image to fly
-The push refers to repository [registry.fly.io/onsappelle-ror]
-6cc7c9bc124d: Pushed
-23763b54bba7: Pushed
-42e0ca6c9fab: Pushed
-f0440fb57f5f: Pushed
-2d422075c03d: Pushed
-c688d8084f13: Pushed
-fb03d8d228c1: Pushed
-6f47822ff088: Pushed
-b860220b82ad: Pushed
-7292cf786aa8: Pushed
-deployment-01HKP52TNE8Y29ZG3J4NS6GMRZ: digest: sha256:a567e4f13854d88225e6118848dc9a83cd753cf36575752f7b4a336669718b8a size: 2421
---> Pushing image done
-image: registry.fly.io/onsappelle-ror:deployment-01HKP52TNE8Y29ZG3J4NS6GMRZ
-image size: 482 MB
-
-Watch your deployment at https://fly.io/apps/onsappelle-ror/monitoring
-
-Provisioning ips for onsappelle-ror
-  Dedicated ipv6: 2a09:8280:1::42:dc11
-  Shared ipv4: 66.241.125.15
-  Add a dedicated ipv4 with: fly ips allocate-v4
-
-Running onsappelle-ror release_command: ./bin/rails db:prepare
-
--------
- ✖ release_command failed
--------
-Error release_command failed running on machine 5683210c6776d8 with exit code 1.
-Check its logs: here's the last 100 lines below, or run 'fly logs -i 5683210c6776d8':
-  Pulling container image registry.fly.io/onsappelle-ror:deployment-01HKP52TNE8Y29ZG3J4NS6GMRZ
-  Successfully prepared image registry.fly.io/onsappelle-ror:deployment-01HKP52TNE8Y29ZG3J4NS6GMRZ (9.901541718s)
-  Configuring firecracker
-  [    0.047221] PCI: Fatal: No config space access function found
-   INFO Starting init (commit: 8995e367)...
-   INFO Preparing to run: `/rails/bin/docker-entrypoint ./bin/rails db:prepare` as rails
-   INFO [fly api proxy] listening at /.fly/api
-  2024/01/09 12:53:33 listening on [fdaa:4:faa2:a7b:5adc:3b3a:609f:2]:22 (DNS: [fdaa::3]:53)
-  bin/rails aborted!
-  LoadError: libpq.so.5: cannot open shared object file: No such file or directory - /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4/lib/pg_ext.so (LoadError)
-  /usr/local/bundle/ruby/3.3.0/gems/bootsnap-1.17.0/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:32:in `require'
-  /usr/local/bundle/ruby/3.3.0/gems/zeitwerk-2.6.12/lib/zeitwerk/kernel.rb:38:in `require'
-  /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4/lib/pg.rb:49:in `block in <module:PG>'
-  /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4/lib/pg.rb:37:in `block in <module:PG>'
-  /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4/lib/pg.rb:42:in `<module:PG>'
-  /usr/local/bundle/ruby/3.3.0/gems/pg-1.5.4/lib/pg.rb:6:in `<main>'
-  /usr/local/bundle/ruby/3.3.0/gems/bootsnap-1.17.0/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:32:in `require'
-  /usr/local/bundle/ruby/3.3.0/gems/zeitwerk-2.6.12/lib/zeitwerk/kernel.rb:38:in `require'
-  /rails/config/application.rb:7:in `<main>'
-  /rails/Rakefile:4:in `require_relative'
-  /rails/Rakefile:4:in `<main>'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/commands/rake/rake_command.rb:43:in `block in with_rake'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/commands/rake/rake_command.rb:41:in `with_rake'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/commands/rake/rake_command.rb:20:in `perform'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/command.rb:156:in `invoke_rake'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/command.rb:73:in `block in invoke'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/command.rb:149:in `with_argv'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/command.rb:69:in `invoke'
-  /usr/local/bundle/ruby/3.3.0/gems/railties-7.1.2/lib/rails/commands.rb:18:in `<main>'
-  /usr/local/bundle/ruby/3.3.0/gems/bootsnap-1.17.0/lib/bootsnap/load_path_cache/core_ext/kernel_require.rb:32:in `require'
-  /rails/bin/rails:4:in `<main>'
-  (See full trace by running task with --trace)
-   INFO Main child exited normally with code: 1
-   INFO Starting clean up.
-   WARN hallpass exited, pid: 314, status: signal: 15 (SIGTERM)
-  2024/01/09 12:53:35 listening on [fdaa:4:faa2:a7b:5adc:3b3a:609f:2]:22 (DNS: [fdaa::3]:53)
-  [    3.345701] reboot: Restarting system
-  machine restart policy set to 'no', not restarting
--------
-Error: release command failed - aborting deployment. error release_command machine 5683210c6776d8 exited with non-zero status of 1
-
-#+end_src
-**** rails db:system:change --to=postgresql
-and then set db back to sqlite for dev
-added, and keep installing libbsqlite in prod
-**** fly deploy works! better than it should :(
-it even sends emails, which means the docker image
-includes the app_env_vars.rb not in git
-**** fly secrets
-in case a deployment is done from somewhere without an app_env_vars.rb
-
-fly secrets set MAILER_EMAIL=appelonsnous@gmail.com
-fly secrets set MAILER_PASSWORD=...
-https://fly.io/docs/reference/secrets/#setting-secrets
-**** change postgres password
-#+begin_src bash
-fly ssh console
-psql &DATABASE_URL
-
-ALTER ROLE onsappelle_ror
-WITH PASSWORD 'password';
-
-# direct accss to psql
- fly postgres connect -a onsappelle-ror-db
-#+end_src
-
-#+begin_src bash
-
-fly secrets set DATABASE_URL=postgres://onsappelle_ror:password@onsappelle-ror-db.flycast:5432/onsappelle_ror?sslmode=disable
-#+end_src
-*** first failed try (hello world)
-https://fly.io/docs/hands-on/launch-app/
-generate fly.toml
-#+begin_src bash
-$ fly launch --image flyio/hellofly:latest
-Using image flyio/hellofly:latest
-Creating app in /home/andre/workspace/onsappelle-ror
-We're about to launch your app on Fly.io. Here's what you're getting:
-
-Organization: Andreas                (fly launch defaults to the personal org)
-Name:         onsappelle-ror         (derived from your directory name)
-Region:       Paris, France          (this is the fastest region for you)
-App Machines: shared-cpu-1x, 1GB RAM (most apps need about 1GB of RAM)
-Postgres:     <none>                 (not requested)
-Redis:        <none>                 (not requested)
-
-X Sorry, your reply was invalid: "N¨" is not a valid answer, please try again.
-? Do you want to tweak these settings before proceeding? No
-Created app 'onsappelle-ror' in organization 'personal'
-Admin URL: https://fly.io/apps/onsappelle-ror
-Hostname: onsappelle-ror.fly.dev
-Wrote config file fly.toml
-Validating /home/andre/workspace/onsappelle-ror/fly.toml
-Platform: machines
-✓ Configuration is valid
-==> Building image
-Searching for image 'flyio/hellofly:latest' remotely...
-image found: img_z1nr0lpjz9v5q98w
-
-Watch your deployment at https://fly.io/apps/onsappelle-ror/monitoring
-
-Provisioning ips for onsappelle-ror
-  Dedicated ipv6: 2a09:8280:1::4e:d937
-  Shared ipv4: 66.241.124.227
-  Add a dedicated ipv4 with: fly ips allocate-v4
-
-Error: input:3: createRelease We need your payment information to continue! Add a credit card or buy credit: https://fly.io/dashboard/andreas-58/billing
-#+end_src
-
-https://fly.io/docs/about/pricing/
-We don’t offer a “free tier.” Instead, we offer some free resource allowances that apply to all plans, including the Hobby plan
-
-Hobby plan is 5$ /month, which you only find out after creating an account :P
-** ovh 3.50/month
-https://www.ovhcloud.com/fr/vps/compare/
-** digitalocean 4$/month
-https://www.digitalocean.com/pricing/droplets#basic-droplets
-
-** render.com, free but db wipes (or 7$ month)
-https://mysite-1psl.onrender.com/
-
-postgres mandatory but free version expires after 90 days
-
-found them on this blog [[https://dev.to/render/deploying-your-rails-6-app-4an4][here]]
-
-
-
-https://render.com/pricing
-
-https://docs.render.com/deploy-rails
-
-They tell to switch from sqlite to postgres
-How to continue using [[https://medium.com/@codetrouble/how-to-deploy-your-rails-app-with-both-sqlite-and-postgresql-on-render-7369ab50d04b][sqlite in development]]
-
-add pg to [[file:Gemfile::add postgres for render.com][Gemfile]]
-#+begin_src bash
-$ bundle install
-Unable to find PostgreSQL client library.
-
-Please install libpq or postgresql client package like so:
-  sudo apt install libpq-dev
-
-#+end_src
-configure pg for production in [[file:config/database.yml::production:][database.yml]]
-
-set the RAILS_MASTER_KEY env variable.
-If you don't have a file config/master.key
-generate one with
-#+begin_src bash
-VISUAL="vi" bin/rails credentials:edit
-#+end_src
-see [[https://stackoverflow.com/questions/54064347/rails-during-asset-precompile-throws-error-key-must-be-16-bytes][stackoverflow]]
-
-But it should be possible to have an sqlite on disk
-disk is for paid plan 7$ /month
-https://docs.render.com/disks
-** google cloud
-https://cloud.google.com/ruby/rails/

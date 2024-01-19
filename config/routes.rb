@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  passwordless_for :users
   root "reminders#new"
 
   post 'new_user_inputs', to: 'users#new_inputs'
@@ -7,6 +8,9 @@ Rails.application.routes.draw do
   # https://api.rubyonrails.org/v7.1.2/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
   resources :reminders do
     resources :users do
+    end
+    member do
+      get 'confirm'
     end
   end
 end
