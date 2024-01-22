@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
   include Passwordless::ControllerHelpers
-  # before_action :require_user!
 
   helper_method :current_user
 
@@ -11,9 +10,11 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user!
+    # logger.info("HELLO, USER #{current_user&.email}")
+    # logger.info("WELCOME TO #{request.original_url}")
     return if current_user
     # so that the user is redirected to where they wanted to go
     save_passwordless_redirect_location!(User)
-    redirect_to root_path, flash: { error: 'You are not worthy!' }
+    redirect_to users_sign_in_path, flash: { error: 'You are not worthy!' }
   end
 end

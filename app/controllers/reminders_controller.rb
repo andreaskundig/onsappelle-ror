@@ -1,31 +1,32 @@
 class RemindersController < ApplicationController
   include ReminderFactory
-  # skip_before_action :require_user!, only: [:new, :create]
+ # it might be better to have this in the parent
+ # but then it affects the default sign_in route
+  before_action :require_user!
+  skip_before_action :require_user!, only: [:new, :create]
 
   def index
-    @reminders = Reminder.all
+    @reminders = current_user.reminders
+    logger.info("index USER #{@current_user&.email}")
   end
 
   def show
     @reminder = Reminder.find(params[:id])
-    @current_user ||= authenticate_by_session(User)
-    logger.info("show HELLO, USER #{@current_user&.email}")
   end
 
   def new
     @reminder = Reminder.new
-    @current_user ||= authenticate_by_session(User)
-    logger.info("new HELLO, USER #{@current_user&.email}")
+    if current_user
+      @reminder.users << current_user
+    end
   end
 
   def create
     @reminder = Reminder.new(reminder_params)
     update_reminder_recipients(@reminder, params[:users])
-    @current_user ||= authenticate_by_session(User)
-    logger.info("create HELLO, USER #{@current_user&.email}")
     if @reminder.save # saves to db
       # save has worked
-      unless @current_user
+      unless current_user
         @passwordless_link =
           passwordless_url_to(@reminder.users.first,
                               confirm_reminder_path(@reminder))

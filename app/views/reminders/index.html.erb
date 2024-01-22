@@ -11,3 +11,6 @@
     bin/rails routes shows all of them
     in link_to they can be used by appending _path %>
 <%= link_to "New Reminder", new_reminder_path %>
+<% if @current_user %>
+  <%= link_to "Sign out", users_sign_out_path(@current_user) %>
+<% end %>

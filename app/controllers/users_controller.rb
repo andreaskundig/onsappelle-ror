@@ -2,6 +2,12 @@ class UsersController < ApplicationController
   include ReminderFactory
   include UsersHelper
 
+  # it might be better to have this in the parent
+  # but then it affects the default sign_in route
+  # and it's not clear where skip_before_action
+  # could be set
+  before_action :require_user!
+
   def index
     @reminder = Reminder.find(params[:reminder_id])
   end

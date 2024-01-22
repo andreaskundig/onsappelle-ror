@@ -14,5 +14,8 @@
 
 <p>
     <%= link_to "New", new_reminder_path %>
-    <%= link_to "All", reminders_path %>
+    <%= link_to "Reminders", reminders_path %>
+    <% if @current_user %>
+        <%= link_to "Sign out", users_sign_out_path(@current_user) %>
+    <% end %>
 </p>

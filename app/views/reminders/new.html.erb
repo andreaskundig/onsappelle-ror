@@ -6,5 +6,10 @@
 </p>
 
 <p>
-  <%= link_to "All reminders", reminders_path %>
+  <% if @current_user %>
+    <%= link_to "Reminders", reminders_path %>
+    <%= link_to "Sign out", users_sign_out_path(@current_user) %>
+  <% else %>
+    <%= link_to "Sign in", users_sign_in_path %>
+  <% end %>
 </p>
