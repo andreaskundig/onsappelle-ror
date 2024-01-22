@@ -37,11 +37,14 @@ class UsersController < ApplicationController
     # @user = @reminder.users.build
   end
 
+  # TODO delete if not used...
   def create
     @reminder = Reminder.find(params[:reminder_id])
     @user = @reminder.users.build(user_params)
     # email = params[:user][:email]
     # update_reminder_recipients(@reminder, [email])
+    # TODO check if users were removed or added
+    # TODO send confirmation email
     if @reminder.save
       respond_to do |format|
         format.html { redirect_to reminder_path(@reminder) }

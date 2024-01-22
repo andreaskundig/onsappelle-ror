@@ -1,0 +1,10 @@
+A reminder was created to be sent to you.
+
+It will only be sent if it is confirmed by one of the recipients.
+You can confirm it by clicking on this link:
+<%= @passwordless_link %>
+
+If confirmed, the reminder will be sent on the <%= @reminder.date.strftime('%Y-%m-%d') %> to:
+<% @reminder.users.each do |recipient| %>
+- <%=  recipient.email %>
+<% end %>

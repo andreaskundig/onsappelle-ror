@@ -7,7 +7,7 @@ module ReminderFactory
 
   def update_reminder_recipients(reminder, user_params)
     emails = user_params&.map {|u| u[:email]}
-    return {removed: [], added: [] } unless emails
+    return nil unless emails
     # TODO check validity centrally and tell user
     valid_emails = emails.map {|e| e.strip}
                      .filter {|e| not (e.nil? or e.empty?)}

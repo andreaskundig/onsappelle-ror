@@ -10,8 +10,7 @@ class ApplicationController < ActionController::Base
   end
 
   def require_user!
-    # logger.info("HELLO, USER #{current_user&.email}")
-    # logger.info("WELCOME TO #{request.original_url}")
+    logger.info("HELLO, USER #{current_user&.email}")
     return if current_user
     # so that the user is redirected to where they wanted to go
     save_passwordless_redirect_location!(User)

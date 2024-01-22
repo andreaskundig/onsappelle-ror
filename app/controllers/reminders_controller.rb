@@ -24,20 +24,36 @@ class RemindersController < ApplicationController
   def create
     @reminder = Reminder.new(reminder_params)
     update_reminder_recipients(@reminder, params[:users])
+    # TODO if we have a user, mark the reminder as confirmed
+    needs_confirmation = not current_user
+
     if @reminder.save # saves to db
       # save has worked
-      unless current_user
-        @passwordless_link =
-          passwordless_url_to(@reminder.users.first,
-                              confirm_reminder_path(@reminder))
-      end
 
-      # email confirmation
-      UserMailer.with(emails: @reminder.users.pluck(:email),
-                      reminder: @reminder,
-                      passwordless_link: @passwordless_link
-                     )
-        .added_to_reminder_email.deliver_later
+      # TODO include link to remove yourself from the reminder
+      @reminder.users.each do |recipient|
+        if needs_confirmation
+          # ask for confirmation
+          passwordless_link =
+            passwordless_url_to(recipient,
+                                confirm_reminder_path(@reminder))
+          UserMailer.with(email: recipient.email,
+                          reminder: @reminder,
+                          passwordless_link: passwordless_link
+                         )
+            .ask_reminder_confirmation_email.deliver_later
+        else
+          passwordless_link =
+            passwordless_url_to(recipient,
+                                reminder_path(@reminder))
+          # email confirmation
+          UserMailer.with(email: recipient.email,
+                          reminder: @reminder,
+                          passwordless_link: passwordless_link
+                         )
+            .confirm_reminder_email.deliver_later
+        end
+      end
 
       # makes a new request to end this one
       redirect_to reminder_path(@reminder)
@@ -65,9 +81,19 @@ class RemindersController < ApplicationController
 
     if @reminder.update(reminder_params)
       # email confirmation
-      UserMailer.with(emails: changes[:added].map {|u| u.email},
-                      reminder: @reminder)
-        .added_to_reminder_email.deliver_later
+      if changes
+        @reminder.users do |recipient|
+          passwordless_link =
+            passwordless_url_to(recipient,
+                                reminder_path(@reminder))
+          # email confirmation
+          UserMailer.with(email: recipient.email,
+                          reminder: @reminder,
+                          passwordless_link: passwordless_link
+                         )
+            .confirm_reminder_email.deliver_later
+        end
+      end
       redirect_to reminder_path(@reminder)
     else
       render :show, status: :unprocessable_entity
