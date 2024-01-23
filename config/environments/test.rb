@@ -61,4 +61,15 @@ Rails.application.configure do
 
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
+
+
+  # https://github.com/mikker/passwordless#urls-and-links
+  config.action_mailer.default_url_options =
+    { host: "localhost", port: "3000"}
+  routes.default_url_options[:host] ||= "localhost"
+  routes.default_url_options[:port] ||= "3000"
+
+  # https://guides.rubyonrails.org/debugging_rails_applications.html#what-is-the-logger-questionmark
+  # Rails.logger = Logger.new(STDOUT)
+  # Rails.logger = Log4r::Logger.new("Application Log")
 end

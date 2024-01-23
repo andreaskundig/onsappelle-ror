@@ -17,8 +17,8 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_not_equal the_email, old_reminder.users[0].email
 
     post "/reminders/",
-         params: { reminder: { date: "2023-12-21",
-                               user: [{ email: the_email }]} }
+         params: { reminder: { date: "2023-12-21"},
+                   users: [{ email: the_email }] }
     assert_response :redirect
 
     assert_equal reminder_count + 1, Reminder.count
@@ -27,9 +27,10 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_equal the_email, new_reminder.users[0].email
 
     follow_redirect!
-    assert_response :success
-    assert_select "h1", "Reminder #{new_reminder.id}"
-    assert_select "span", the_email
+    assert_response :found
+    # assert_response :success
+    # assert_select "h1", "Reminder #{new_reminder.id}"
+    # assert_select "span", the_email
   end
 
   test "can create two reminders" do
@@ -41,8 +42,8 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_0 = DateTime.new(2023, 12, 10)
     date_0 = datetime_0.strftime('%Y-%m-%d')
     post "/reminders/",
-         params: { reminder: { date: date_0,
-                               user: [{ email: email_0 }]} }
+         params: { reminder: { date: date_0},
+                   users: [{ email: email_0 }]}
     assert_response :redirect
 
     assert_equal reminder_count + 1, Reminder.count
@@ -56,8 +57,8 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_1 = DateTime.new(2123, 12, 11)
     date_1 = datetime_1.strftime('%Y-%m-%d')
     post "/reminders/",
-         params: { reminder: { date: date_1,
-                               user: [{ email: email_1 }]} }
+         params: { reminder: { date: date_1},
+                   users: [{ email: email_1 }] }
     assert_response :redirect
     assert_equal reminder_count + 2, Reminder.count
     reminder_1 = Reminder.last
@@ -75,9 +76,9 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_0 = DateTime.new(2023, 12, 10)
     date_0 = datetime_0.strftime('%Y-%m-%d')
     post "/reminders/",
-         params: { reminder: { date: date_0,
-                               user: [{ email: the_email }]} }
-    assert_response :redirect
+         params: { reminder: { date: date_0},
+                   users: [{ email: the_email }]}
+    assert_response :found
 
     assert_equal reminder_count + 1, Reminder.count
     reminder_0 = Reminder.last
@@ -89,8 +90,8 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_1 = DateTime.new(2123, 12, 11)
     date_1 = datetime_1.strftime('%Y-%m-%d')
     post "/reminders/",
-         params: { reminder: { date: date_1,
-                               user: [{ email: the_email }]} }
+         params: { reminder: { date: date_1},
+                   users: [{ email: the_email }]}
     assert_response :redirect
     assert_equal reminder_count + 2, Reminder.count
     reminder_1 = Reminder.last
@@ -109,26 +110,26 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     old_emails = reminder.users.map { |u| u.email }
     assert_not_includes old_emails, the_email
 
-    get "/reminders/#{reminder.id}/edit"
-    assert_response :success
-    assert_select "h1", "Edit Reminder"
-
     patch "/reminders/#{reminder.id}",
-         params: { reminder: { date: the_date,
-                               users: { email: the_email }} }
+          params: { reminder: { date: the_date},
+                    users: { email: the_email }}
     assert_response :redirect
 
+    # no update without logging in
     new_reminder = Reminder.find(reminder.id)
     new_date = new_reminder.date.strftime('%Y-%m-%d')
-    assert_equal the_date, new_date
-    new_emails = new_reminder.users.map { |u| u.email }
-    assert_includes new_emails, the_email
-    assert_equal old_emails.length + 1, new_emails.length
+    assert_equal original_date, new_date
 
-    follow_redirect!
-    assert_response :success
-    assert_select "h1", "Edit Reminder"
-    assert_select "span", the_email
+    # TODO log in
+    # new_reminder = Reminder.find(reminder.id)
+    # new_date = new_reminder.date.strftime('%Y-%m-%d')
+    # assert_equal the_date, new_date
+    # new_emails = new_reminder.users.map { |u| u.email }
+    # assert_includes new_emails, the_email
+    # assert_equal old_emails.length + 1, new_emails.length
+
+    # follow_redirect!
+    # assert_response :success
   end
 
   test "can update a reminder with empty email" do
@@ -138,17 +139,22 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     original_date = reminder.date.strftime('%Y-%m-%d')
     assert_not_equal the_date, original_date
 
-    get "/reminders/#{reminder.id}/edit"
-    assert_response :success
-    assert_select "h1", "Edit Reminder"
-
     patch "/reminders/#{reminder.id}",
-         params: { reminder: { date: the_date,
-                               users: { email: '' }} }
-    assert_response :redirect
+          params: { reminder: { date: the_date},
+                    users: { email: '' }}
+    assert_response :found
 
     new_reminder = Reminder.find(reminder.id)
     new_date = new_reminder.date.strftime('%Y-%m-%d')
-    assert_equal the_date, new_date
+    assert_equal original_date, new_date
+
+    # patch "/reminders/#{reminder.id}",
+    #       params: { reminder: { date: the_date},
+    #                 users: { email: '' }}
+    # assert_response :redirect
+    #TODO log in
+    # new_reminder = Reminder.find(reminder.id)
+    # new_date = new_reminder.date.strftime('%Y-%m-%d')
+    # assert_equal the_date, new_date
   end
 end

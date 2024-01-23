@@ -26,7 +26,7 @@ class RemindersController < ApplicationController
   def create
     @reminder = Reminder.new(reminder_params)
     update_reminder_recipients(@reminder, params[:users])
-    # TODO if we have a user, mark the reminder as confirmed
+    # TODO if we have a user:  reminder.confirmed = true
     needs_confirmation = !current_user
 
     if @reminder.save # saves to db
