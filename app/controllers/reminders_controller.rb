@@ -4,6 +4,8 @@ class RemindersController < ApplicationController
  # but then it affects the default sign_in route
   before_action :require_user!
   skip_before_action :require_user!, only: [:new, :create]
+  before_action :find_and_authorize_reminder,
+                only: [:show, :destroy, :confirm, :update, :edit]
 
   def index
     @reminders = current_user.reminders
@@ -11,7 +13,7 @@ class RemindersController < ApplicationController
   end
 
   def show
-    @reminder = Reminder.find(params[:id])
+    # @reminder is set by :find_and_authorize_reminder
   end
 
   def new
@@ -55,6 +57,9 @@ class RemindersController < ApplicationController
         end
       end
 
+      # TODO redirect to some confirmation unless current user
+      # maybe the login page with an extra message?
+
       # makes a new request to end this one
       redirect_to reminder_path(@reminder)
     else
@@ -65,17 +70,18 @@ class RemindersController < ApplicationController
   end
 
   def confirm
-    @reminder = Reminder.find(params[:id])
+    # @reminder is set by :find_and_authorize_reminder
     print("TODO SET A CONFIRMED FLAG\n")
     redirect_to reminder_path(@reminder)
   end
 
+  # TODO check if this is really used
   def edit
-    @reminder = Reminder.find(params[:id])
+    # @reminder is set by :find_and_authorize_reminder
   end
 
   def update
-    @reminder = Reminder.find(params[:id])
+    # @reminder is set by :find_and_authorize_reminder
     changes =
       update_reminder_recipients(@reminder, params[:users])
 
@@ -101,11 +107,9 @@ class RemindersController < ApplicationController
   end
 
   def destroy
-    @reminder = Reminder.find(params[:id])
+    # @reminder is set by :find_and_authorize_reminder
     @reminder.destroy
-
-    # redirect_to root_path, status: :see_other
-    redirect_to reminders_path, status: :see_other
+    redirect_to root_path, status: :see_other
   end
 
   private
@@ -123,6 +127,16 @@ class RemindersController < ApplicationController
       )
       return "#{link}?destination_path=#{destination_path}"
     end
+
+    def find_and_authorize_reminder
+      @reminder = current_user.reminders.find_by(id: params[:id])
+      unless @reminder
+        # return head :forbidden
+        # redirect_to root_path, status: :forbidden
+        redirect_to root_path, status: :see_other
+      end
+    end
+
     def reminder_params
       # params.require(:reminder).permit!
       params.require(:reminder)
