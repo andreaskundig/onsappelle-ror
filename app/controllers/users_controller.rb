@@ -7,7 +7,7 @@ class UsersController < ApplicationController
   # and it's not clear where skip_before_action
   # could be set
   before_action :require_user!
-  skip_before_action :require_user!, only: [:new_inputs]
+  skip_before_action :require_user!, only: [:new_inputs, :remove_inputs]
 
   def index
     @reminder = Reminder.find(params[:reminder_id])
