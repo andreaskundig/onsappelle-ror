@@ -1,7 +1,7 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
 
-* TODO passwordless authentication by email
+* passwordless authentication by email
 gem
 https://github.com/mikker/passwordless
 ** magic link
@@ -64,7 +64,7 @@ You can further customize this URL by specifying the destination path to be redi
 **** pull request that removed it
 presumably because user_agent and remote_addr
 args were removed from Session.new
-* TODO landing page
+* landing page
 
 ** button/link to remove user
 

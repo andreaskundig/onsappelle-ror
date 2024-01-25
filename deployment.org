@@ -555,6 +555,17 @@ WITH PASSWORD 'password';
 
 fly secrets set DATABASE_URL=postgres://onsappelle_ror:password@onsappelle-ror-db.flycast:5432/onsappelle_ror?sslmode=disable
 #+end_src
+*** connect to db by proxy
+https://fly.io/docs/flyctl/proxy/
+#+begin_src bash
+fly proxy 15432:5432 -a onsappelle-ror-db
+#+end_src
+**** connect to database directly is 2$/mo
+Allocate an IP address
+#+begin_src bash
+fly ips allocate-v4 --app onsappelle-ror-db
+? Looks like you're accessing a paid feature. Dedicated IPv4 addresses now cost $2/mo. Are you ok with this? No
+#+end_src
 ** first failed try (hello world)
 https://fly.io/docs/hands-on/launch-app/
 generate fly.toml
