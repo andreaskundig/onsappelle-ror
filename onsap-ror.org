@@ -101,6 +101,22 @@ and calls [[file:app/controllers/users_controller.rb::def remove_inputs][users_c
 which returns [[file:app/views/users/remove_inputs.turbo_stream.erb::<%= turbo_stream.remove "recipient_#{@email_code}" %>][remove_inputs.turbo_stream.rb]]
 which removes the recipient where the [-] was clicked
 
+* TODO send emails at reminder date
+https://github.com/javan/whenever
+https://dev.to/risafj/cron-jobs-in-rails-a-simple-guide-to-actually-using-the-whenever-gem-now-with-tasks-2omi
+configure it in [[file:Gemfile::gem 'whenever', require: false][Gemfile]]
+#+begin_src bash
+bundle install
+bundle exec wheneverize .
+#+end_src
+this creates [[file:config/schedule.rb][config/schedule.rb]]
+where you can define cron tasks
+#+begin_src bash
+whenever --update-crontab --set environment='development'
+# in wsl, start crontab with service
+sudo service cron start
+#+end_src
+
 * TODO show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
@@ -109,7 +125,6 @@ activate reminder
 * TODO ensure email field is empty at page load
 find out how this is filled...
 * TODO rename reminder.users to .recipients
-* TODO send emails at reminder date
 * TODO refactor: remove unused routes controller methods
 * TODO [#B] [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
 * TODO Active Job adapter w persistent backend (sidekiq resque)
