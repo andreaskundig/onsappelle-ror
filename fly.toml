@@ -32,3 +32,13 @@ console_command = "/rails/bin/rails console"
 [mounts]
   source="onsapvol"
   destination="/data"
+
+# https://fly.io/docs/app-guides/supercronic/
+# with some inspiration from
+# https://fly.io/docs/rails/the-basics/sidekiq/
+[processes]
+  # The command below is used to launch a Rails server; be sure to
+  # replace with the command you're using to launch your server.
+  app = "bin/rails server"
+  cron = "supercronic /app/crontab"
+

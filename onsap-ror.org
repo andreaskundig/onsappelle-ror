@@ -102,20 +102,6 @@ which returns [[file:app/views/users/remove_inputs.turbo_stream.erb::<%= turbo_s
 which removes the recipient where the [-] was clicked
 
 * TODO send emails at reminder date
-https://github.com/javan/whenever
-https://dev.to/risafj/cron-jobs-in-rails-a-simple-guide-to-actually-using-the-whenever-gem-now-with-tasks-2omi
-configure it in [[file:Gemfile::gem 'whenever', require: false][Gemfile]]
-#+begin_src bash
-bundle install
-bundle exec wheneverize .
-#+end_src
-this creates [[file:config/schedule.rb][config/schedule.rb]]
-where you can define cron tasks
-#+begin_src bash
-whenever --update-crontab --set environment='development'
-# in wsl, start crontab with service
-sudo service cron start
-#+end_src
 
 * TODO show page: edit date, more validation
 activate reminder
@@ -131,7 +117,7 @@ find out how this is filled...
 
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
 
-* first steps
+* steps
 ** rails generate stuff
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
 #+begin_src bash
@@ -217,7 +203,41 @@ set password for test and development dbs in [[file:config/database.yml::passwor
 bin/rails db:create
 bin/rails db:migrate
 #+end_src
+** cron jobs with whenever
+https://github.com/javan/whenever
+https://dev.to/risafj/cron-jobs-in-rails-a-simple-guide-to-actually-using-the-whenever-gem-now-with-tasks-2omi
+configure it in [[file:Gemfile::gem 'whenever', require: false][Gemfile]]
+#+begin_src bash
+bundle install
+bundle exec wheneverize .
+#+end_src
+this creates [[file:config/schedule.rb][config/schedule.rb]]
+where you can define cron tasks
+#+begin_src bash
+whenever --update-crontab --set environment='development'
+# see your personal cron jobs
+crontab -l
+# in wsl, start crontab with service
+sudo service cron start
+#+end_src
+
+but cron isn't so good for containers apparently
+*** supercronic: cron for containers
+https://fly.io/docs/app-guides/supercronic/
+In the root of your project, add a crontab file.
+#+begin_src
+touch ./crontab
+#+end_src
+
+I take what whenever generated before...
+ #+begin_src bash
+crontab -l > ./crontab
+ #+end_src
+ the guide seems a bit outdated (?),
+ so I took some inspiration from the sidekiq doc too
+ https://fly.io/docs/rails/the-basics/sidekiq/
 * language server
+
 ** finally chose ruby-lsp
 ** solargraph
 https://emacs-lsp.github.io/lsp-mode/page/lsp-solargraph/

@@ -1,0 +1,6 @@
+
+
+# Begin Whenever generated tasks for: /home/andre/workspace/onsappelle-ror/config/schedule.rb at: 2024-01-26 09:24:43 +0100
+* * * * * /bin/bash -l -c 'date > ~/whenever_date'
+
+# End Whenever generated tasks for: /home/andre/workspace/onsappelle-ror/config/schedule.rb at: 2024-01-26 09:24:43 +0100
