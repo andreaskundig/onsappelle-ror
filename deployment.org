@@ -3,6 +3,13 @@
 * deployment on fly.io (5$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
+https://fly.io/docs/rails/the-basics/deployments/
+** steps
+go to project onsappelle-ror-deploy
+fetch all, merge main into deploy
+#+begin_src bash
+fly deploy
+#+end_src
 ** existing rails app
 https://fly.io/docs/rails/getting-started/existing/
 

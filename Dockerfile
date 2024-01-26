@@ -13,6 +13,15 @@ ENV RAILS_ENV="production" \
     BUNDLE_PATH="/usr/local/bundle" \
     BUNDLE_WITHOUT="development"
 
+
+# Throw-away build stage to reduce size of final image
+FROM base as build
+
+# Install packages needed to build gems
+# and curl to install supercronic
+RUN apt-get update -qq && \
+    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config curl
+
 # SUPERCRONIC START
 # https://fly.io/docs/app-guides/supercronic/
 # https://github.com/aptible/supercronic/releases
@@ -29,13 +38,6 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
 
 COPY crontab crontab
 # SUPERCRONIC END
-
-# Throw-away build stage to reduce size of final image
-FROM base as build
-
-# Install packages needed to build gems
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential git libpq-dev libvips pkg-config
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
