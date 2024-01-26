@@ -29,9 +29,10 @@ console_command = "/rails/bin/rails console"
   guest_path = "/rails/public"
   url_prefix = "/"
 
-# [mounts]
-#   source="onsapvol"
-#   destination="/data"
+[mounts]
+  source="onsapvol"
+  destination="/data"
+  processes = ["app"]
 
 # https://fly.io/docs/app-guides/supercronic/
 # with some inspiration from
