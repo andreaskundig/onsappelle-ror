@@ -40,5 +40,4 @@ console_command = "/rails/bin/rails console"
   # The command below is used to launch a Rails server; be sure to
   # replace with the command you're using to launch your server.
   app = "bin/rails server"
-  cron = "supercronic /app/crontab"
-
+  cron = "supercronic /rails/crontab"
