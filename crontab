@@ -1,6 +1,6 @@
 
 
-# Begin Whenever generated tasks for: /home/andre/workspace/onsappelle-ror/config/schedule.rb at: 2024-01-26 09:24:43 +0100
-* * * * * /bin/bash -l -c 'date > ~/whenever_date'
+# Begin Whenever generated tasks for: /home/andre/workspace/onsappelle-ror/config/schedule.rb at: 2024-01-29 19:30:03 +0100
+* * * * * /bin/bash -l -c 'cd /home/andre/workspace/onsappelle-ror && RAILS_ENV=production bundle exec rake notification:send_due_reminders --silent'
 
-# End Whenever generated tasks for: /home/andre/workspace/onsappelle-ror/config/schedule.rb at: 2024-01-26 09:24:43 +0100
+# End Whenever generated tasks for: /home/andre/workspace/onsappelle-ror/config/schedule.rb at: 2024-01-29 19:30:03 +0100
