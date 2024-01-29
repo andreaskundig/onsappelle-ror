@@ -7,6 +7,11 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_select "h1", "New Reminder"
   end
 
+  def get_email_html_body(email)
+    email_html = email.html_part.body.to_s
+    Nokogiri::HTML(email_html)
+  end
+
   test "can create a reminder" do
     get "/reminders/new"
     assert_response :success
@@ -16,16 +21,15 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     reminder_count = Reminder.count
     old_reminder = Reminder.last
     assert_not_equal the_email, old_reminder.users[0].email
-    sent_emails = capture_emails do
+    emails = capture_emails do
         post "/reminders/",
              params: { reminder: { date: "2023-12-21"},
                        users: [{ email: the_email }] }
     end
-    assert_equal 1, sent_emails.size
+    assert_equal 1, emails.size
     assert_response :redirect
 
-    sent_email_html = "#{sent_emails.first.html_part.body}"
-    sent_email_doc = Nokogiri::HTML(sent_email_html)
+    sent_email_doc = Nokogiri::HTML( emails.first.html_part.body.to_s)
     sent_email_links = sent_email_doc.css('a')
     assert_equal 1, sent_email_links.size
     email_confirm_link = sent_email_links.first
@@ -44,7 +48,6 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     # assert_select "span", the_email
     #
     email_confirm_href = email_confirm_link.attribute("href").to_s
-    print("\033[33m #{email_confirm_href}\n")
     sign_in_url = email_confirm_href.sub('http://localhost:3000', '')
     confirm_url = sign_in_url.sub(/.*destination_path=/, '')
 
@@ -154,7 +157,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
 
     patch "/reminders/#{reminder.id}",
           params: { reminder: { date: the_date},
-                    users: { email: the_email }}
+                    users: [{ email: the_email }]}
     assert_response :redirect
 
     # no update without logging in
@@ -162,7 +165,25 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     new_date = new_reminder.date.strftime('%Y-%m-%d')
     assert_equal original_date, new_date
 
-    # TODO log in
+    user =  User.first
+    emails = capture_emails do
+        post users_sign_in_path,
+             params: { "passwordless[email]"=>  user.email }
+    end
+    email_text = emails.first.to_s
+    urls = email_text.scan(/(http[s]?:\/\/\S+)/)
+    sign_in_url = urls.first.first
+
+    get sign_in_url
+    assert_response :redirect
+    follow_redirect!
+    assert_response :success
+
+    patch "/reminders/#{reminder.id}",
+          params: { reminder: { date: the_date},
+                    users: [{ email: the_email }]}
+    assert_response :redirect
+
     # new_reminder = Reminder.find(reminder.id)
     # new_date = new_reminder.date.strftime('%Y-%m-%d')
     # assert_equal the_date, new_date
