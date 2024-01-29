@@ -5,7 +5,7 @@ class RemindersTest < ApplicationSystemTestCase
   include UsersHelper
 
   test "visiting reminders/new" do
-    visit new_reminder_url
+    visit new_reminder_path
 
     assert_selector "h1", text: "New Reminder"
   end
