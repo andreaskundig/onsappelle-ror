@@ -1,5 +1,17 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
+* authentication-zero, rodauth ?
+[[https://bootrails.com/blog/generate-authentication-like-rails-8-will/][Generate authentication like Rails 8 will]]
+
+https://github.com/lazaronixon/authentication-zero
+
+http://rodauth.jeremyevans.net/documentation.html
+
+https://www.reddit.com/r/rails/comments/1aczuiv/some_say_use_devise_some_say_authenticationzero/
+- With authentication_zero you own the generated authentication code and you need to maintain it. Some experience in the language and the framework would be required to do it.
+- Sorcery is minimalistic (in a good way) compared to Devise, which makes a lot of assumptions. You get the core part, you need to build the rest yourself and you probably need to know what you want.
+- Rodauth is most advanced and most secure authentication solution for Ruby, but at the cost of some added complexity. For example, to use most secure features, you need to have a separate database user just for auth.
+- built-in stuff in Rails is good enough for all cases (unlike some people like to mindlessly say, even for production apps), but you need to build something yourself and maintain it, similar case as with authentication_zero
 
 * passwordless authentication by email
 gem
@@ -137,6 +149,10 @@ $ bin/rails generate controller Users
 [[https://guides.rubyonrails.org/action_mailer_basics.html][generating a mailer]]
 #+begin_src bash
 bin/rails generate mailer User
+#+end_src
+[[https://guides.rubyonrails.org/active_record_migrations.html#adding-new-columns][adding new columns]]
+#+begin_src bash
+bin/rails generate migration AddDetailsToReminder description:string sent:datetime confirmed:datetime
 #+end_src
 
 ** gmail
