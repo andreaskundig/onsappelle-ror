@@ -4,6 +4,10 @@ one:
   user: one
   reminder: one
 
-two:
+reminder_2_user_1:
+  user: one
+  reminder: two
+
+reminder_2_user_2:
   user: two
   reminder: two
