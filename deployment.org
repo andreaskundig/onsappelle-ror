@@ -10,6 +10,17 @@ fetch all, merge main into deploy
 #+begin_src bash
 fly deploy
 #+end_src
+
+which machines are running
+#+begin_src bash
+fly machines list
+#+end_src
+
+get a dialogue to start machines
+#+begin_src bash
+fly machines start
+#+end_src
+
 ** existing rails app
 https://fly.io/docs/rails/getting-started/existing/
 

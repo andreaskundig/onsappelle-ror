@@ -238,6 +238,16 @@ crontab -l > ./crontab
  https://fly.io/docs/rails/the-basics/sidekiq/
 see [[file:Dockerfile::SUPERCRONIC START][Dockerfile]] and [[file:fly.toml::\[processes\]][fly.toml]]
 
+#+begin_src toml
+[processes]
+  app = "bin/rails server"
+  cron = "supercronic /rails/crontab"
+#+end_src
+Fly creates one machine per process,
+and its command is passed to [[file:bin/docker-entrypoint][docker-entrypoint]]
+instead of CMD at the end of [[file:Dockerfile::CMD \["./bin/rails", "server"\]][Dockerfile]]
+(ENTRYPOINT and CMD [[https://www.baeldung.com/ops/dockerfile-run-cmd-entrypoint][explained at baeldung]])
+
 #+begin_src
 cd deployment_dir
 fly deploy

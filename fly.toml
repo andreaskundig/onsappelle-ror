@@ -18,6 +18,7 @@ console_command = "/rails/bin/rails console"
   auto_stop_machines = true
   auto_start_machines = true
   min_machines_running = 1
+  # this applies only to process app
   processes = ["app"]
 
 [[vm]]
@@ -32,13 +33,16 @@ console_command = "/rails/bin/rails console"
 [mounts]
   source="onsapvol"
   destination="/data"
+  # not sure this is needed
   processes = ["app"]
 
 # https://fly.io/docs/app-guides/supercronic/
 # with some inspiration from
 # https://fly.io/docs/rails/the-basics/sidekiq/
 [processes]
-  # The command below is used to launch a Rails server; be sure to
-  # replace with the command you're using to launch your server.
+  # when starting a server,
+  # this is passed to docker entry-point
+  # instead of CMD in the docker file
+  # Fly creates one machine per process
   app = "bin/rails server"
   cron = "supercronic /rails/crontab"
