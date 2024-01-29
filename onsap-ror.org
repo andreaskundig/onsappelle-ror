@@ -1,6 +1,17 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
-* authentication-zero, rodauth ?
+* passwordless authentication by email
+gem
+https://github.com/mikker/passwordless
+** magic link
+There is an issue
+[[https://github.com/mikker/passwordless/issues/70][Create auth token links for email]]
+the readme once had a section
+[[https://github.com/mikker/passwordless/blob/5b971d24e141aa6699eb510b051fb00ca4d463e2/README.md#generate-your-own-magic-links][generate your own magic links]]
+The section disappeared with
+[[https://github.com/mikker/passwordless/pull/153/files][this pull request]]
+** alternatives
+*** authentication-zero, rodauth ?
 [[https://bootrails.com/blog/generate-authentication-like-rails-8-will/][Generate authentication like Rails 8 will]]
 
 https://github.com/lazaronixon/authentication-zero
@@ -13,23 +24,12 @@ https://www.reddit.com/r/rails/comments/1aczuiv/some_say_use_devise_some_say_aut
 - Rodauth is most advanced and most secure authentication solution for Ruby, but at the cost of some added complexity. For example, to use most secure features, you need to have a separate database user just for auth.
 - built-in stuff in Rails is good enough for all cases (unlike some people like to mindlessly say, even for production apps), but you need to build something yourself and maintain it, similar case as with authentication_zero
 
-* passwordless authentication by email
-gem
-https://github.com/mikker/passwordless
-** magic link
-There is an issue
-[[https://github.com/mikker/passwordless/issues/70][Create auth token links for email]]
-the readme once had a section
-[[https://github.com/mikker/passwordless/blob/5b971d24e141aa6699eb510b051fb00ca4d463e2/README.md#generate-your-own-magic-links][generate your own magic links]]
-The section disappeared with
-[[https://github.com/mikker/passwordless/pull/153/files][this pull request]]
-** alternatives
-handrolled
+*** handrolled
 https://blog.testdouble.com/posts/2022-10-25-building-passwordless-email-auth-in-rails/
 with token (handrolled)
 https://dev.to/phawk/password-less-auth-in-rails-4ah
 
-with devise
+*** with devise
 https://github.com/abevoelker/devise-passwordless
 devise seems pretty heavy for something
 that doesn't include passwordless...
@@ -153,6 +153,7 @@ bin/rails generate mailer User
 [[https://guides.rubyonrails.org/active_record_migrations.html#adding-new-columns][adding new columns]]
 #+begin_src bash
 bin/rails generate migration AddDetailsToReminder description:string sent:datetime confirmed:datetime
+bin/rails db:migrate
 #+end_src
 
 ** gmail

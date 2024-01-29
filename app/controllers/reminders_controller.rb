@@ -25,16 +25,15 @@ class RemindersController < ApplicationController
 
   def create
     @reminder = Reminder.new(reminder_params)
+    @reminder.confirmed_at = Time.zone.now if current_user
     update_reminder_recipients(@reminder, params[:users])
-    # TODO if we have a user:  reminder.confirmed = true
-    needs_confirmation = !current_user
 
     if @reminder.save # saves to db
       # save has worked
 
       # TODO include link to remove yourself from the reminder
       @reminder.users.each do |recipient|
-        if needs_confirmation
+        if !@reminder.confirmed_at
           # ask for confirmation
           passwordless_link =
             passwordless_url_to(recipient,
@@ -71,8 +70,13 @@ class RemindersController < ApplicationController
 
   def confirm
     # @reminder is set by :find_and_authorize_reminder
-    print("TODO SET A CONFIRMED FLAG\n")
-    redirect_to reminder_path(@reminder)
+    @reminder.confirmed_at = Time.zone.now if current_user
+    if @reminder.save # saves to db
+      redirect_to reminder_path(@reminder)
+    else
+      # TODO show something more like a server error
+      render :show, status: :unprocessable_entity
+    end
   end
 
   # TODO check if this is really used
