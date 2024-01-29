@@ -31,8 +31,9 @@ class Reminder < ApplicationRecord
   end
 
   def self.due_for_sending_at(date)
-    where("date <= ?", date)
-      .where.not(confirmed_at: nil)
-      .where(sent_at: nil)
+        includes(:users)
+        .where("date <= ?", date)
+        .where.not(confirmed_at: nil)
+        .where(sent_at: nil)
   end
 end

@@ -1,13 +1,13 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
-one:
+reminder_1_user_1:
   user: one
+  reminder: one
+
+reminder_1_user_2:
+  user: two
   reminder: one
 
 reminder_2_user_1:
   user: one
-  reminder: two
-
-reminder_2_user_2:
-  user: two
   reminder: two

@@ -23,4 +23,15 @@ class UserMailer < ApplicationMailer
     end
   end
 
+  def remind_email
+    @email = params[:email]
+    @reminder = params[:reminder]
+    recipients = @reminder.users.map {|u| u.email }
+    if @email
+      mail(to: @email,
+           reply_to: recipients,
+           subject: "Time to keep in touch")
+    end
+  end
+
 end

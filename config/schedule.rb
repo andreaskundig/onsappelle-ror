@@ -19,6 +19,11 @@
 
 # Learn more: http://github.com/javan/whenever
 
+# every 1.minute do
+#   command "date > ~/whenever_date"
+# end
+
+# every 2.hours do
 every 1.minute do
-  command "date > ~/whenever_date"
+  rake "notification:send_due_reminders"
 end

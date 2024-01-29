@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      Today <%= @reminder.date.strftime('%d.%m.%Y') %> is the day you decided to contact each other.
+    </h1>
+    <p>
+        Reply to this email to write to:
+        <ul>
+              <% @reminder.users.each do |recipient| %>
+                  <li><%= recipient.email %></li>
+              <% end %>
+          </ul>
+      </p>
+  </body>
+</html>
