@@ -13,13 +13,20 @@ console_command = "/rails/bin/rails console"
   release_command = "./bin/rails db:prepare"
 
 [http_service]
-  internal_port = 3000
-  force_https = true
-  auto_stop_machines = true
-  auto_start_machines = true
-  min_machines_running = 1
   # this applies only to process app
   processes = ["app"]
+  internal_port = 3000
+  force_https = true
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
+
+[[services]]
+  # this applies only to process cron
+  processes = ["cron"]
+  auto_stop_machines = false
+  auto_start_machines = true
+  min_machines_running = 1
 
 [[vm]]
   cpu_kind = "shared"
