@@ -246,10 +246,14 @@ In the root of your project, add a crontab file.
 touch ./crontab
 #+end_src
 
-I take what whenever generated before...
+I take what whenever generated before,
+but the paths need to be changed
+to match the server setup
 #+begin_src bash
 crontab -l > ./crontab
 #+end_src
+
+
  the guide seems a bit outdated (?),
  so I took some inspiration from the sidekiq doc too
  https://fly.io/docs/rails/the-basics/sidekiq/
@@ -269,6 +273,10 @@ instead of CMD at the end of [[file:Dockerfile::CMD \["./bin/rails", "server"\]]
 cd deployment_dir
 fly deploy
 fly scale count app=1 cron=1
+#+end_src
+*** connecting to the cron machine
+#+begin_src bash
+fly ssh console --machine cron
 #+end_src
 * language server
 

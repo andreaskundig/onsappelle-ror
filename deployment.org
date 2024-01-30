@@ -21,7 +21,7 @@ get a dialogue to start machines
 fly machines start
 #+end_src
 
-** existing rails app
+** following tutorial existing rails app
 https://fly.io/docs/rails/getting-started/existing/
 
 *** launch
@@ -95,33 +95,6 @@ Before proceeding, please review the posted Rails FAQ:
 https://fly.io/docs/rails/getting-started/dockerfiles/.
 
 Once ready: run 'fly deploy' to deploy your Rails app.
-#+end_src
-*** volumes
-#+begin_src bash
-$ fly volumes create onsapvol
-
-            Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/reference/volumes/
-? Do you still want to use the volumes feature? Yes
-Some regions require a Launch plan or higher (bom, fra).
-See https://fly.io/plans to set up a plan.
-
-? Select region: Paris, France (cdg)
-                  ID: vol_zrew0go635oe791r
-                Name: onsapvol
-                 App: onsappelle-ror
-              Region: cdg
-                Zone: 88d2
-             Size GB: 3
-           Encrypted: true
-          Created at: 08 Jan 24 23:03 UTC
-  Snapshot retention: 5
-#+end_src
-
-in fly.toml
-#+begin_src toml
-[mounts]
-  source="onsapvol"
-  destination="/data"
 #+end_src
 *** deploy fails: Unable to find PostgreSQL client library
 
@@ -551,13 +524,140 @@ added, and keep installing libbsqlite in prod
 *** fly deploy works! better than it should :(
 it even sends emails, which means the docker image
 includes the app_env_vars.rb not in git
-*** fly secrets
+** volumes
+#+begin_src bash
+$ fly volumes create onsapvol
+
+            Warning! Every volume is pinned to a specific physical host. You should create two or more volumes per application to avoid downtime. Learn more at https://fly.io/docs/reference/volumes/
+? Do you still want to use the volumes feature? Yes
+Some regions require a Launch plan or higher (bom, fra).
+See https://fly.io/plans to set up a plan.
+
+? Select region: Paris, France (cdg)
+                  ID: vol_zrew0go635oe791r
+                Name: onsapvol
+                 App: onsappelle-ror
+              Region: cdg
+                Zone: 88d2
+             Size GB: 3
+           Encrypted: true
+          Created at: 08 Jan 24 23:03 UTC
+  Snapshot retention: 5
+#+end_src
+
+in fly.toml
+#+begin_src toml
+[mounts]
+  source="onsapvol"
+  destination="/data"
+#+end_src
+** restoring a database
+https://fly.io/docs/postgres/managing/backup-and-restore/
+#+begin_src bash
+ 1294  fly info -a onsappelle-ror-db
+Command "info" is deprecated, Replaced by 'status', 'ips list', and 'services list'
+App
+  Name     = onsappelle-ror-db
+  Owner    = personal
+  Platform = machines
+  Hostname = onsappelle-ror-db.fly.dev
+
+Services
+PROTOCOL        PORTS           HANDLERS        FORCE HTTPS     PROCESS GROUP   REGIONS MACHINES
+TCP             5432 => 5432    [PG_TLS]        False                           cdg     1
+TCP             5433 => 5433    [PG_TLS]        False                           cdg     1
+
+IP Addresses
+TYPE            ADDRESS                 REGION  CREATED AT
+private_v6      fdaa:4:faa2:0:1::3      global  2024-01-08T22:40:54Z
+
+ 1295  fly postgres list
+ NAME                    OWNER           STATUS          LATEST DEPLOY
+onsappelle-ror-db       personal        deployed
+
+ 1296  fly volumes list -a onsappelle-ror-db
+ID                      STATE   NAME    SIZE    REGION  ZONE    ENCRYPTED       ATTACHED VM     CREATED AT
+vol_1vp31wejd9ywzoer    created pg_data 10GB    cdg     88d2    true            28663ddf72de58  3 weeks ago
+
+ 1297  fly volume snapshots list vol_1vp31wejd9ywzoer
+Snapshots
+ID                              STATUS  SIZE            CREATED AT
+vs_pOzovae2A8NquqJemQ3gD        created 269502593       13 hours ago
+vs_7Pg3Z9vpM46NU9bmoG8aO        created 268962385       1 day ago
+vs_8Ag3ZXvz20aLIellLaQpq        created 268700447       2 days ago
+vs_V71p5bPR2g8YUj999BxJk        created 268438509       3 days ago
+vs_YYlpqmOg029NhZgbRO7R         created 268172446       4 days ago
+vs_BylXZKv4mA3MF0p058JkG        created 267023003       5 days ago
+#+end_src
+
+When restoring the snapshot, [[https://community.fly.io/t/restoring-postgres-snapshot-fails-restore-volume-size-must-be-at-least-10gb/17937/5][choose a custom configuration]] with a 10GB volume.
+#+begin_src
+$ fly postgres create --snapshot-id vs_pOzovae2A8NquqJemQ3gD
+? Choose an app name (leave blank to generate one): onsappelle-db
+automatically selected personal organization: Andreas
+Some regions require a Launch plan or higher (bom, fra).
+See https://fly.io/plans to set up a plan.
+
+? Select region: Paris, France (cdg)
+? Select configuration: Specify custom configuration
+? Initial cluster size - Specify at least 3 for HA 1
+? Select VM size: shared-cpu-1x - CPU Kind: Shared, vCPUs: 1 Memory: 256MB
+? Volume size 10
+Creating postgres cluster in organization personal
+Creating app...
+Setting secrets on app onsappelle-db...
+Restoring 1 of 1 machines with image flyio/postgres-flex:15.3@sha256:44b698752cf113110f2fa72443d7fe452b48228aafbb0d93045ef1e3282360a6
+Waiting for machine to start...
+Machine e78499dc615068 is created
+==> Monitoring health checks
+  Waiting for e78499dc615068 to become healthy (started, 3/3)
+
+Postgres cluster onsappelle-db created
+  Username:    XXXXXXX
+  Password:    XXXXXXX
+  Hostname:    onsappelle-db.internal
+  Flycast:     fdaa:4:faa2:0:1::6
+  Proxy port:  5432
+  Postgres port:  5433
+  Connection string: postgres://XXXXXX:XXXXXX@onsappelle-db.flycast:5432
+
+Save your credentials in a secure place -- you won't be able to see them again!
+
+Connect to postgres
+Any app within the Andreas  organization can connect to this Postgres using the above connection string
+
+Now that you've set up Postgres, here's what you need to understand: https://fly.io/docs/postgres/getting-started/what-you-should-know/
+#+end_src
+
+Attaching the old database and reattaching the new one will create a new user in the new one and automatically add a new DATABASE_URL to the environment.
+
+If you want to keep the old DATABASE_URL from the app:
+#+begin_src bash
+fly ssh console
+echo $DATABASE_URL
+#+end_src
+
+#+begin_src bash
+fly postgres detach onsappelle-ror-db
+fly postgres attach onsappelle-db
+
+Checking for existing attachments
+? Database "onsappelle_ror" already exists. Continue with the attachment process? Yes
+Error: database user "onsappelle_ror" already exists. Please specify a new database user via --database-user
+#+end_src
+
+You need to redeploy to reset the env variable, but you can [[https://community.fly.io/t/set-update-env-vars-without-deploy/9020/6][redeploy with the same image]].
+#+begin_src bash
+fly deploy -i $(fly releases --json | jq.[0].ImageRef)
+#+end_src
+
+** fly secrets
 in case a deployment is done from somewhere without an app_env_vars.rb
 
 fly secrets set MAILER_EMAIL=appelonsnous@gmail.com
 fly secrets set MAILER_PASSWORD=...
 https://fly.io/docs/reference/secrets/#setting-secrets
-*** change postgres password
+** change postgres password
 #+begin_src bash
 fly ssh console
 psql &DATABASE_URL
@@ -573,12 +673,12 @@ WITH PASSWORD 'password';
 
 fly secrets set DATABASE_URL=postgres://onsappelle_ror:password@onsappelle-ror-db.flycast:5432/onsappelle_ror?sslmode=disable
 #+end_src
-*** connect to db by proxy
+** connect to db by proxy
 https://fly.io/docs/flyctl/proxy/
 #+begin_src bash
 fly proxy 15432:5432 -a onsappelle-ror-db
 #+end_src
-**** connect to database directly is 2$/mo
+*** connect to database directly is 2$/mo
 Allocate an IP address
 #+begin_src bash
 fly ips allocate-v4 --app onsappelle-ror-db
