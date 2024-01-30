@@ -276,7 +276,7 @@ fly scale count app=1 cron=1
 #+end_src
 *** connecting to the cron machine
 #+begin_src bash
-fly ssh console --machine cron
+fly ssh console --machine cron -g cron
 #+end_src
 * language server
 
