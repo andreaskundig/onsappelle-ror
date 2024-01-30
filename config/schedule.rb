@@ -23,7 +23,7 @@
 #   command "date > ~/whenever_date"
 # end
 
-# every 2.hours do
-every 1.minute do
+every 2.hours do
+# every 1.minute do
   rake "notification:send_due_reminders"
 end
