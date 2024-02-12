@@ -123,6 +123,7 @@ class RemindersController < ApplicationController
       session = create_passwordless_session!(authenticatable)
       # creates link like this
       # http://localhost:3000/users/sign_in/c59c071d-12dc-4b01-85dc-5a6b0a964517/GDIFW1
+      # debugger
       link = Passwordless.context.url_for(
         session,
         action: "confirm",

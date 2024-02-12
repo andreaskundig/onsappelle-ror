@@ -7,7 +7,7 @@
     <% end %><!-- end errors -->
   </div>
 
-  <h3>Recipients</h3>
+  <h3><%= t :Recipients %></h3>
 
   <%= turbo_frame_tag 'recipient_errors' do %>
     <% reminder.errors.full_messages_for(:users).each do |message| %>

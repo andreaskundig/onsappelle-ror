@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+I18n.available_locales = [:en, :fr]
+I18n.default_locale = :fr

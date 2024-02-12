@@ -13,7 +13,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
   end
 
   test "can create a reminder" do
-    get "/reminders/new"
+    get "/fr/reminders/new"
     assert_response :success
 
     the_email = 'welcome@test.com'
@@ -22,7 +22,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     old_reminder = Reminder.last
     assert_not_equal the_email, old_reminder.users[0].email
     emails = capture_emails do
-        post "/reminders/",
+        post "/fr/reminders/",
              params: { reminder: { date: "2023-12-21"},
                        users: [{ email: the_email }] }
     end

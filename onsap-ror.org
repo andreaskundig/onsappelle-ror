@@ -12,6 +12,8 @@ The section disappeared with
 [[https://github.com/mikker/passwordless/pull/153/files][this pull request]]
 ** alternatives
 *** authentication-zero, rodauth ?
+https://github.com/janko/rodauth-rails
+
 [[https://bootrails.com/blog/generate-authentication-like-rails-8-will/][Generate authentication like Rails 8 will]]
 
 https://github.com/lazaronixon/authentication-zero
@@ -129,6 +131,9 @@ find out how this is filled...
 
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
 
+* run a test
+bin/rails test test/system/reminders_test -n"/can_create_a/"
+bin/rails test test/integration/reminder_flow_test -n"/can create a/"
 * steps
 ** rails generate stuff
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
