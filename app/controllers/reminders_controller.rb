@@ -27,6 +27,7 @@ class RemindersController < ApplicationController
     @reminder = Reminder.new(reminder_params)
     @reminder.confirmed_at = Time.zone.now if current_user
     update_reminder_recipients(@reminder, params[:users])
+    locale = params[:locale]
 
     if @reminder.save # saves to db
       # save has worked
@@ -37,6 +38,7 @@ class RemindersController < ApplicationController
           # ask for confirmation
           passwordless_link =
             passwordless_url_to(recipient,
+                                locale,
                                 confirm_reminder_path(@reminder))
           UserMailer.with(email: recipient.email,
                           reminder: @reminder,
@@ -46,6 +48,7 @@ class RemindersController < ApplicationController
         else
           passwordless_link =
             passwordless_url_to(recipient,
+                                locale,
                                 reminder_path(@reminder))
           # email confirmation
           UserMailer.with(email: recipient.email,
@@ -117,8 +120,9 @@ class RemindersController < ApplicationController
   end
 
   private
-    def passwordless_url_to(authenticatable,
-                            destination_path = '')
+  def passwordless_url_to(authenticatable,
+                          locale,
+                          destination_path = '')
       # see https://github.com/mikker/passwordless/blob/0428330d2ba0dfe9a8da36a854a39840740d4c84/test/passwordless/context_test.rb
       session = create_passwordless_session!(authenticatable)
       # creates link like this
@@ -128,7 +132,8 @@ class RemindersController < ApplicationController
         session,
         action: "confirm",
         id: session.to_param,
-        token: session.token
+        token: session.token,
+        locale: locale
       )
       return "#{link}?destination_path=#{destination_path}"
     end
