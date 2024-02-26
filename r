@@ -1,31 +1,32 @@
                                   Prefix Verb       URI Pattern                                                                                       Controller#Action
-                                                    /ruby_lsp_rails                                                                                   #<RubyLsp::Rails::RackApp:0x00007fe48520fc58>
-                           users_sign_in GET        /users/sign_in(.:format)                                                                          passwordless/sessions#new {:authenticatable=>:user, :resource=>:users}
-                                         POST       /users/sign_in(.:format)                                                                          passwordless/sessions#create {:authenticatable=>:user, :resource=>:users}
-                    verify_users_sign_in GET        /users/sign_in/:id(.:format)                                                                      passwordless/sessions#show {:authenticatable=>:user, :resource=>:users}
-                   confirm_users_sign_in GET        /users/sign_in/:id/:token(.:format)                                                               passwordless/sessions#confirm {:authenticatable=>:user, :resource=>:users}
-                                         PATCH      /users/sign_in/:id(.:format)                                                                      passwordless/sessions#update {:authenticatable=>:user, :resource=>:users}
-                          users_sign_out GET|DELETE /users/sign_out(.:format)                                                                         passwordless/sessions#destroy {:authenticatable=>:user, :resource=>:users}
-                                    root GET        /                                                                                                 reminders#new
+                                                    /ruby_lsp_rails                                                                                   #<RubyLsp::Rails::RackApp:0x00007f2051cec278>
+                         redirected_root GET        /                                                                                                 redirect(302, /fr)
                          new_user_inputs POST       /new_user_inputs(.:format)                                                                        users#new_inputs
                       remove_user_inputs DELETE     /remove_user_inputs/:email_code(.:format)                                                         users#remove_inputs
-                          reminder_users GET        /reminders/:reminder_id/users(.:format)                                                           users#index
-                                         POST       /reminders/:reminder_id/users(.:format)                                                           users#create
-                       new_reminder_user GET        /reminders/:reminder_id/users/new(.:format)                                                       users#new
-                      edit_reminder_user GET        /reminders/:reminder_id/users/:id/edit(.:format)                                                  users#edit
-                           reminder_user GET        /reminders/:reminder_id/users/:id(.:format)                                                       users#show
-                                         PATCH      /reminders/:reminder_id/users/:id(.:format)                                                       users#update
-                                         PUT        /reminders/:reminder_id/users/:id(.:format)                                                       users#update
-                                         DELETE     /reminders/:reminder_id/users/:id(.:format)                                                       users#destroy
-                        confirm_reminder GET        /reminders/:id/confirm(.:format)                                                                  reminders#confirm
-                               reminders GET        /reminders(.:format)                                                                              reminders#index
-                                         POST       /reminders(.:format)                                                                              reminders#create
-                            new_reminder GET        /reminders/new(.:format)                                                                          reminders#new
-                           edit_reminder GET        /reminders/:id/edit(.:format)                                                                     reminders#edit
-                                reminder GET        /reminders/:id(.:format)                                                                          reminders#show
-                                         PATCH      /reminders/:id(.:format)                                                                          reminders#update
-                                         PUT        /reminders/:id(.:format)                                                                          reminders#update
-                                         DELETE     /reminders/:id(.:format)                                                                          reminders#destroy
+                           users_sign_in GET        /:locale/users/sign_in(.:format)                                                                  my_passwordless_sessions#new {:authenticatable=>:user, :resource=>:users}
+                                         POST       /:locale/users/sign_in(.:format)                                                                  my_passwordless_sessions#create {:authenticatable=>:user, :resource=>:users}
+                    verify_users_sign_in GET        /:locale/users/sign_in/:id(.:format)                                                              my_passwordless_sessions#show {:authenticatable=>:user, :resource=>:users}
+                   confirm_users_sign_in GET        /:locale/users/sign_in/:id/:token(.:format)                                                       my_passwordless_sessions#confirm {:authenticatable=>:user, :resource=>:users}
+                                         PATCH      /:locale/users/sign_in/:id(.:format)                                                              my_passwordless_sessions#update {:authenticatable=>:user, :resource=>:users}
+                          users_sign_out GET|DELETE /:locale/users/sign_out(.:format)                                                                 my_passwordless_sessions#destroy {:authenticatable=>:user, :resource=>:users}
+                          reminder_users GET        /:locale/reminders/:reminder_id/users(.:format)                                                   users#index
+                                         POST       /:locale/reminders/:reminder_id/users(.:format)                                                   users#create
+                       new_reminder_user GET        /:locale/reminders/:reminder_id/users/new(.:format)                                               users#new
+                      edit_reminder_user GET        /:locale/reminders/:reminder_id/users/:id/edit(.:format)                                          users#edit
+                           reminder_user GET        /:locale/reminders/:reminder_id/users/:id(.:format)                                               users#show
+                                         PATCH      /:locale/reminders/:reminder_id/users/:id(.:format)                                               users#update
+                                         PUT        /:locale/reminders/:reminder_id/users/:id(.:format)                                               users#update
+                                         DELETE     /:locale/reminders/:reminder_id/users/:id(.:format)                                               users#destroy
+                        confirm_reminder GET        /:locale/reminders/:id/confirm(.:format)                                                          reminders#confirm
+                               reminders GET        /:locale/reminders(.:format)                                                                      reminders#index
+                                         POST       /:locale/reminders(.:format)                                                                      reminders#create
+                            new_reminder GET        /:locale/reminders/new(.:format)                                                                  reminders#new
+                           edit_reminder GET        /:locale/reminders/:id/edit(.:format)                                                             reminders#edit
+                                reminder GET        /:locale/reminders/:id(.:format)                                                                  reminders#show
+                                         PATCH      /:locale/reminders/:id(.:format)                                                                  reminders#update
+                                         PUT        /:locale/reminders/:id(.:format)                                                                  reminders#update
+                                         DELETE     /:locale/reminders/:id(.:format)                                                                  reminders#destroy
+                                    root GET        /:locale(.:format)                                                                                reminders#new
         turbo_recede_historical_location GET        /recede_historical_location(.:format)                                                             turbo/native/navigation#recede
         turbo_resume_historical_location GET        /resume_historical_location(.:format)                                                             turbo/native/navigation#resume
        turbo_refresh_historical_location GET        /refresh_historical_location(.:format)                                                            turbo/native/navigation#refresh

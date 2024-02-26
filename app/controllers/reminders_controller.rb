@@ -89,6 +89,7 @@ class RemindersController < ApplicationController
 
   def update
     # @reminder is set by :find_and_authorize_reminder
+    locale = params[:locale]
     changes =
       update_reminder_recipients(@reminder, params[:users])
 
@@ -98,6 +99,7 @@ class RemindersController < ApplicationController
         @reminder.users do |recipient|
           passwordless_link =
             passwordless_url_to(recipient,
+                                locale,
                                 reminder_path(@reminder))
           # email confirmation
           UserMailer.with(email: recipient.email,

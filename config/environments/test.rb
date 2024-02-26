@@ -65,9 +65,10 @@ Rails.application.configure do
 
   # https://github.com/mikker/passwordless#urls-and-links
   config.action_mailer.default_url_options =
-    { host: "localhost", port: "3000"}
+    { host: "localhost"}
+    # { host: "localhost", port: "3000"}
   routes.default_url_options[:host] ||= "localhost"
-  routes.default_url_options[:port] ||= "3000"
+  # routes.default_url_options[:port] ||= "3000"
 
   # https://guides.rubyonrails.org/debugging_rails_applications.html#what-is-the-logger-questionmark
   # Rails.logger = Logger.new(STDOUT)

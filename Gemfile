@@ -75,7 +75,7 @@ end
 
 gem "dockerfile-rails", ">= 1.6", :group => :development
 
-gem "passwordless", "~> 1.2"
+gem "passwordless", "~> 1.4.0"
 gem 'whenever', require: false
 
 gem "readline-ext", "~> 0.2.0"

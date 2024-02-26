@@ -5,7 +5,7 @@ class RemindersTest < ApplicationSystemTestCase
   include UsersHelper
 
   test "visiting reminders/new" do
-    visit new_reminder_path
+    visit new_reminder_path(locale: 'en')
 
     assert_selector "h1", text: "New Reminder"
   end
@@ -18,7 +18,7 @@ class RemindersTest < ApplicationSystemTestCase
     email3 = "create3@reminder.test"
 
 
-    visit new_reminder_path
+    visit new_reminder_path(locale: 'en')
     assert_selector "h1", text: "New Reminder"
     assert_no_selector "span", text: email1
     assert_no_selector "span", text: email2
@@ -34,10 +34,11 @@ class RemindersTest < ApplicationSystemTestCase
 
     fill_in "user_email", with: email3
     click_on "Add recipient"
-    assert_selector "span", text: email3
-    assert_selector "a[href$='#{email_to_code(email3)}']", text: '[-]'
 
-    find("a[href$='#{email_to_code(email3)}']").click
+    assert_selector "span", text: email3
+    assert_selector "a[href*='#{email_to_code(email3)}']", text: '[-]'
+
+    find("a[href*='#{email_to_code(email3)}']").click
     assert_no_selector "span", text: email3
 
     assert_equal reminder_count, Reminder.count

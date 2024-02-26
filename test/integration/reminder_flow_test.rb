@@ -3,7 +3,7 @@ require "nokogiri"
 
 class ReminderFlowTest < ActionDispatch::IntegrationTest
   test "can see the welcome page" do
-    get "/"
+    get "/en/"
     assert_select "h1", "New Reminder"
   end
 
@@ -12,7 +12,8 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     Nokogiri::HTML(email_html)
   end
 
-  test "can create a reminder" do
+  test "can create a reminder fr" do
+    host! "localhost"
     get "/fr/reminders/new"
     assert_response :success
 
@@ -28,6 +29,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     end
     assert_equal 1, emails.size
     assert_response :redirect
+    assert_redirected_to %r{^http://localhost.*}
 
     sent_email_doc = Nokogiri::HTML( emails.first.html_part.body.to_s)
     sent_email_links = sent_email_doc.css('a')
@@ -51,23 +53,82 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     sign_in_url = email_confirm_href.sub('http://localhost:3000', '')
     confirm_url = sign_in_url.sub(/.*destination_path=/, '')
 
-    #TODO fix test redirect: not to example.com
     get sign_in_url
     assert_response :see_other
+    assert_redirected_to %r{^http://localhost/fr/reminders/.*/confirm}
 
     get confirm_url
     assert_response :found
+    assert_redirected_to %r{^http://localhost/fr/reminders/}
+    assert_redirected_to new_reminder
+
+    follow_redirect!
+    assert_response :success
+    assert_select "h1", "Rappel #{new_reminder.id}"
+    assert_select "span", the_email
+
+    new_reminder.reload
+    refute_nil new_reminder.confirmed_at
+  end
+
+  test "can create a reminder en" do
+    host! "localhost"
+    get "/en/reminders/new"
+    assert_response :success
+
+    the_email = 'welcome@test.com'
+
+    reminder_count = Reminder.count
+    old_reminder = Reminder.last
+    assert_not_equal the_email, old_reminder.users[0].email
+    emails = capture_emails do
+        post "/en/reminders/",
+             params: { reminder: { date: "2023-12-21"},
+                       users: [{ email: the_email }] }
+    end
+    assert_equal 1, emails.size
+    assert_response :redirect
+    assert_redirected_to %r{^http://localhost.*}
+
+    sent_email_doc = Nokogiri::HTML( emails.first.html_part.body.to_s)
+    sent_email_links = sent_email_doc.css('a')
+    assert_equal 1, sent_email_links.size
+    email_confirm_link = sent_email_links.first
+    assert_equal 'confirm reminder', email_confirm_link.text
+
+    assert_equal reminder_count + 1, Reminder.count
+    new_reminder = Reminder.last
+    assert_equal DateTime.new(2023, 12, 21), new_reminder.date
+    assert_equal the_email, new_reminder.users[0].email
+    assert_nil new_reminder.confirmed_at
 
     # follow_redirect!
     # assert_response :found
     # assert_response :success
     # assert_select "h1", "Reminder #{new_reminder.id}"
     # assert_select "span", the_email
+    #
+    email_confirm_href = email_confirm_link.attribute("href").to_s
+    sign_in_url = email_confirm_href.sub('http://localhost:3000', '')
+    confirm_url = sign_in_url.sub(/.*destination_path=/, '')
+
+    get sign_in_url
+    assert_response :see_other
+    assert_redirected_to %r{^http://localhost/en/reminders/.*/confirm}
+
+    get confirm_url
+    assert_response :found
+    assert_redirected_to %r{^http://localhost/en/reminders/}
+    assert_redirected_to new_reminder
+
+    follow_redirect!
+    assert_response :success
+    assert_select "h1", "Reminder #{new_reminder.id}"
+    assert_select "span", the_email
 
     new_reminder.reload
     refute_nil new_reminder.confirmed_at
   end
-
   test "can create two reminders" do
 
     reminder_count = Reminder.count
@@ -77,7 +138,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_0 = DateTime.new(2023, 12, 10)
     date_0 = datetime_0.strftime('%Y-%m-%d')
     assert_emails 1 do
-        post "/reminders/",
+        post "/en/reminders/",
              params: { reminder: { date: date_0},
                        users: [{ email: email_0 }]}
     end
@@ -94,7 +155,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_1 = DateTime.new(2123, 12, 11)
     date_1 = datetime_1.strftime('%Y-%m-%d')
     assert_emails 1 do
-        post "/reminders/",
+        post "/en/reminders/",
              params: { reminder: { date: date_1},
                        users: [{ email: email_1 }] }
     end
@@ -115,7 +176,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_0 = DateTime.new(2023, 12, 10)
     date_0 = datetime_0.strftime('%Y-%m-%d')
     assert_emails 1 do
-        post "/reminders/",
+        post "/fr/reminders/",
              params: { reminder: { date: date_0},
                        users: [{ email: the_email }]}
     end
@@ -132,7 +193,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     datetime_1 = DateTime.new(2123, 12, 11)
     date_1 = datetime_1.strftime('%Y-%m-%d')
     assert_emails 1 do
-        post "/reminders/",
+        post "/fr/reminders/",
              params: { reminder: { date: date_1},
                        users: [{ email: the_email }]}
     end
@@ -155,7 +216,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     old_emails = reminder.users.map { |u| u.email }
     assert_not_includes old_emails, the_email
 
-    patch "/reminders/#{reminder.id}",
+    patch "/en/reminders/#{reminder.id}",
           params: { reminder: { date: the_date},
                     users: [{ email: the_email }]}
     assert_response :redirect
@@ -173,13 +234,21 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     email_text = emails.first.to_s
     urls = email_text.scan(/(http[s]?:\/\/\S+)/)
     sign_in_url = urls.first.first
+    assert_match %r{/en/users/sign_in/}, sign_in_url
 
     get sign_in_url
     assert_response :redirect
+    assert_redirected_to 'http://localhost/'
+
+    #TODO find a way to redirect to /en, not /fr
+    follow_redirect!
+    assert_response :redirect
+    assert_redirected_to 'http://localhost/fr'
+
     follow_redirect!
     assert_response :success
 
-    patch "/reminders/#{reminder.id}",
+    patch "/en/reminders/#{reminder.id}",
           params: { reminder: { date: the_date},
                     users: [{ email: the_email }]}
     assert_response :redirect
@@ -202,7 +271,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     original_date = reminder.date.strftime('%Y-%m-%d')
     assert_not_equal the_date, original_date
 
-    patch "/reminders/#{reminder.id}",
+    patch "/en/reminders/#{reminder.id}",
           params: { reminder: { date: the_date},
                     users: { email: '' }}
     assert_response :found

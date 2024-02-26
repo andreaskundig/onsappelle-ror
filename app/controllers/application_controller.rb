@@ -28,7 +28,9 @@ class ApplicationController < ActionController::Base
   # adds params[:locale] to every url_for, link_to etc...
   # https://guides.rubyonrails.org/i18n.html#setting-the-locale-from-url-params
   def default_url_options
-    { locale: I18n.locale }
+    Rails.application.routes.default_url_options.merge(
+      locale: I18n.locale
+    )
   end
 end
 

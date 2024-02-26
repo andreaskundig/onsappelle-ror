@@ -2,7 +2,7 @@ require "test_helper"
 
 class RemindersControllerTest < ActionDispatch::IntegrationTest
   test "should get new reminder" do
-    get new_reminder_url
+    get new_reminder_url(locale: 'fr')
     assert_response :success
   end
 
