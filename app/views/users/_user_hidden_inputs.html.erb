@@ -1,7 +1,6 @@
 <%= turbo_frame_tag "recipient_#{email_to_code(user.email)}" do %>
     <% if user.errors.full_messages_for(:email).length == 0  %>
-        <div>
-            <strong>Email</strong>
+        <li>
             <span><%= user.email %></span>
             <%= hidden_field_tag 'users[][email]', user.email, id: user.id  %>
             <%= link_to '[-]',
@@ -9,6 +8,6 @@
                                      email_to_code(user.email)),
              data: { turbo_stream: true, turbo_method: :delete},
              method: :delete %>
-        </div>
+        </li>
     <% end %>
 <% end %>

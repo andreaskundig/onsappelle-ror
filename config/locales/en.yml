@@ -31,3 +31,7 @@ en:
   Reminders: "Reminders"
   Reminder: "Reminder"
   Recipients: "Recipients"
+  dont_drift: "Don't drift apart"
+  remind_each_other: "Remind yourselves to call each other by an email sent at this date:"
+  email_date: "Sending date"
+  new_recipient: "New recipient"

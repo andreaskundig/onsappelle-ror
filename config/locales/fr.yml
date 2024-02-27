@@ -3,3 +3,7 @@ fr:
   Reminders: "Rappels"
   Reminder: "Rappel"
   Recipients: "Destinataires"
+  dont_drift: "Perdez-vous pas de vue"
+  remind_each_other: "Rappelez-vous de vous appeler par un  email envoyé à cette date:"
+  email_date: "Date d'envoi"
+  new_recipient: "Nouveau destinataire"

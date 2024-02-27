@@ -3,10 +3,8 @@
         <div><mark><%= message %></mark></div>
     <% end %>
     <div>
-      <%= label_tag 'user[email]', 'Email' %>
+      <%= label_tag 'user[email]',  t(:new_recipient) %>
       <%= text_field_tag 'user[email]', ''  %>
-    </div>
-    <div>
-      <%= submit_tag "Add recipient" %>
+      <%= submit_tag "+" %>
     </div>
   <% end %>

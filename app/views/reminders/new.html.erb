@@ -1,5 +1,7 @@
-<h1>New Reminder</h1>
-
+<h1><%= t :dont_drift %></h1>
+<p>
+  <%= t :remind_each_other %>
+</p>
 <%= render "form", reminder:  @reminder %>
 <p>
   <%= submit_tag "Create reminder", form: 'reminder_form' %>
