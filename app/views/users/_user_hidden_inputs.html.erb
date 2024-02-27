@@ -3,11 +3,13 @@
         <li>
             <span><%= user.email %></span>
             <%= hidden_field_tag 'users[][email]', user.email, id: user.id  %>
-            <%= link_to '[-]',
+            <%= link_to(
              remove_user_inputs_path(email_code:
                                      email_to_code(user.email)),
              data: { turbo_stream: true, turbo_method: :delete},
-             method: :delete %>
+             method: :delete) do %>
+                <%= content_tag(:i, nil, class: ['fa-solid', 'fa-circle-minus'] ) %>
+        <% end %>
         </li>
     <% end %>
 <% end %>

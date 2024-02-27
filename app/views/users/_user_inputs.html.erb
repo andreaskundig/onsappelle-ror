@@ -5,6 +5,9 @@
     <div>
       <%= label_tag 'user[email]',  t(:new_recipient) %>
       <%= text_field_tag 'user[email]', ''  %>
-      <%= submit_tag "+" %>
+      <%= button_tag do %>
+        <%= content_tag :i, nil, class: ['fa-solid', 'fa-circle-plus']  %>
+      <% end %>
+
     </div>
   <% end %>

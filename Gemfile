@@ -79,3 +79,5 @@ gem "passwordless", "~> 1.4.0"
 gem 'whenever', require: false
 
 gem "readline-ext", "~> 0.2.0"
+# https://origin.fontawesome.com/docs/web/use-with/ruby-on-rails
+gem "font-awesome-sass", "~> 6.5.1"
