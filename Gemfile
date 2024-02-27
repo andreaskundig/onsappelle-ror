@@ -81,3 +81,5 @@ gem 'whenever', require: false
 gem "readline-ext", "~> 0.2.0"
 # https://origin.fontawesome.com/docs/web/use-with/ruby-on-rails
 gem "font-awesome-sass", "~> 6.5.1"
+# https://github.com/svenfuchs/rails-i18n
+gem 'rails-i18n', '~> 7.0.0' # For 7.0.0
