@@ -5,27 +5,29 @@
     </strong>
     <%= r_form.date_field :date %>
     <% reminder.errors.full_messages_for(:date).each do |message| %>
-        <div><mark><%= message %></mark></div>
+      <div><mark><%= message %></mark></div>
     <% end %><!-- end errors -->
   </div>
 
   <div>
     <strong><%= t :Recipients %></strong>
 
-  <%= turbo_frame_tag 'recipient_errors' do %>
-    <% reminder.errors.full_messages_for(:users).each do |message| %>
+    <%= turbo_frame_tag 'recipient_errors' do %>
+      <% reminder.errors.full_messages_for(:users).each do |message| %>
         <div><mark><%= message %></mark></div>
-    <% end %><!-- end errors -->
-  <% end %><!-- end turbo_frame -->
-  <ul class="email_list">
-    <%= turbo_frame_tag 'recipients' %>
-  <% @reminder.users.each do |user| %>
-    <%= render 'users/user_hidden_inputs', user: user %>
-  <% end %>
-<% end %><!-- end form -->
+      <% end %><!-- end errors -->
+    <% end %><!-- end turbo_frame -->
 
-<%= turbo_frame_tag 'new_recipient' do %>
-  <%= render 'users/user_inputs', user: User.new %>
-<% end %>
-  </ul>
+    <ul class="email_list">
+      <%= turbo_frame_tag 'recipients' %>
+      <% @reminder.users.each do |user| %>
+        <%= render 'users/user_hidden_inputs', user: user %>
+      <% end %><!-- end users -->
+    </ul>
+  </div>
+<% end %><!-- end form -->
+  <div>
+    <%= turbo_frame_tag 'new_recipient' do %>
+      <%= render 'users/user_inputs', user: User.new %>
+    <% end %><!-- end turbo_frame -->
   </div>
