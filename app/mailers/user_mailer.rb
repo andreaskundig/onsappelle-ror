@@ -1,14 +1,14 @@
 class UserMailer < ApplicationMailer
   default from: ENV['MAILER_EMAIL']
 
-  def ask_reminder_confirmation_email
+  def request_reminder_confirmation_email
     @email = params[:email]
     @reminder = params[:reminder]
     @passwordless_link = params[:passwordless_link]
-    formatted_date = @reminder.date.strftime('%Y-%m-%d')
+    @date = @reminder.date.strftime('%Y-%m-%d')
     if @email
       mail(to: @email,
-           subject: "Confirm reminder at #{formatted_date}")
+           subject:t('.subject', date: @date))
     end
   end
 
@@ -16,10 +16,10 @@ class UserMailer < ApplicationMailer
     @email = params[:email]
     @reminder = params[:reminder]
     @passwordless_link = params[:passwordless_link]
-    formatted_date = @reminder.date.strftime('%Y-%m-%d')
+    @date = @reminder.date.strftime('%Y-%m-%d')
     if @email
       mail(to: @email,
-           subject: "Reminder at #{formatted_date}")
+           subject:t('.subject', date: @date))
     end
   end
 

@@ -59,7 +59,7 @@ class RemindersController < ApplicationController
                             reminder: @reminder,
                             passwordless_link: passwordless_link
                           )
-              .ask_reminder_confirmation_email.deliver_later
+              .request_reminder_confirmation_email.deliver_later
         end
         redirect_to request_confirmation_path
       end

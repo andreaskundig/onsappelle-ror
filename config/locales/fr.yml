@@ -9,10 +9,22 @@ fr:
   new_recipient: "Nouveau destinataire"
   create_reminder: "Créer rappel"
   sign_in: "Se connecter"
-  reminders:
-    request_confirmation:
+  request_confirmation:
+    page:
       title: 'Confirmez le rappel'
       content: "Pour activer le rappel, cliquer sur le lien dans l'email de confirmation que vous allez recevoir."
+  user_mailer:
+    request_reminder_confirmation_email:
+      subject: "Confirmer le rappel du %{date}"
+      click_confirm: "Confirmez le rappel en cliquant sur ce lien:"
+      confirm: "confirmer"
+      sending: "Si le rappel est confirmé, un email sera envoyé le %{date} aux destinataires suivants:"
+    confirm_reminder_email:
+      subject: "Rappel du %{date} confirmé"
+      confirmed: "Le rappel sera envoyé le %{date} par email aux destinataires suivants:"
+      disagree: "Si ce rappel ne te convient plus, tu peux le changer sur"
+      website: "notre site web"
+
   passwordless:
     sessions:
       new:

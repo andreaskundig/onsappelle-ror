@@ -1,9 +1,8 @@
-On the <%= @reminder.date.strftime('%Y-%m-%d') %>
+<%= t('.confirmed', date: @date) %>
 
-I will send a reminder to:
 <% @reminder.users.each do |recipient| %>
 - <%=  recipient.email %>
 <% end %>
 
-If you disagree, you can change that on the website:
+<%= t('.disagree') %> <%= t('.website') %>:
 <%= @passwordless_link %>

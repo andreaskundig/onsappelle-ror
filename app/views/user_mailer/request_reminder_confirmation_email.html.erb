@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>
+      <%= t('.click_confirm') %>
+      <a href="<%= @passwordless_link %>"><%= t('.confirm') %></a>
+    </h1>
+    <p>
+      <%= t('.sending', date: @date) %>
+      <ul>
+        <% @reminder.users.each do |recipient| %>
+          <li><%= recipient.email %></li>
+        <% end %>
+      </ul>
+    </p>
+  </body>
+</html>

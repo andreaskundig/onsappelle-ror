@@ -1,0 +1,8 @@
+<%= t('.click_confirm') %>
+
+<%= @passwordless_link %>
+
+<%= t('.sending', date: @date) %>
+<% @reminder.users.each do |recipient| %>
+- <%=  recipient.email %>
+<% end %>

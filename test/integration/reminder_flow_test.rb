@@ -35,7 +35,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     sent_email_links = sent_email_doc.css('a')
     assert_equal 1, sent_email_links.size
     email_confirm_link = sent_email_links.first
-    assert_equal 'confirm reminder', email_confirm_link.text
+    assert_equal 'confirmer', email_confirm_link.text
 
     assert_equal reminder_count + 1, Reminder.count
     new_reminder = Reminder.last

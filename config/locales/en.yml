@@ -37,10 +37,25 @@ en:
   new_recipient: "New recipient"
   create_reminder: "Create reminder"
   sign_in: "Sign_in"
-  reminders:
-    request_confirmation:
+  request_confirmation:
+    page:
       title: 'Confirm the reminder'
       content: "To confirm the reminder, click on the link in the confirmation email that you will receive."
+      subject: "Confirm reminder at %{date}"
+      click_confirm: "Confirm the reminder by clicking on this link"
+      confirm: "Confirm"
+      sending: "If the reminder is confirmed, an email will be sent on the %{date} to the following recipients:"
+  user_mailer:
+    request_reminder_confirmation_email:
+      subject: "Confirm reminder at %{date}"
+      click_confirm: "Confirm the reminder by clicking on this link:"
+      confirm: "confirm"
+      sending: "If the reminder is confirmed, an email will be sent on the %{date} to the following recipients:"
+    confirm_reminder_email:
+      subject: "Reminder at %{date} confirmed"
+      confirmed: "The reminder will be sent by email on the %{date} to the following recipients:"
+      disagree: "If this reminder no longer suits you, you can change it on"
+      website: "our website"
 
   passwordless:
     sessions:
