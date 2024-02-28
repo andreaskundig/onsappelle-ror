@@ -63,6 +63,10 @@ en:
       confirmed: "The reminder will be sent by email on the %{date} to the following recipients:"
       disagree: "If this reminder no longer suits you, you can change it on"
       website: "our website"
+    remind_email:
+      subject: "Contact each other now"
+      day: "Today %{date} is the day you wanted to contact each other."
+      reply: "Reply to all and write to:"
 
   passwordless:
     sessions:

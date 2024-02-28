@@ -26,11 +26,15 @@ class UserMailer < ApplicationMailer
   def remind_email
     @email = params[:email]
     @reminder = params[:reminder]
+    @date = @reminder.date.strftime('%d.%m.%Y')
     recipients = @reminder.users.map {|u| u.email }
-    if @email
-      mail(to: @email,
-           reply_to: recipients,
-           subject: "Time to keep in touch")
+    locale = @reminder.locale || I18n.default_locale
+    I18n.with_locale(locale) do
+      if @email
+        mail(to: @email,
+             reply_to: recipients,
+             subject: t('.subject'))
+      end
     end
   end
 

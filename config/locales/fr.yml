@@ -31,7 +31,10 @@ fr:
       confirmed: "Le rappel sera envoyé le %{date} par email aux destinataires suivants:"
       disagree: "Si ce rappel ne te convient plus, tu peux le changer sur"
       website: "notre site web"
-
+    remind_email:
+      subject: "Contactez-vous maintenant"
+      day: "C'est aujourd'hui %{date} que vous vouliez vous contacter."
+      reply: "Répondre à tous pour écrit aux destinataires suivants:"
   passwordless:
     mailer:
       sign_in:
