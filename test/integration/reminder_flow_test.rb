@@ -42,6 +42,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_equal DateTime.new(2023, 12, 21), new_reminder.date
     assert_equal the_email, new_reminder.users[0].email
     assert_nil new_reminder.confirmed_at
+    assert_equal 'fr', new_reminder.locale
 
     # follow_redirect!
     # assert_response :found

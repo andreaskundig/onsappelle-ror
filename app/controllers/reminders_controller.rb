@@ -25,10 +25,11 @@ class RemindersController < ApplicationController
   end
 
   def create
+    locale = params[:locale]
     @reminder = Reminder.new(reminder_params)
+    @reminder.locale = locale
     @reminder.confirmed_at = Time.zone.now if current_user
     update_reminder_recipients(@reminder, params[:users])
-    locale = params[:locale]
 
     if @reminder.save # saves to db
       # save has worked

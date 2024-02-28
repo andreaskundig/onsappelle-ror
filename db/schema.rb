@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_29_101154) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_28_182805) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -35,6 +35,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_29_101154) do
     t.string "description"
     t.datetime "sent_at"
     t.datetime "confirmed_at"
+    t.string "locale"
   end
 
   create_table "user_reminders", force: :cascade do |t|
