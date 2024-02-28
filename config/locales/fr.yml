@@ -2,17 +2,24 @@
 fr:
   Reminders: "Rappels"
   Reminder: "Rappel"
+  New_reminder: "Nouveau rappel"
   Recipients: "Destinataires"
   dont_drift: "Perdez-vous pas de vue"
-  remind_each_other: "Un email vous rappelle de vous appeler."
+  remind_each_other: "Laissez-moi vous envoyer un email qui vous rappelle de vous appeler."
   email_date: "Date d'envoi"
   new_recipient: "Nouveau destinataire"
   create_reminder: "Créer rappel"
   sign_in: "Se connecter"
+  sign_out: "Se déconnecter"
+  reminders:
+    show:
+      cancel: 'Annuler les modifications'
+      update: 'Mettre à jour'
+      destroy: 'Supprimer le rappel'
   request_confirmation:
     page:
-      title: 'Confirmez le rappel'
-      content: "Pour activer le rappel, cliquer sur le lien dans l'email de confirmation que vous allez recevoir."
+      title: 'Confirme le rappel'
+      content: "Pour activer le rappel, clique sur le lien dans l'email de confirmation que tu vas recevoir."
   user_mailer:
     request_reminder_confirmation_email:
       subject: "Confirmer le rappel du %{date}"
@@ -26,9 +33,20 @@ fr:
       website: "notre site web"
 
   passwordless:
+    mailer:
+      sign_in:
+        subject: "Connexion ✨"
+        body: |-
+          Utilise ce jeton pour te connecter: %{token}
+
+          Tu peux aussi cliquer directement sur ce lien:
+          %{magic_link}
     sessions:
       new:
         email:
           label: "Adresse email"
           placeholder: "user@example.com"
         submit: "Se connecter"
+      show:
+        label: "Jeton"
+        confirm: "Confirmer"

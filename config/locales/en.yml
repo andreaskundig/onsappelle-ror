@@ -30,13 +30,20 @@
 en:
   Reminders: "Reminders"
   Reminder: "Reminder"
+  New_reminder: "New reminder"
   Recipients: "Recipients"
   dont_drift: "Don't drift apart"
-  remind_each_other: "An email reminds you to call each other"
+  remind_each_other: "Let me send you an email that reminds you to call each other."
   email_date: "Sending date"
   new_recipient: "New recipient"
   create_reminder: "Create reminder"
-  sign_in: "Sign_in"
+  sign_in: "Sign in"
+  sign_out: "Sign out"
+  reminders:
+    show:
+      cancel: 'Cancel changes'
+      update: 'Update'
+      destroy: 'Delete reminder'
   request_confirmation:
     page:
       title: 'Confirm the reminder'

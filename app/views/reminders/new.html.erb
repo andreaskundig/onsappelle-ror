@@ -9,8 +9,8 @@
 
 <p>
   <% if @current_user %>
-    <%= link_to "Reminders", reminders_path %>
-    <%= link_to "Sign out", users_sign_out_path, {locale: locale} %>
+    <%= link_to t("Reminders"), reminders_path %>
+    <%= link_to t("sign_out"), users_sign_out_path, {locale: locale} %>
   <% else %>
     <%= link_to t('sign_in'), users_sign_in_path %>
   <% end %>

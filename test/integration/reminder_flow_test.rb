@@ -64,7 +64,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
 
     follow_redirect!
     assert_response :success
-    assert_select "h1", "Rappel #{new_reminder.id}"
+    assert_select "h1", "Rappel"
     assert_select "span", the_email
 
     new_reminder.reload
