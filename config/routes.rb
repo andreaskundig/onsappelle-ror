@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     # passwordless_for :users
     passwordless_for :users, controller: 'my_passwordless_sessions'
 
+    get 'request_confirmation', to: 'reminders#request_confirmation'
     # https://api.rubyonrails.org/v7.1.2/classes/ActionDispatch/Routing/Mapper/Resources.html#method-i-resources
     resources :reminders do
       resources :users do

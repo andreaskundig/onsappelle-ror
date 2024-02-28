@@ -3,7 +3,8 @@ class RemindersController < ApplicationController
  # it might be better to have this in the parent
  # but then it affects the default sign_in route
   before_action :require_user!
-  skip_before_action :require_user!, only: [:new, :create]
+  skip_before_action :require_user!,
+                     only: [:new, :create, :request_confirmation]
   before_action :find_and_authorize_reminder,
                 only: [:show, :destroy, :confirm, :update, :edit]
 
@@ -31,39 +32,38 @@ class RemindersController < ApplicationController
 
     if @reminder.save # saves to db
       # save has worked
-
+      #
       # TODO include link to remove yourself from the reminder
-      @reminder.users.each do |recipient|
-        if !@reminder.confirmed_at
-          # ask for confirmation
-          passwordless_link =
-            passwordless_url_to(recipient,
-                                locale,
-                                confirm_reminder_path(@reminder))
-          UserMailer.with(email: recipient.email,
-                          reminder: @reminder,
-                          passwordless_link: passwordless_link
-                         )
-            .ask_reminder_confirmation_email.deliver_later
-        else
+      if @reminder.confirmed_at
+        # email to inform about confirmation
+        @reminder.users.each do |recipient|
           passwordless_link =
             passwordless_url_to(recipient,
                                 locale,
                                 reminder_path(@reminder))
-          # email confirmation
           UserMailer.with(email: recipient.email,
                           reminder: @reminder,
                           passwordless_link: passwordless_link
                          )
             .confirm_reminder_email.deliver_later
         end
+        redirect_to reminder_path(@reminder)
+      else
+        # email to ask for confirmation
+        @reminder.users.each do |recipient|
+            passwordless_link =
+              passwordless_url_to(recipient,
+                                  locale,
+                                  confirm_reminder_path(@reminder))
+            UserMailer.with(email: recipient.email,
+                            reminder: @reminder,
+                            passwordless_link: passwordless_link
+                          )
+              .ask_reminder_confirmation_email.deliver_later
+        end
+        redirect_to request_confirmation_path
       end
 
-      # TODO redirect to some confirmation unless current user
-      # maybe the login page with an extra message?
-
-      # makes a new request to end this one
-      redirect_to reminder_path(@reminder)
     else
       # just renders the view new.html.erb,
       # with an error, and without a new request
@@ -80,6 +80,9 @@ class RemindersController < ApplicationController
       # TODO show something more like a server error
       render :show, status: :unprocessable_entity
     end
+  end
+
+  def request_confirmation
   end
 
   # TODO check if this is really used

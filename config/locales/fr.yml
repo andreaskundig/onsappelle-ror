@@ -9,3 +9,14 @@ fr:
   new_recipient: "Nouveau destinataire"
   create_reminder: "Créer rappel"
   sign_in: "Se connecter"
+  reminders:
+    request_confirmation:
+      title: 'Confirmez le rappel'
+      content: "Pour activer le rappel, cliquer sur le lien dans l'email de confirmation que vous allez recevoir."
+  passwordless:
+    sessions:
+      new:
+        email:
+          label: "Adresse email"
+          placeholder: "user@example.com"
+        submit: "Se connecter"

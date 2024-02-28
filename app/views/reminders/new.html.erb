@@ -1,10 +1,10 @@
-<h1 class="page_title"><%= t :dont_drift %></h1>
+<h1 class="page_title"><%= t 'dont_drift' %></h1>
 <p>
-  <%= t :remind_each_other %>
+  <%= t 'remind_each_other' %>
 </p>
 <%= render "form", reminder:  @reminder %>
 <p>
-  <%= submit_tag t(:create_reminder), form: 'reminder_form' %>
+  <%= submit_tag t('create_reminder'), form: 'reminder_form' %>
 </p>
 
 <p>
@@ -12,6 +12,6 @@
     <%= link_to "Reminders", reminders_path %>
     <%= link_to "Sign out", users_sign_out_path, {locale: locale} %>
   <% else %>
-    <%= link_to t(:sign_in), users_sign_in_path %>
+    <%= link_to t('sign_in'), users_sign_in_path %>
   <% end %>
 </p>

@@ -37,3 +37,15 @@ en:
   new_recipient: "New recipient"
   create_reminder: "Create reminder"
   sign_in: "Sign_in"
+  reminders:
+    request_confirmation:
+      title: 'Confirm the reminder'
+      content: "To confirm the reminder, click on the link in the confirmation email that you will receive."
+
+  passwordless:
+    sessions:
+      new:
+        email:
+          label: "Email address"
+          placeholder: "user@example.com"
+        submit: "Sign in"

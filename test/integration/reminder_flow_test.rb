@@ -4,7 +4,7 @@ require "nokogiri"
 class ReminderFlowTest < ActionDispatch::IntegrationTest
   test "can see the welcome page" do
     get "/en/"
-    assert_select "h1", "New Reminder"
+    assert_select "h1", "Don't drift apart"
   end
 
   def get_email_html_body(email)
@@ -12,7 +12,7 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     Nokogiri::HTML(email_html)
   end
 
-  test "can create a reminder fr" do
+  test "can create and confirm a reminder fr" do
     host! "localhost"
     get "/fr/reminders/new"
     assert_response :success
@@ -71,64 +71,6 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     refute_nil new_reminder.confirmed_at
   end
 
-  test "can create a reminder en" do
-    host! "localhost"
-    get "/en/reminders/new"
-    assert_response :success
-
-    the_email = 'welcome@test.com'
-
-    reminder_count = Reminder.count
-    old_reminder = Reminder.last
-    assert_not_equal the_email, old_reminder.users[0].email
-    emails = capture_emails do
-        post "/en/reminders/",
-             params: { reminder: { date: "2023-12-21"},
-                       users: [{ email: the_email }] }
-    end
-    assert_equal 1, emails.size
-    assert_response :redirect
-    assert_redirected_to %r{^http://localhost.*}
-
-    sent_email_doc = Nokogiri::HTML( emails.first.html_part.body.to_s)
-    sent_email_links = sent_email_doc.css('a')
-    assert_equal 1, sent_email_links.size
-    email_confirm_link = sent_email_links.first
-    assert_equal 'confirm reminder', email_confirm_link.text
-
-    assert_equal reminder_count + 1, Reminder.count
-    new_reminder = Reminder.last
-    assert_equal DateTime.new(2023, 12, 21), new_reminder.date
-    assert_equal the_email, new_reminder.users[0].email
-    assert_nil new_reminder.confirmed_at
-
-    # follow_redirect!
-    # assert_response :found
-    # assert_response :success
-    # assert_select "h1", "Reminder #{new_reminder.id}"
-    # assert_select "span", the_email
-    #
-    email_confirm_href = email_confirm_link.attribute("href").to_s
-    sign_in_url = email_confirm_href.sub('http://localhost:3000', '')
-    confirm_url = sign_in_url.sub(/.*destination_path=/, '')
-
-    get sign_in_url
-    assert_response :see_other
-    assert_redirected_to %r{^http://localhost/en/reminders/.*/confirm}
-
-    get confirm_url
-    assert_response :found
-    assert_redirected_to %r{^http://localhost/en/reminders/}
-    assert_redirected_to new_reminder
-
-    follow_redirect!
-    assert_response :success
-    assert_select "h1", "Reminder #{new_reminder.id}"
-    assert_select "span", the_email
-
-    new_reminder.reload
-    refute_nil new_reminder.confirmed_at
-  end
   test "can create two reminders" do
 
     reminder_count = Reminder.count

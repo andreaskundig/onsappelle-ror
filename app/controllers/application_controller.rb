@@ -12,9 +12,13 @@ class ApplicationController < ActionController::Base
   def require_user!
     logger.info("HELLO, USER #{current_user&.email}")
     return if current_user
+    notice = 'You are not worthy!'
+    # if controller_name == 'reminders' and action_name == 'confirm'
+    #   notice = "Confirm the reminder by clicking on the link in the email you will receive."
+    # end
     # so that the user is redirected to where they wanted to go
     save_passwordless_redirect_location!(User)
-    redirect_to users_sign_in_path, flash: { error: 'You are not worthy!' }
+    redirect_to users_sign_in_path, flash: { notice: notice }
   end
 
   # https://guides.rubyonrails.org/i18n.html#managing-the-locale-across-requests

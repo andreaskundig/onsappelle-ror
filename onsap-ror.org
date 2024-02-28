@@ -161,6 +161,14 @@ bin/rails generate migration AddDetailsToReminder description:string sent:dateti
 bin/rails db:migrate
 #+end_src
 
+genereate passwordless views
+#+begin_src bash
+bin/rails generate passwordless:views
+      create  app/views/passwordless/mailer/sign_in.text.erb
+      create  app/views/passwordless/sessions/new.html.erb
+      create  app/views/passwordless/sessions/show.html.erb
+#+end_src
+
 ** gmail
 choose 2 factor authentication and use app password
 ** use postgres for local development

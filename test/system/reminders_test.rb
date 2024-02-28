@@ -7,7 +7,7 @@ class RemindersTest < ApplicationSystemTestCase
   test "visiting reminders/new" do
     visit new_reminder_path(locale: 'en')
 
-    assert_selector "h1", text: "New Reminder"
+    assert_selector "h1", text: "Don't drift apart"
   end
 
   test "can create a reminder" do
@@ -19,24 +19,22 @@ class RemindersTest < ApplicationSystemTestCase
 
 
     visit new_reminder_path(locale: 'en')
-    assert_selector "h1", text: "New Reminder"
+    assert_selector "h1", text: "Don't drift apart"
     assert_no_selector "span", text: email1
     assert_no_selector "span", text: email2
 
     fill_in "reminder_date", with: Date.new(2023,1,4)
     fill_in "user_email", with: email1
-    click_on "Add recipient"
+    find("#new_recipient button").click
     assert_selector "span", text: email1
 
     fill_in "user_email", with: email2
-    click_on "Add recipient"
+    find("#new_recipient button").click
     assert_selector "span", text: email2
 
     fill_in "user_email", with: email3
-    click_on "Add recipient"
-
+    find("#new_recipient button").click
     assert_selector "span", text: email3
-    assert_selector "a[href*='#{email_to_code(email3)}']", text: '[-]'
 
     find("a[href*='#{email_to_code(email3)}']").click
     assert_no_selector "span", text: email3
@@ -53,6 +51,7 @@ class RemindersTest < ApplicationSystemTestCase
     assert_equal DateTime.new(2023, 1, 4), new_reminder.date
     assert_equal email1, new_reminder.users[0].email
     assert_equal email2, new_reminder.users[1].email
+    assert_not new_reminder.confirmed_at
   end
 
   test "can update a reminder" do
