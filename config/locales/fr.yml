@@ -5,7 +5,7 @@ fr:
   New_reminder: "Nouveau rappel"
   Recipients: "Destinataires"
   dont_drift: "Perdez-vous pas de vue"
-  remind_each_other: "Laissez-moi vous envoyer un email qui vous rappelle de vous appeler."
+  remind_each_other: "Laisse-moi vous envoyer un email qui vous rappelle de vous appeler."
   email_date: "Date d'envoi"
   new_recipient: "Nouveau destinataire"
   create_reminder: "Créer rappel"
@@ -16,25 +16,26 @@ fr:
       cancel: 'Annuler les modifications'
       update: 'Mettre à jour'
       destroy: 'Supprimer le rappel'
-  request_confirmation:
-    page:
+    request_confirmation:
       title: 'Confirme le rappel'
-      content: "Pour activer le rappel, clique sur le lien dans l'email de confirmation que tu vas recevoir."
+      announce_email: >-
+        Tu vas recevoir un email intitulé "Confirmer le rappel du ...".
+      confirm: "Il contient un lien qu'il faut cliquer pour activer le rappel."
   user_mailer:
     request_reminder_confirmation_email:
       subject: "Confirmer le rappel du %{date}"
-      click_confirm: "Confirmez le rappel en cliquant sur ce lien:"
+      click_confirm: "Confirme le rappel en cliquant sur ce lien:"
       confirm: "confirmer"
       sending: "Si le rappel est confirmé, un email sera envoyé le %{date} aux destinataires suivants:"
     confirm_reminder_email:
       subject: "Rappel du %{date} confirmé"
       confirmed: "Le rappel sera envoyé le %{date} par email aux destinataires suivants:"
       disagree: "Si ce rappel ne te convient plus, tu peux le changer sur"
-      website: "notre site web"
+      website: "mon site web"
     remind_email:
-      subject: "Contactez-vous maintenant"
+      subject: "C'est le moment de s'appeler"
       day: "C'est aujourd'hui %{date} que vous vouliez vous contacter."
-      reply: "Répondre à tous pour écrit aux destinataires suivants:"
+      reply: "Répondre à tous pour écrire aux destinataires suivants:"
   passwordless:
     mailer:
       sign_in:
