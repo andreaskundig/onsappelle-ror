@@ -78,18 +78,19 @@ You can further customize this URL by specifying the destination path to be redi
 **** pull request that removed it
 presumably because user_agent and remote_addr
 args were removed from Session.new
-* landing page
+* security
+https://guides.rubyonrails.org/security.html
 
-** button/link to remove user
+set session expiry
+https://github.com/mikker/passwordless?tab=readme-ov-file#timeout-and-expiry
 
-** create users during reminder creation
-users are created when add user is pressed
-it would be better to create them only after
-create reminder is pressed.
+validate  email
 
-It was first done this way and unfortunately they all had the same id, which prevented displaying several of them
-** should there be only one email input?
-added users could be hidden inputs + just text
+when adding title/description, use [[https://api.rubyonrails.org/classes/ActionView/Helpers/SanitizeHelper.html#method-i-sanitize][Rails.sanitize]]
+
+set allowed hosts
+https://guides.rubyonrails.org/security.html#dns-rebinding-and-host-header-attacks
+
 
 * doc for pages (+ turbo_frames)
 ** add recipient to new reminder
@@ -115,18 +116,16 @@ and calls [[file:app/controllers/users_controller.rb::def remove_inputs][users_c
 which returns [[file:app/views/users/remove_inputs.turbo_stream.erb::<%= turbo_stream.remove "recipient_#{@email_code}" %>][remove_inputs.turbo_stream.rb]]
 which removes the recipient where the [-] was clicked
 
-* TODO send emails at reminder date
-
 * TODO show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
 
-* TODO active/inactive reminders ?
+validate email
 * TODO ensure email field is empty at page load
 find out how this is filled...
 * TODO rename reminder.users to .recipients
 * TODO refactor: remove unused routes controller methods
-* TODO [#B] [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
+* TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
 * TODO Active Job adapter w persistent backend (sidekiq resque)
 
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]

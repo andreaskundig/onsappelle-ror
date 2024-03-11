@@ -862,6 +862,10 @@ Error: failed to fetch an image or build from source: error building: failed to 
 #+end_src
 * other providers
 https://www.hostingadvice.com/how-to/best-ruby-on-rails-hosting/
+** northflank
+free plan but 256mb memory
+https://app.northflank.com/u/andreaskundig
+https://northflank.com/docs/v1/application/network/expose-your-application#ruby-on-rails
 ** ovh 3.50/month
 https://www.ovhcloud.com/fr/vps/compare/
 ** digitalocean 4$/month
