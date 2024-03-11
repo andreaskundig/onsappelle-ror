@@ -3,7 +3,12 @@
 <ul>
   <% @reminders.each do |reminder| %>
       <li>
-        <%= link_to reminder.date, reminder %>
+        <%= link_to l(reminder.date.to_date, format: :long), reminder %>
+        <ul>
+          <% reminder.users.each do |user|%>
+            <li><%= user.email %></li>
+          <% end %>
+        </ul>
       </li>
   <% end %>
 </ul>
