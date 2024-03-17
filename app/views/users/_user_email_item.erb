@@ -1,0 +1,10 @@
+<% if user.errors.full_messages_for(:email).length == 0  %>
+    <li>
+        <span><%= user.email %></span>
+        <%= hidden_field_tag 'users[][email]',
+            user.email, id: user.id  %>
+        <a data-action="click->recipients#removeRecipient">
+            <%= content_tag(:i, nil, class: ['fa-solid', 'fa-circle-minus'] ) %>
+        </a>
+    </li>
+<% end %><!-- end if no errors -->

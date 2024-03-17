@@ -30,6 +30,10 @@ class Reminder < ApplicationRecord
     added
   end
 
+  def emails_as_json()
+    users.map {|u| u.email}.to_json
+  end
+
   def self.due_for_sending_at(date)
         includes(:users)
         .where("date <= ?", date)

@@ -24,19 +24,19 @@ class RemindersTest < ApplicationSystemTestCase
     assert_no_selector "span", text: email2
 
     fill_in "reminder_date", with: Date.new(2023,1,4)
-    fill_in "user_email", with: email1
-    find("#new_recipient button").click
+    fill_in "recipient_email", with: email1
+    find('[data-controller="recipients"] button').click
     assert_selector "span", text: email1
 
-    fill_in "user_email", with: email2
-    find("#new_recipient button").click
+    fill_in "recipient_email", with: email2
+    find('[data-controller="recipients"] button').click
     assert_selector "span", text: email2
 
-    fill_in "user_email", with: email3
-    find("#new_recipient button").click
+    fill_in "recipient_email", with: email3
+    find('[data-controller="recipients"] button').click
     assert_selector "span", text: email3
 
-    find("a[href*='#{email_to_code(email3)}']").click
+    find(".email_list > li:nth-child(3) > a ").click
     assert_no_selector "span", text: email3
 
     assert_equal reminder_count, Reminder.count

@@ -18,16 +18,16 @@
       <% end %><!-- end errors -->
     <% end %><!-- end turbo_frame -->
 
-    <ul class="email_list">
-      <%= turbo_frame_tag 'recipients' %>
+  </div>
+  <div data-controller="recipients">
+    <ul data-recipients-target="emailList" class="email_list">
       <% @reminder.users.each do |user| %>
-        <%= render 'users/user_hidden_inputs', user: user %>
+        <%= render 'users/user_email_item', user: user %>
       <% end %><!-- end users -->
     </ul>
-  </div>
+    <input id="recipient_email" data-recipients-target="email" type="email">
+    <button data-action="click->recipients#addRecipient">
+      <i class="fa-solid fa-circle-plus"></i>!</a></li>
+    </button>
+</div>
 <% end %><!-- end form -->
-  <div>
-    <%= turbo_frame_tag 'new_recipient' do %>
-      <%= render 'users/user_inputs', user: User.new %>
-    <% end %><!-- end turbo_frame -->
-  </div>
