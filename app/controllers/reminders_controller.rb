@@ -145,7 +145,9 @@ class RemindersController < ApplicationController
     end
 
     def find_and_authorize_reminder
-      @reminder = current_user.reminders.find_by(id: params[:id])
+      @reminder = current_user.reminders
+                    .includes(:users)
+                    .find_by(id: params[:id])
       unless @reminder
         # return head :forbidden
         # redirect_to root_path, status: :forbidden

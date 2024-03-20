@@ -3,9 +3,6 @@
   <%= t 'remind_each_other' %>
 </p>
 <%= render "form", reminder:  @reminder %>
-<p>
-  <%= submit_tag t('create_reminder'), form: 'reminder_form' %>
-</p>
 
 <p>
   <% if @current_user %>

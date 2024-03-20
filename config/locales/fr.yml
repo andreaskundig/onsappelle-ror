@@ -7,15 +7,26 @@ fr:
   dont_drift: "Perdez-vous pas de vue"
   remind_each_other: "Laisse-moi vous envoyer un email qui vous rappelle de vous appeler."
   email_date: "Date d'envoi"
+  missing_date: "Faut une date"
   new_recipient: "Nouveau destinataire"
+  missing_recipient: "Faut au moins un destinataire"
   create_reminder: "Créer rappel"
   sign_in: "Se connecter"
   sign_out: "Se déconnecter"
+  activerecord:
+    attributes:
+      reminder:
+        users: 'Les destinataires'
+    errors:
+      reminder:
+        users:
+          blank: 'ne doivent pas être vides'
   reminders:
     show:
       cancel: 'Annuler les modifications'
-      update: 'Mettre à jour'
       destroy: 'Supprimer le rappel'
+    form:
+      update: 'Mettre à jour'
     request_confirmation:
       title: 'Confirme le rappel'
       announce_email: >-

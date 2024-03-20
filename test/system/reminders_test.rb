@@ -25,15 +25,15 @@ class RemindersTest < ApplicationSystemTestCase
 
     fill_in "reminder_date", with: Date.new(2023,1,4)
     fill_in "recipient_email", with: email1
-    find('[data-controller="recipients"] button').click
+    find('[data-controller="reminder-form"] button').click
     assert_selector "span", text: email1
 
     fill_in "recipient_email", with: email2
-    find('[data-controller="recipients"] button').click
+    find('[data-controller="reminder-form"] button').click
     assert_selector "span", text: email2
 
     fill_in "recipient_email", with: email3
-    find('[data-controller="recipients"] button').click
+    find('[data-controller="reminder-form"] button').click
     assert_selector "span", text: email3
 
     find(".email_list > li:nth-child(3) > a ").click

@@ -35,16 +35,26 @@ en:
   dont_drift: "Don't drift apart"
   remind_each_other: "Let me send you an email that reminds you to call each other."
   email_date: "Sending date"
+  missing_date: "You need a date"
   new_recipient: "New recipient"
+  missing_recipient: "You need at least one recipient"
   create_reminder: "Create reminder"
   sign_in: "Sign in"
   sign_out: "Sign out"
+  activerecord:
+    attributes:
+      reminder:
+        users: 'Recipients'
+    errors:
+      reminder:
+        users:
+          blank: 'should not be empty'
   reminders:
     show:
       cancel: 'Cancel changes'
-      update: 'Update'
       destroy: 'Delete reminder'
-
+    form:
+      update: 'Update'
     request_confirmation:
       title: 'Confirm the reminder'
       announce_email: >-

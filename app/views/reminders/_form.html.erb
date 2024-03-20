@@ -1,33 +1,48 @@
-<%= form_with model: reminder, id: 'reminder_form' do |r_form| %>
+<%= form_with model: reminder,
+ data: {controller: "reminder-form"},
+ id: 'reminder_form' do |r_form| %>
   <div>
     <strong>
-      <%= r_form.label :date, t(:email_date) %>
+      <%= r_form.label :date, t("email_date") %>
     </strong>
-    <%= r_form.date_field :date %>
     <% reminder.errors.full_messages_for(:date).each do |message| %>
       <div><mark><%= message %></mark></div>
     <% end %><!-- end errors -->
+    <div data-reminder-form-target="missingDate"
+         class="<%= "hidden" if reminder.date%>">
+      <mark><%= t("missing_date") %></mark>
+    </div>
+    <%= r_form.date_field :date,
+     data: {reminder_form_target: "dateInput",
+            action: "input->reminder-form#updateErrors"} %>
   </div>
 
-  <div>
-    <strong><%= t :Recipients %></strong>
-
-    <%= turbo_frame_tag 'recipient_errors' do %>
-      <% reminder.errors.full_messages_for(:users).each do |message| %>
-        <div><mark><%= message %></mark></div>
-      <% end %><!-- end errors -->
-    <% end %><!-- end turbo_frame -->
-
-  </div>
-  <div data-controller="recipients">
-    <ul data-recipients-target="emailList" class="email_list">
-      <% @reminder.users.each do |user| %>
+  <!-- <div data-controller="recipients"> -->
+  <div >
+    <strong><%= t "Recipients" %></strong>
+    <% reminder.errors.full_messages_for(:users).each do |message| %>
+      <div><mark><%= message %></mark></div>
+    <% end %><!-- end errors -->
+    <div data-reminder-form-target="missingRecipient"
+         class="<%= "hidden" unless reminder.users.empty?%>">
+      <mark><%= t("missing_recipient") %></mark>
+    </div>
+    <ul data-reminder-form-target="recipientList" class="email_list">
+      <% reminder.users.each do |user| %>
         <%= render 'users/user_email_item', user: user %>
       <% end %><!-- end users -->
     </ul>
-    <input id="recipient_email" data-recipients-target="email" type="email">
-    <button data-action="click->recipients#addRecipient">
-      <i class="fa-solid fa-circle-plus"></i>!</a></li>
+    <input id="recipient_email"
+           data-reminder-form-target="emailInput" type="email">
+    <button
+      data-action="click->reminder-form#addRecipient">
+      <i class="fa-solid fa-circle-plus"></i></a></li>
     </button>
+<p>
+  <%= submit_tag reminder.new_record? ? t('create_reminder') : t('.update'),
+     data: {reminder_form_target: "submitButton" },
+     disabled: reminder.new_record?,
+     form: 'reminder_form' %>
+</p>
 </div>
 <% end %><!-- end form -->
