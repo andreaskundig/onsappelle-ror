@@ -5,14 +5,14 @@ fr:
   New_reminder: "Nouveau rappel"
   Recipients: "Destinataires"
   dont_drift: "Perdez-vous pas de vue"
-  remind_each_other: "Laisse-moi vous envoyer un email qui vous rappelle de vous appeler."
+  remind_each_other: "Laissez-moi vous rappeller de vous appeler, en envoyant un email à tous."
   email_date: "Date d'envoi"
   missing_date: "Faut une date"
   new_recipient: "Nouveau destinataire"
   missing_recipient: "Faut au moins un destinataire"
   create_reminder: "Créer rappel"
-  sign_in: "Se connecter"
-  sign_out: "Se déconnecter"
+  sign_in: "Connexion"
+  sign_out: "Déconnexion"
   activerecord:
     attributes:
       reminder:
@@ -63,5 +63,5 @@ fr:
           placeholder: "user@example.com"
         submit: "Se connecter"
       show:
-        label: "Jeton"
+        token: "Jeton"
         confirm: "Confirmer"

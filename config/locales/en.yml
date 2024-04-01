@@ -83,3 +83,6 @@ en:
           label: "Email address"
           placeholder: "user@example.com"
         submit: "Sign in"
+      show:
+        token: "Token"
+        confirm: "Confirm"
