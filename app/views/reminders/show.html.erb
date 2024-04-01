@@ -1,3 +1,12 @@
+<header>
+  <nav>
+    <%= link_to  t("New_reminder"), new_reminder_path %>
+    <%= link_to t("Reminders"), reminders_path %>
+    <% if @current_user %>
+        <%= link_to t("sign_out"), users_sign_out_path, {locale: locale} %>
+    <% end %>
+  </nav>
+</header>
 <h1><%= t :Reminder %></h1>
 <%= render 'form', reminder: @reminder %>
 <p>
@@ -7,9 +16,4 @@
      method: :delete,
      data: {turbo_method: :delete,
             turbo_confirm: "Are you sure?"} %>
-    <%= link_to  t("New_reminder"), new_reminder_path %>
-    <%= link_to t("Reminders"), reminders_path %>
-    <% if @current_user %>
-        <%= link_to t("sign_out"), users_sign_out_path, {locale: locale} %>
-    <% end %>
 </p>

@@ -1,14 +1,16 @@
+<header>
+  <nav>
+    <% if @current_user %>
+      <%= link_to t("Reminders"), reminders_path %>
+      <%= link_to t("sign_out"), users_sign_out_path, {locale: locale} %>
+    <% else %>
+      <%= link_to t('sign_in'), users_sign_in_path %>
+    <% end %>
+  </nav>
+</header>
 <h1 class="page_title"><%= t 'dont_drift' %></h1>
 <p>
   <%= t 'remind_each_other' %>
 </p>
 <%= render "form", reminder:  @reminder %>
 
-<p>
-  <% if @current_user %>
-    <%= link_to t("Reminders"), reminders_path %>
-    <%= link_to t("sign_out"), users_sign_out_path, {locale: locale} %>
-  <% else %>
-    <%= link_to t('sign_in'), users_sign_in_path %>
-  <% end %>
-</p>
