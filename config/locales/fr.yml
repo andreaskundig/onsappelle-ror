@@ -46,7 +46,7 @@ fr:
     remind_email:
       subject: "C'est le moment de s'appeler"
       day: "C'est aujourd'hui %{date} que vous vouliez vous contacter."
-      reply: "Répondre à tous pour écrire aux destinataires suivants:"
+      reply: "Réponds à cet email pour écrire aux destinataires suivants:"
   passwordless:
     mailer:
       sign_in:

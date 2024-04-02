@@ -74,7 +74,7 @@ en:
     remind_email:
       subject: "Time to call each other"
       day: "Today %{date} is the day you wanted to contact each other."
-      reply: "Reply to all and write to:"
+      reply: "Reply to this email to write to:"
 
   passwordless:
     sessions:
