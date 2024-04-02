@@ -32,8 +32,6 @@ en:
   Reminder: "Reminder"
   New_reminder: "New reminder"
   Recipients: "Recipients"
-  dont_drift: "Don't drift apart"
-  remind_each_other: "Let me send you an email that reminds you to call each other."
   email_date: "Sending date"
   missing_date: "You need a date"
   new_recipient: "New recipient"
@@ -50,6 +48,9 @@ en:
         users:
           blank: 'should not be empty'
   reminders:
+    new:
+      dont_drift: "Don't drift apart"
+      remind_each_other: "Let me send you an email that reminds you to call each other."
     show:
       cancel: 'Cancel changes'
       destroy: 'Delete reminder'
@@ -79,6 +80,7 @@ en:
   passwordless:
     sessions:
       new:
+        connect: 'Sign in'
         email:
           label: "Email address"
           placeholder: "user@example.com"

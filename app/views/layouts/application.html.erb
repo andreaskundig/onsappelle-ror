@@ -12,6 +12,14 @@
   </head>
 
   <body>
+    <header>
+      <nav>
+        <%= link_to  new_reminder_path do %>
+          <i class="fa-solid fa-hand-sparkles"></i>
+        <% end %>
+        <%= yield :navigation %>
+      </nav>
+    </header>
     <%= yield %>
   </body>
 </html>

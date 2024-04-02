@@ -1,3 +1,4 @@
+<h1 class="page_title"><%= t '.connect' %></h1>
 <%= form_with(model: @session, url: url_for(action: 'new'), data: { turbo: 'false' }) do |f| %>
   <% email_field_name = :"passwordless[#{email_field}]" %>
   <%= f.label email_field_name,

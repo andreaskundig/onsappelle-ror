@@ -4,8 +4,6 @@ fr:
   Reminder: "Rappel"
   New_reminder: "Nouveau rappel"
   Recipients: "Destinataires"
-  dont_drift: "Perdez-vous pas de vue"
-  remind_each_other: "Laissez-moi vous rappeller de vous appeler, en envoyant un email à tous."
   email_date: "Date d'envoi"
   missing_date: "Faut une date"
   new_recipient: "Nouveau destinataire"
@@ -21,7 +19,11 @@ fr:
       reminder:
         users:
           blank: 'ne doivent pas être vides'
+
   reminders:
+    new:
+      dont_drift: "Perdez-vous pas de vue"
+      remind_each_other: "Laissez-moi vous rappeller de vous appeler, en envoyant un email à tous."
     show:
       cancel: 'Annuler les modifications'
       destroy: 'Supprimer le rappel'
@@ -32,6 +34,7 @@ fr:
       announce_email: >-
         Tu vas recevoir un email intitulé "Confirmer le rappel du ...".
       confirm: "Il contient un lien qu'il faut cliquer pour activer le rappel."
+
   user_mailer:
     request_reminder_confirmation_email:
       subject: "Confirmer le rappel du %{date}"
@@ -47,6 +50,7 @@ fr:
       subject: "C'est le moment de s'appeler"
       day: "C'est aujourd'hui %{date} que vous vouliez vous contacter."
       reply: "Réponds à cet email pour écrire aux destinataires suivants:"
+
   passwordless:
     mailer:
       sign_in:
@@ -58,6 +62,7 @@ fr:
           %{magic_link}
     sessions:
       new:
+        connect: 'Connexion'
         email:
           label: "Adresse email"
           placeholder: "user@example.com"
