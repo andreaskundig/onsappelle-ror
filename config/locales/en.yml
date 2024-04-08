@@ -54,7 +54,7 @@ en:
     form:
       cancel: 'Cancel changes'
       destroy: 'Delete reminder'
-      update: 'Update'
+      update: 'Save'
     request_confirmation:
       title: 'Confirm the reminder'
       announce_email: >-

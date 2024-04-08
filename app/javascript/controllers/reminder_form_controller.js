@@ -3,13 +3,14 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = [ "dateInput", "emailInput", "recipientList",
                      "recipientEmail", "missingRecipient",
-                     "missingDate", "submitButton"]
+                     "missingDate", "submitButton", "cancelButton"]
 
   initialize() {
     // this.updateErrors();
   }
 
-  updateErrors(){
+  updateStateDisplay(){
+    // update Errors
     const missingRecipient = !this.recipientEmailTargets.length;
     if (missingRecipient) {
       this.missingRecipientTarget.classList.remove('hidden');
@@ -27,7 +28,11 @@ export default class extends Controller {
     const disabled = missingRecipient || missingDate;
     this.submitButtonTarget.disabled = disabled;
 
+    // enable Cancel
+    this.cancelButtonTarget.disabled = false;
   }
+
+
 
   addRecipient(event) {
     event.preventDefault();
@@ -36,14 +41,14 @@ export default class extends Controller {
       const email = this.emailInputTarget.value;
       this.insertEmailItem(email, this.recipientListTarget);
       this.emailInputTarget.value = '';
-      this.updateErrors();
+      this.updateStateDisplay();
     }
   }
 
   removeRecipient(event){
     const li = event.target.parentElement.parentElement;
     this.recipientListTarget.removeChild(li);
-    this.updateErrors();
+    this.updateStateDisplay();
   }
 
   insertEmailItem(email, listTarget) {

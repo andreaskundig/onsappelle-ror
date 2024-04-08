@@ -27,7 +27,7 @@ fr:
     form:
       cancel: 'Annuler modifications'
       destroy: 'Supprimer'
-      update: 'Mettre à jour'
+      update: 'Enregistrer'
     request_confirmation:
       title: 'Confirme le rappel'
       announce_email: >-

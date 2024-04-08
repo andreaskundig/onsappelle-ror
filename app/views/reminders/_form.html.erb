@@ -9,12 +9,12 @@
                 <div><mark><%= message %></mark></div>
             <% end %><!-- end errors -->
             <div data-reminder-form-target="missingDate"
-                 class="<%= "hidden" if reminder.date%>">
+                 class="<%= "hidden" if reminder.date%> input_error">
                 <mark><%= t("missing_date") %></mark>
             </div>
             <%= r_form.date_field :date,
                 data: {reminder_form_target: "dateInput",
-                       action: "input->reminder-form#updateErrors"} %>
+                       action: "input->reminder-form#updateStateDisplay"} %>
         </div>
 
         <!-- <div data-controller="recipients"> -->
@@ -24,7 +24,7 @@
                 <div><mark><%= message %></mark></div>
             <% end %><!-- end errors -->
             <div data-reminder-form-target="missingRecipient"
-                 class="<%= "hidden" unless reminder.users.empty?%>">
+                 class="<%= "hidden" unless reminder.users.empty?%> input_error">
                 <mark><%= t("missing_recipient") %></mark>
             </div>
             <ul data-reminder-form-target="recipientList" class="email_list">
@@ -43,9 +43,16 @@
     <div>
         <%= submit_tag reminder.new_record? ? t('create_reminder') : t('.update'),
          data: {reminder_form_target: "submitButton" },
-         disabled: reminder.new_record?,
+         disabled: true,
          class: 'row_button',
          form: 'reminder_form'
+        %>
+        <%= button_to t('.cancel'),
+         reminder.new_record? ? new_reminder_path : reminder_path(@reminder),
+         method: "get",
+         form_class: 'row_button',
+         disabled: true,
+         data: {reminder_form_target: "cancelButton" }
         %>
         <%= yield %>
     </div>
