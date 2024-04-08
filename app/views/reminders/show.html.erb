@@ -6,12 +6,15 @@
     <% end %>
 <% end %>
 <h1><%= t :Reminder %></h1>
-<%= render 'form', reminder: @reminder %>
-<p>
+<%= render 'form', reminder: @reminder do %>
     <%= button_to t('.cancel'), reminder_path(@reminder),
-    :method => "get" %>
+     method: "get",
+     form_class: 'row_button'
+     data: {reminder_form_target: "cancelButton" },
+    %>
     <%= button_to t('.destroy'), reminder_path(@reminder),
      method: :delete,
+     form_class: 'row_button',
      data: {turbo_method: :delete,
             turbo_confirm: "Are you sure?"} %>
-</p>
+<% end %>

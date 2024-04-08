@@ -24,10 +24,9 @@ fr:
     new:
       dont_drift: "Perdez-vous pas de vue"
       remind_each_other: "Laissez-moi vous rappeller de vous appeler, en envoyant un email à tous."
-    show:
-      cancel: 'Annuler les modifications'
-      destroy: 'Supprimer le rappel'
     form:
+      cancel: 'Annuler modifications'
+      destroy: 'Supprimer'
       update: 'Mettre à jour'
     request_confirmation:
       title: 'Confirme le rappel'

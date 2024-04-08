@@ -51,10 +51,9 @@ en:
     new:
       dont_drift: "Don't drift apart"
       remind_each_other: "Let me send you an email that reminds you to call each other."
-    show:
+    form:
       cancel: 'Cancel changes'
       destroy: 'Delete reminder'
-    form:
       update: 'Update'
     request_confirmation:
       title: 'Confirm the reminder'
