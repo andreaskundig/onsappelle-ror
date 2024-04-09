@@ -153,15 +153,18 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     the_email = 'update@updaty.com'
     the_date = '2221-02-01'
 
-    reminder = Reminder.first
+    reminder = reminders(:one)
     original_date = reminder.date.strftime('%Y-%m-%d')
     assert_not_equal the_date, original_date
     old_emails = reminder.users.map { |u| u.email }
     assert_not_includes old_emails, the_email
+    new_users = (old_emails + [the_email]).map { |e| {email: e}}
 
+    # try to change the date
+    Rails.logger.info("\033[37;104mTry to change the date\033[0m")
     patch "/en/reminders/#{reminder.id}",
           params: { reminder: { date: the_date},
-                    users: [{ email: the_email }]}
+                    users: [new_users]}
     assert_response :redirect
 
     # no update without logging in
@@ -169,7 +172,8 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     new_date = new_reminder.date.strftime('%Y-%m-%d')
     assert_equal original_date, new_date
 
-    user =  User.first
+    # log in
+    user = reminder.users.first
     emails = capture_emails do
         post users_sign_in_path,
              params: { "passwordless[email]"=>  user.email }
@@ -191,20 +195,21 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     follow_redirect!
     assert_response :success
 
+    Rails.logger.info("\033[37;104mRetry to change the date\033[0m")
     patch "/en/reminders/#{reminder.id}",
           params: { reminder: { date: the_date},
-                    users: [{ email: the_email }]}
+                    users: [new_users]}
     assert_response :redirect
 
-    # new_reminder = Reminder.find(reminder.id)
-    # new_date = new_reminder.date.strftime('%Y-%m-%d')
-    # assert_equal the_date, new_date
-    # new_emails = new_reminder.users.map { |u| u.email }
-    # assert_includes new_emails, the_email
-    # assert_equal old_emails.length + 1, new_emails.length
+    updated_reminder = Reminder.find(reminder.id)
+    new_date = updated_reminder.date.strftime('%Y-%m-%d')
+    assert_equal the_date, new_date
+    new_emails = new_reminder.users.map { |u| u.email }
+    assert_includes new_emails, the_email
+    assert_equal old_emails.length + 1, new_emails.length
 
-    # follow_redirect!
-    # assert_response :success
+    follow_redirect!
+    assert_response :success
   end
 
   test "can update a reminder with empty email" do
