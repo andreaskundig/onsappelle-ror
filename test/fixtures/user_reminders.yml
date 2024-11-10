@@ -11,3 +11,7 @@ reminder_1_user_2:
 reminder_2_user_1:
   user: one
   reminder: two
+
+reminder_4_user_1:
+  user: one
+  reminder: four

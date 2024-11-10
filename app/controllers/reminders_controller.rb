@@ -97,6 +97,7 @@ class RemindersController < ApplicationController
     changes =
       update_reminder_recipients(@reminder, params[:users])
 
+    @reminder.sent_at = nil
     if @reminder.update(reminder_params)
       # email confirmation
       if changes

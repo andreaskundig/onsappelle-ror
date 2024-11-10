@@ -212,6 +212,53 @@ class ReminderFlowTest < ActionDispatch::IntegrationTest
     assert_response :success
   end
 
+  test "can update sent reminder" do
+    the_email = 'update.sent.at@updaty.com'
+    the_date = '2221-03-02'
+
+    reminder = reminders(:four)
+    original_date = reminder.date.strftime('%Y-%m-%d')
+    assert_not_equal the_date, original_date
+    new_users = reminder.users.map { |u| {email: u.email} }
+
+    # for some reason this is necessary to set the locale
+    get "/en"
+
+    # log in
+    user = reminder.users.first
+    emails = capture_emails do
+        post users_sign_in_path,
+             params: { "passwordless[email]"=>  user.email }
+    end
+    email_text = emails.first.to_s
+    urls = email_text.scan(/(http[s]?:\/\/\S+)/)
+    sign_in_url = urls.first.first
+    assert_match %r{/en/users/sign_in/}, sign_in_url
+
+    get sign_in_url
+    assert_redirected_to 'http://localhost/'
+
+    #TODO find a way to redirect to /en, not /fr
+    follow_redirect!
+    assert_redirected_to 'http://localhost/fr'
+
+    follow_redirect!
+    assert_response :success
+
+    Rails.logger.info("\033[37;104mRetry to change the date\033[0m")
+    patch "/en/reminders/#{reminder.id}",
+          params: { reminder: { date: the_date},
+                    users: [new_users]}
+    assert_response :redirect
+
+    updated_reminder = Reminder.find(reminder.id)
+    new_date = updated_reminder.date.strftime('%Y-%m-%d')
+    assert_equal the_date, new_date
+    assert_nil updated_reminder.sent_at
+
+    follow_redirect!
+    assert_response :success
+  end
   test "can update a reminder with empty email" do
     the_date = '2221-02-01'
 
