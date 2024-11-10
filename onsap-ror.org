@@ -1,5 +1,14 @@
 #+title: Onsap Ror
 [[file:/mnt/c/Users/andre/workspace/onsappelle/onsappelle.org::][spec...]]
+* run the application
+sudo service postgresql start
+bin/rails server
+* run a test
+sudo service postgresql start
+bin/rails test
+# system test launches browser
+bin/rails test test/system/reminders_test -n"/can_create_a/"
+bin/rails test test/integration/reminder_flow_test -n"/can create a/"
 * passwordless authentication by email
 gem
 https://github.com/mikker/passwordless
@@ -129,10 +138,6 @@ find out how this is filled...
 * TODO Active Job adapter w persistent backend (sidekiq resque)
 
 as recommended in the [[https://guides.rubyonrails.org/action_mailer_basics.html#calling-the-mailer][mailer doc]]
-
-* run a test
-bin/rails test test/system/reminders_test -n"/can_create_a/"
-bin/rails test test/integration/reminder_flow_test -n"/can create a/"
 * steps
 ** rails generate stuff
 [[https://guides.rubyonrails.org/association_basics.html#choosing-between-has-many-through-and-has-and-belongs-to-many][has-many :through relation]]
