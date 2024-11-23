@@ -125,12 +125,30 @@ and calls [[file:app/controllers/users_controller.rb::def remove_inputs][users_c
 which returns [[file:app/views/users/remove_inputs.turbo_stream.erb::<%= turbo_stream.remove "recipient_#{@email_code}" %>][remove_inputs.turbo_stream.rb]]
 which removes the recipient where the [-] was clicked
 
+
+
+
+
+
+* TODO upgrade to rails 8.0
+at 7.1.2 there's a deprecation warning
+DEPRECATION WARNING: ActiveSupport::ProxyObject is deprecated and will be removed in Rails 8.0.
+Use Ruby's built-in BasicObject instead.
+
+set a debugger in [[file:~/.rvm/gems/ruby-3.3.0/gems/activesupport-7.2.2/lib/active_support/deprecation/reporting.rb::message ||= "You are using deprecated behavior which will be removed from the next major or minor release."][reporting.rb]]
+probably comes from [[file:~/.rvm/gems/ruby-3.3.0/gems/jbuilder-2.11.5/lib/jbuilder/jbuilder.rb::ActiveSupport::ProxyObject][jbuilder.rb]]
+which uses BasicObject when ProxyObject is gone,
+so it should be ok.
+
+
 * TODO show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
 
 validate email
 * TODO ensure email field is empty at page load
+which uses BasicObject when ProxyObject is gone,
+so it should be ok
 find out how this is filled...
 * TODO rename reminder.users to .recipients
 * TODO refactor: remove unused routes controller methods

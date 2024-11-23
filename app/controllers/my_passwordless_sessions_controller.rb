@@ -1,3 +1,5 @@
+
+# TODO move to passwordless 1.6.0 and get rid of this class
 class MyPasswordlessSessionsController < Passwordless::SessionsController
     def create
       handle_resource_not_found unless @resource = find_authenticatable
