@@ -140,7 +140,8 @@ probably comes from [[file:~/.rvm/gems/ruby-3.3.0/gems/jbuilder-2.11.5/lib/jbuil
 which uses BasicObject when ProxyObject is gone,
 so it should be ok.
 
-
+at 8.0.0
+needed to upgrade rails-i18n and jbuilder
 * TODO show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0

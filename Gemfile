@@ -3,7 +3,7 @@ source "https://rubygems.org"
 ruby "3.3.0"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 7.2.2"
+gem "rails", "~> 8.0.0"
 
 # The original asset pipeline for Rails [https://github.com/rails/sprockets-rails]
 gem "sprockets-rails"
@@ -27,7 +27,7 @@ gem "turbo-rails"
 gem "stimulus-rails"
 
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
-gem "jbuilder"
+gem "jbuilder", '~> 2.13'
 
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
@@ -82,4 +82,4 @@ gem "readline-ext", "~> 0.2.0"
 # https://origin.fontawesome.com/docs/web/use-with/ruby-on-rails
 gem "font-awesome-sass", "~> 6.5.1"
 # https://github.com/svenfuchs/rails-i18n
-gem 'rails-i18n', '~> 7.0.0' # For 7.0.0
+gem 'rails-i18n', '~> 8.0.0' # For 8.0.0
