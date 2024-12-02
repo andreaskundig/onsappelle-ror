@@ -12,6 +12,9 @@ fetch all, merge main into deploy
 #+begin_src bash
 fly deploy
 #+end_src
+then push to origin/deploy
+
+
 
 which machines are running
 #+begin_src bash

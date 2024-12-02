@@ -81,6 +81,10 @@ Rails.application.configure do
     open_timeout:    5,
     read_timeout:    5 }
 
+  # https://github.com/mikker/passwordless#urls-and-links
+  config.action_mailer.default_url_options = {host: "onsappelle-ror.fly.dev"}
+  routes.default_url_options[:host] ||= "onsappelle-ror.fly.dev"
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
