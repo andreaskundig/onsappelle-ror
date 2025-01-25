@@ -130,7 +130,7 @@ which removes the recipient where the [-] was clicked
 
 
 
-* TODO upgrade to rails 8.0
+* DONE upgrade to rails 8.0
 at 7.1.2 there's a deprecation warning
 DEPRECATION WARNING: ActiveSupport::ProxyObject is deprecated and will be removed in Rails 8.0.
 Use Ruby's built-in BasicObject instead.
@@ -146,9 +146,7 @@ sudo apt-get install kdiff3
 THOR_MERGE=kdiff3 bin/rails app:update
 (or overwrite everything and review diff in magint)
 
-
-
-* TODO show page: edit date, more validation
+* show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
 
@@ -158,6 +156,7 @@ which uses BasicObject when ProxyObject is gone,
 so it should be ok
 find out how this is filled...
 * TODO rename reminder.users to .recipients
+does \.users only appear with reminder.users ?
 * TODO refactor: remove unused routes controller methods
 * TODO [[https://github.com/paper-trail-gem/paper_trail][paper_trail]] for reminders and  user_reminders
 * TODO Active Job adapter w persistent backend (sidekiq resque)

@@ -687,7 +687,7 @@ fly secrets set DATABASE_URL=postgres://onsappelle_ror:password@onsappelle-ror-d
 ** connect to db by proxy
 https://fly.io/docs/flyctl/proxy/
 #+begin_src bash
-fly proxy 15432:5432 -a onsappelle-ror-db
+fly proxy 15432:5432 -a onsappelle-db
 #+end_src
 *** connect to database directly is 2$/mo
 Allocate an IP address
