@@ -13,6 +13,9 @@ bin/rails test test/integration/reminder_flow_test -n"/can create a/"
 * passwordless authentication by email
 gem
 https://github.com/mikker/passwordless
+
+my pull request
+https://github.com/mikker/passwordless/pull/209
 ** magic link
 There is an issue
 [[https://github.com/mikker/passwordless/issues/70][Create auth token links for email]]
