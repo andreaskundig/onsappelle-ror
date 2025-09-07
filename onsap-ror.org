@@ -144,10 +144,10 @@ sudo apt-get install kdiff3
 THOR_MERGE=kdiff3 bin/rails app:update
 (or overwrite everything and review diff in magint)
 
-8.0.1
+8.0.1, 8.0.2
 bin/rails test:system
 update rails version in [[file:Gemfile::gem "rails", "~> 8.0.1"][Gemfile]]
-run bundle update rails
+bundle update rails
 bin/rails app:update
 bin/rails test:system
 
