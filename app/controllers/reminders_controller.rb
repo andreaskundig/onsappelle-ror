@@ -94,13 +94,14 @@ class RemindersController < ApplicationController
   def update
     # @reminder is set by :find_and_authorize_reminder
     locale = params[:locale]
-    changes =
+    recipient_changes =
       update_reminder_recipients(@reminder, params[:users])
-
+    new_date = params[:reminder][:date]
+    date_change = date_change?(@reminder.date, new_date)
     @reminder.sent_at = nil
     if @reminder.update(reminder_params)
       # email confirmation
-      if changes
+      if recipient_changes || date_change
         @reminder.users do |recipient|
           passwordless_link =
             passwordless_url_to(recipient,
