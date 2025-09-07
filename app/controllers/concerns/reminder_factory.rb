@@ -19,4 +19,14 @@ module ReminderFactory
       added: reminder.add_recipients_by_email(to_add)
     }
   end
+
+  def date_change?(old_date_object, new_date_string)
+    new_parsed_date = nil
+    begin
+      new_parsed_date = Date.parse(new_date_string)
+      return new_parsed_date != old_date_object
+    rescue ArgumentError
+    end
+    return false
+  end
 end
