@@ -102,7 +102,7 @@ class RemindersController < ApplicationController
     if @reminder.update(reminder_params)
       # email confirmation
       if recipient_changes || date_change
-        @reminder.users do |recipient|
+        @reminder.users.each do |recipient|
           passwordless_link =
             passwordless_url_to(recipient,
                                 locale,
