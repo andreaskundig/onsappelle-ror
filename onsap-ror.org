@@ -126,7 +126,9 @@ and calls [[file:app/controllers/users_controller.rb::def remove_inputs][users_c
 which returns [[file:app/views/users/remove_inputs.turbo_stream.erb::<%= turbo_stream.remove "recipient_#{@email_code}" %>][remove_inputs.turbo_stream.rb]]
 which removes the recipient where the [-] was clicked
 
-* upgraded to rails 8.0
+* upgrades
+
+rails 8.0
 https://guides.rubyonrails.org/upgrading_ruby_on_rails.html
 
 at 7.1.2 there's a deprecation warning
@@ -149,6 +151,10 @@ bin/rails test:system
 update rails version in [[file:Gemfile::gem "rails", "~> 8.0.1"][Gemfile]]
 bundle update rails
 bin/rails app:update
+bin/rails test:system
+
+updating a library after dependabot warning
+bundle upgrade rexml
 bin/rails test:system
 
 * show page: edit date, more validation
