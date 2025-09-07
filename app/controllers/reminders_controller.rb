@@ -9,7 +9,7 @@ class RemindersController < ApplicationController
                 only: [:show, :destroy, :confirm, :update, :edit]
 
   def index
-    @reminders = current_user.reminders.eager_load(:users).order('date, email')
+    @reminders = current_user.reminders.eager_load(:users).order('date DESC, email')
     logger.info("index USER #{@current_user&.email}")
   end
 
