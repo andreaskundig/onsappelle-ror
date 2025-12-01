@@ -46,9 +46,9 @@ fr:
       disagree: "Si ce rappel ne te convient plus, tu peux le changer sur"
       website: "mon site web"
     remind_email:
-      subject: "C'est le moment de s'appeler"
-      day: "C'est aujourd'hui %{date} que vous vouliez vous contacter."
-      reply: "Réponds à cet email pour écrire aux destinataires suivants:"
+      subject: "Email super impersonnel pour rappeller de s'appeler"
+      day: "Eh ouais, je suis juste une application qui envoie un message prémâché à la date prévue. Et c'est vous qui avez choisi le %{date}, parce que vous vouliez vous revoir."
+      reply: "Vous voulez vous revoir? Y a qu'à répondre à cet email pour contacter tout ce beau monde:"
 
   passwordless:
     mailer:

@@ -8,7 +8,7 @@ https://fly.io/docs/rails/the-basics/deployments/
 [[https://fly.io/docs/rails/cookbooks/deploy/][optimize ram use (fly cookbook)]]
 ** steps
 go to project [[file:~/workspace/onsappelle-ror-deploy][onsappelle-ror-deploy]]
-fetch all, merge main into deploy
+fetch all, merge origin/main into deploy
 #+begin_src bash
 fly deploy
 #+end_src

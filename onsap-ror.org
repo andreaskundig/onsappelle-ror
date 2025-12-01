@@ -10,6 +10,8 @@ bin/rails test:system
 # system test launches browser
 bin/rails test test/system/reminders_test -n"/can_create_a/"
 bin/rails test test/integration/reminder_flow_test -n"/can create a/"
+* rails console
+bin/rails console
 * passwordless authentication by email
 gem
 https://github.com/mikker/passwordless
