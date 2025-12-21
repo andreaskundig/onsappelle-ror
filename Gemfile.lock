@@ -157,7 +157,6 @@ GEM
     passwordless (1.4.0)
       bcrypt (>= 3.1.11)
       rails (>= 5.1.4)
-    pg (1.5.4)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -289,7 +288,6 @@ DEPENDENCIES
   importmap-rails
   jbuilder (~> 2.13)
   passwordless (~> 1.4.0)
-  pg (~> 1.1)
   puma (>= 5.0)
   rails (~> 8.0.2)
   rails-i18n (~> 8.0.0)
@@ -305,7 +303,7 @@ DEPENDENCIES
   whenever
 
 RUBY VERSION
-   ruby 3.3.0p0
+  ruby 3.3.0p0
 
 BUNDLED WITH
-   2.5.3
+  4.0.2
