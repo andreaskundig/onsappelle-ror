@@ -87,10 +87,5 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  # <<: *default
-  adapter: postgresql
-  encoding: unicode
-  database: onsappelle_ror_production
-  username: onsappelle_ror
-  password: <%= ENV["ONSAPPELLE_ROR_DATABASE_PASSWORD"] %>
-  # database: storage/production.sqlite3
+  <<: *default
+  database: storage/production.sqlite3
