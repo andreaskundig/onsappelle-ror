@@ -39,8 +39,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_214915) do
   end
 
   create_table "user_reminders", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.bigint "reminder_id", null: false
+    t.integer "user_id", null: false
+    t.integer "reminder_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["reminder_id"], name: "index_user_reminders_on_reminder_id"
