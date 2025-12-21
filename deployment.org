@@ -5,7 +5,23 @@ rails generate dockerfile
 
 docker build -t onsappelle .
 docker run -p 3000:3000 -e SECRET_KEY_BASE=$(openssl rand -hex 64) -e RAILS_ASSUME_SSL=false onsappelle
-* deployment on fly.io (5$ /month)
+* kamal
+#+begin_src shell :results code
+gem install kamal
+#+end_src
+
+#+begin_src shell :results code
+kamal init
+#+end_src
+
+#+RESULTS:
+#+begin_src shell
+Created configuration file in config/deploy.yml
+Created .kamal/secrets file
+Created sample hooks in .kamal/hooks
+#+end_src
+
+* deployment on fly.io (10$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
 https://fly.io/docs/rails/the-basics/deployments/
