@@ -11,9 +11,6 @@ gem "sprockets-rails"
 # Use sqlite3 as the database for Active Record
 gem "sqlite3" , "~> 2.8"# Use pg as the database for Active Record
 
-# add postgres for render.com/fly
-gem "pg", "~> 1.1"
-
 # Use the Puma web server [https://github.com/puma/puma]
 gem "puma", ">= 5.0"
 

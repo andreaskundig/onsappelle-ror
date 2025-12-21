@@ -1,5 +1,9 @@
 #+title: Deployment
+* local docker
+this created the dockerfile for the current rails version
+rails generate dockerfile
 
+docker build -t onsappelle .
 * deployment on fly.io (5$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
