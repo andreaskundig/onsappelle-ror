@@ -103,4 +103,9 @@ Rails.application.configure do
   #
   # Skip DNS rebinding protection for the default health check endpoint.
   # config.host_authorization = { exclude: ->(request) { request.path == "/up" } }
+  
+  # To allow testing with local docker
+  use_ssl = ENV['RAILS_ASSUME_SSL'] != 'false'
+  config.action_controller.forgery_protection_origin_check = use_ssl
+  config.force_ssl = use_ssl
 end

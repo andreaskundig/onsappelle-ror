@@ -4,6 +4,7 @@ this created the dockerfile for the current rails version
 rails generate dockerfile
 
 docker build -t onsappelle .
+docker run -p 3000:3000 -e SECRET_KEY_BASE=$(openssl rand -hex 64) -e RAILS_ASSUME_SSL=false onsappelle
 * deployment on fly.io (5$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
