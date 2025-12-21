@@ -164,6 +164,11 @@ updating a library after dependabot warning
 bundle upgrade rexml
 bin/rails test:system
 
+8.1.1
+requires upgrading ruby from 3.3.0 to 3.3.6
+rvm install 3.3.6
+rvm use 3.3.6 --default
+
 * show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
