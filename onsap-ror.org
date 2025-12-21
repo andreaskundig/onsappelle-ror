@@ -283,6 +283,30 @@ set password for test and development dbs in [[file:config/database.yml::passwor
 bin/rails db:create
 bin/rails db:migrate
 #+end_src
+** go back to sqlite
+revert original commit, keeping onsap-ror.org as it is.
+
+#+begin_src sh :results code
+(bin/rails test) 2>&1 | head -2
+#+end_src
+Missing a gem it depends on? can't activate sqlite3 (>= 2.1), already activated sqlite3-1.6.9
+
+Change Gemfile
+    gem 'sqlite3', '~> X.Y'
+to:
+    gem 'sqlite3'
+bundle update sqlite3
+
+set version 2.8 to Gemfile
+
+bin/rails db:migrate
+
+reminder_test fails
+bin/rails test test/models/reminder_test.rb
+
+find_by date: no longer works
+Reminder.find_by(date: DateTime.parse("2023-12-27 00:00:00"))
+
 ** cron jobs with whenever
 https://github.com/javan/whenever
 https://dev.to/risafj/cron-jobs-in-rails-a-simple-guide-to-actually-using-the-whenever-gem-now-with-tasks-2omi
