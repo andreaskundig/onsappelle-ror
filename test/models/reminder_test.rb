@@ -12,7 +12,7 @@ class ReminderTest < ActiveSupport::TestCase
     assert_equal 1, due_reminders.size
 
     expected_reminder = Reminder.find_by(
-      date: DateTime.parse("2023-12-27 00:00:00"))
+      date: Date.parse("2023-12-27"))
     assert_equal expected_reminder, due_reminders.first
   end
 end

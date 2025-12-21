@@ -12,6 +12,8 @@ bin/rails test test/system/reminders_test -n"/can_create_a/"
 bin/rails test test/integration/reminder_flow_test -n"/can create a/"
 * rails console
 bin/rails console
+* debug
+write 'debugger' in the code to set a breakpoint
 * passwordless authentication by email
 gem
 https://github.com/mikker/passwordless
@@ -300,12 +302,6 @@ bundle update sqlite3
 set version 2.8 to Gemfile
 
 bin/rails db:migrate
-
-reminder_test fails
-bin/rails test test/models/reminder_test.rb
-
-find_by date: no longer works
-Reminder.find_by(date: DateTime.parse("2023-12-27 00:00:00"))
 
 ** cron jobs with whenever
 https://github.com/javan/whenever
