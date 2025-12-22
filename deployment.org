@@ -30,6 +30,9 @@ commit Gemfiles
 kamal build push
 kamal deploy
 
+added up route, without ssl
+https://jbennett.me/articles/quick-tips-for-kamal-setup/
+
 
 todo set MAILER...
     user_name: ENV["MAILER_EMAIL"],

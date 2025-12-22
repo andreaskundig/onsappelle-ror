@@ -108,4 +108,5 @@ Rails.application.configure do
   use_ssl = ENV['RAILS_ASSUME_SSL'] != 'false'
   config.action_controller.forgery_protection_origin_check = use_ssl
   config.force_ssl = use_ssl
+  config.ssl_options = { redirect: { exclude: ->(request) { request.path == "/up" } } }
 end
