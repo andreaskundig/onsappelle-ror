@@ -23,7 +23,6 @@ proxy:
   host: onsap.andreaskundig.ch
   # Proxy connects to your container on port 80 by default.
   app_port: 3000
-  ssl_termination: true
 
 ssh:
   user: ubuntu
