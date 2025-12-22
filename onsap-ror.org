@@ -168,7 +168,7 @@ bin/rails test:system
 requires upgrading ruby from 3.3.0 to 3.3.6
 rvm install 3.3.6
 rvm use 3.3.6 --default
-
+rvm --default ruby-3.3.6
 * show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0
@@ -377,3 +377,9 @@ https://github.com/iftheshoefritz/solargraph-rails/
 gem install solargraph
 gem install solargraph-rails
 #+end_src
+* secrets and credentials
+
+bin/rails credentials:edit
+then use it to populate [[file:.kamal/secrets::KAMAL_REGISTRY_PASSWORD=$(rails credentials:fetch kamal.registry_password)][secrets]] 
+
+KAMAL_REGISTRY_PASSWORD=$(rails credentials:fetch kamal.registry_password)

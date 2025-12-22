@@ -21,6 +21,21 @@ Created .kamal/secrets file
 Created sample hooks in .kamal/hooks
 #+end_src
 
+#+begin_src shell :results code
+kamal setup
+#+end_src
+
+adding `gem "image_processing", "~> 1.2"`
+commit Gemfiles
+kamal build push
+kamal deploy
+
+still fails
+
+does not help
+kamal app exec 'bin/rails db:prepare'
+
+we have this in the [[file:bin/docker-entrypoint::./bin/rails db:prepare][docker-entrypoint]] anyway
 * deployment on fly.io (10$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
