@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   post 'new_user_inputs', to: 'users#new_inputs'
   delete 'remove_user_inputs/:email_code', to: 'users#remove_inputs', as: :remove_user_inputs
 
+  get "up" => "rails/health#show", as: :rails_health_check
+
   scope "/:locale" do
     # passwordless_for :users
     passwordless_for :users, controller: 'my_passwordless_sessions'
