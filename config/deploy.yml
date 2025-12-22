@@ -32,6 +32,7 @@ registry:
   username: andreaskundig
   password:
     - KAMAL_REGISTRY_PASSWORD
+
   # server: localhost:5555
   # Specify the registry server, if you're not using Docker Hub
   # server: registry.digitalocean.com / ghcr.io / ...
@@ -55,6 +56,8 @@ env:
   #   DB_HOST: 192.168.0.2
   secret:
     - RAILS_MASTER_KEY
+    - MAILER_EMAIL
+    - MAILER_PASSWORD
 
 # Aliases are triggered with "bin/kamal <alias>". You can overwrite arguments on invocation:
 # "bin/kamal app logs -r job" will tail logs from the first server in the job section.

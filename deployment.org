@@ -34,9 +34,8 @@ added up route, without ssl
 https://jbennett.me/articles/quick-tips-for-kamal-setup/
 
 
-todo set MAILER...
-    user_name: ENV["MAILER_EMAIL"],
-    password: ENV["MAILER_PASSWORD"],
+added MAILER_ env variables to credentials, secrets etc...
+
 * deployment on fly.io (10$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
