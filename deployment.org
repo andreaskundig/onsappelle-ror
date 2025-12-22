@@ -30,12 +30,10 @@ commit Gemfiles
 kamal build push
 kamal deploy
 
-still fails
 
-does not help
-kamal app exec 'bin/rails db:prepare'
-
-we have this in the [[file:bin/docker-entrypoint::./bin/rails db:prepare][docker-entrypoint]] anyway
+todo set MAILER...
+    user_name: ENV["MAILER_EMAIL"],
+    password: ENV["MAILER_PASSWORD"],
 * deployment on fly.io (10$ /month)
 https://fly.io/docs/
 https://fly.io/dashboard/andreas-58/
