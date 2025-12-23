@@ -34,7 +34,23 @@ added up route, without ssl
 https://jbennett.me/articles/quick-tips-for-kamal-setup/
 
 
-added MAILER_ env variables to credentials, secrets etc...
+added MAILER_ AWS_ env variables to credentials, secrets etc...
+
+volume for production.sqlite
+pre-deploy hook to make the dir
+bin/backup script using rclone
+added in crontab
+
+running backup
+kamal app exec -r job 'bin/backup'
+
+ssh onsap # or kamal shell
+docker container list
+docker exec -it f7a  /bin/bash
+
+kamal console # rails console
+
+
 
 * deployment on fly.io (10$ /month)
 https://fly.io/docs/
