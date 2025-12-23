@@ -3,7 +3,7 @@ set -e
 
 # Configuration
 BUCKET="onsap"
-ENDPOINT="https://bb8a87f8807f5db69772b62703b97916.r2.cloudflarestorage.com"
+ENDPOINT="bb8a87f8807f5db69772b62703b97916.r2.cloudflarestorage.com"
 DB_PATH="/rails/storage/production.sqlite3"
 BACKUP_NAME="backup-$(date +%Y-%m-%d-%H%M%S).sqlite3"
 RETENTION_DAYS=30
