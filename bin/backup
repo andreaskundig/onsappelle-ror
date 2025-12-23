@@ -8,27 +8,31 @@ DB_PATH="/rails/storage/production.sqlite3"
 BACKUP_NAME="backup-$(date +%Y-%m-%d-%H%M%S).sqlite3"
 RETENTION_DAYS=30
 
+# Configure rclone for R2
+cat > /tmp/rclone.conf <<EOF
+[r2]
+type = s3
+provider = Cloudflare
+access_key_id = ${AWS_ACCESS_KEY_ID}
+secret_access_key = ${AWS_SECRET_ACCESS_KEY}
+endpoint = ${ENDPOINT}
+acl = private
+EOF
+
 # Create temporary backup
 cp "$DB_PATH" "/tmp/$BACKUP_NAME"
 
 # Upload to R2
-aws s3 cp "/tmp/$BACKUP_NAME" "s3://$BUCKET/$BACKUP_NAME" \
-  --endpoint-url "$ENDPOINT"
+rclone --config /tmp/rclone.conf copy "/tmp/$BACKUP_NAME" "r2:$BUCKET/"
 
 # Clean up local temp file
 rm "/tmp/$BACKUP_NAME"
 
 # Delete old backups (older than RETENTION_DAYS)
-aws s3 ls "s3://$BUCKET/" --endpoint-url "$ENDPOINT" | \
-  awk '{print $4}' | \
-  grep "^backup-" | \
-  while read file; do
-    file_date=$(echo "$file" | sed 's/backup-\(.*\)\.sqlite3/\1/')
-    file_timestamp=$(date -d "${file_date:0:10}" +%s 2>/dev/null || echo 0)
-    cutoff_timestamp=$(date -d "$RETENTION_DAYS days ago" +%s)
-    if [ "$file_timestamp" -lt "$cutoff_timestamp" ]; then
-      aws s3 rm "s3://$BUCKET/$file" --endpoint-url "$ENDPOINT"
-    fi
-  done
+cutoff_date=$(date -d "$RETENTION_DAYS days ago" +%Y-%m-%d)
+rclone --config /tmp/rclone.conf delete "r2:$BUCKET/" --min-age ${RETENTION_DAYS}d --include "backup-*.sqlite3"
 
+rm "/tmp/rclone.conf"
+
+echo "Backup completed: $BACKUP_NAME"
 echo "Backup completed: $BACKUP_NAME"
