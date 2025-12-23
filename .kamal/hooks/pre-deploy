@@ -1,2 +1,4 @@
 #!/bin/bash
-ssh $KAMAL_HOSTS "sudo mkdir -p /var/lib/onsappelle/storage && sudo chown -R 1000:1000 /var/lib/onsappelle/storage"
+for host in $KAMAL_HOSTS; do
+  ssh -i ~/.ssh/id_rsa ubuntu@$host "sudo mkdir -p /var/lib/onsappelle/storage && sudo chown -R 1000:1000 /var/lib/onsappelle/storage"
+done
