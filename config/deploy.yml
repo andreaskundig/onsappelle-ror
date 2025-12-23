@@ -9,10 +9,10 @@ servers:
   web:
     # infomaniak onsap
     - 83.228.219.20
-  # job:
-  #   hosts:
-  #     - 192.168.0.1
-  #   cmd: bin/jobs
+  job:
+    hosts:
+      - 83.228.219.20
+    cmd: supercronic /rails/crontab
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
 # Remove this section when using multiple web servers and ensure you terminate SSL at your load balancer.
