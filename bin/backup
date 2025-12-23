@@ -1,0 +1,34 @@
+#!/bin/bash
+set -e
+
+# Configuration
+BUCKET="onsap"
+ENDPOINT="https://bb8a87f8807f5db69772b62703b97916.r2.cloudflarestorage.com"
+DB_PATH="/rails/storage/production.sqlite3"
+BACKUP_NAME="backup-$(date +%Y-%m-%d-%H%M%S).sqlite3"
+RETENTION_DAYS=30
+
+# Create temporary backup
+cp "$DB_PATH" "/tmp/$BACKUP_NAME"
+
+# Upload to R2
+aws s3 cp "/tmp/$BACKUP_NAME" "s3://$BUCKET/$BACKUP_NAME" \
+  --endpoint-url "$ENDPOINT"
+
+# Clean up local temp file
+rm "/tmp/$BACKUP_NAME"
+
+# Delete old backups (older than RETENTION_DAYS)
+aws s3 ls "s3://$BUCKET/" --endpoint-url "$ENDPOINT" | \
+  awk '{print $4}' | \
+  grep "^backup-" | \
+  while read file; do
+    file_date=$(echo "$file" | sed 's/backup-\(.*\)\.sqlite3/\1/')
+    file_timestamp=$(date -d "${file_date:0:10}" +%s 2>/dev/null || echo 0)
+    cutoff_timestamp=$(date -d "$RETENTION_DAYS days ago" +%s)
+    if [ "$file_timestamp" -lt "$cutoff_timestamp" ]; then
+      aws s3 rm "s3://$BUCKET/$file" --endpoint-url "$ENDPOINT"
+    fi
+  done
+
+echo "Backup completed: $BACKUP_NAME"
