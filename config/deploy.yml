@@ -89,10 +89,7 @@ volumes:
 
 # Use accessory services (secrets come from .kamal/secrets).
 #
-accessories:
-  storage:
-    host: 83.228.219.20
-    cmd: mkdir -p /var/lib/onsappelle/storage && chown -R 1000:1000 /var/lib/onsappelle/storage
+
 # accessories:
 #   db:
 #     image: mysql:8.0
