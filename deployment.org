@@ -44,11 +44,14 @@ added in crontab
 running backup
 kamal app exec -r job 'bin/backup'
 
-ssh onsap # or kamal shell
+ssh onsap # or kamal shell/jobshell
 docker container list
 docker exec -it f7a  /bin/bash
 
-kamal console # rails console
+[[file:config/deploy.yml::aliases:][aliases]] defined in deploy.yml
+kamal console # rails console on primary
+kamal shell
+kamal jobshell
 
 
 
