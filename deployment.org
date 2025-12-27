@@ -30,7 +30,7 @@ commit Gemfiles
 kamal build push
 kamal deploy
 
-added up route, without ssl
+added /up route, without ssl
 https://jbennett.me/articles/quick-tips-for-kamal-setup/
 
 
@@ -40,9 +40,18 @@ volume for production.sqlite
 pre-deploy hook to make the dir
 bin/backup script using rclone
 added in crontab
+backup with rclone is risky. 
+- don’t go copying or moving the main SQLite database file around when your application is running. My understanding is this could lead to database corruption.
+https://joyofrails.com/articles/what-you-need-to-know-about-sqlite
+Litestream would be better, but I couldn't get it to run with cloudflare r2
 
 running backup
 kamal app exec -r job 'bin/backup'
+
+list backups
+rclone ls r2:onsap
+
+
 
 ssh onsap # or kamal shell/jobshell
 docker container list
@@ -53,7 +62,12 @@ kamal console # rails console on primary
 kamal shell
 kamal jobshell
 
+** restore latest backup
 
+BACKUP=$(rclone ls r2:onsap | tail -1 | sed 's/.*\(backup.*\)/\1/')
+kamal app stop -r web
+kamal app exec -r job "rclone copyto r2:onsap/$BACKUP /rails/storage/production.sqlite3"
+kamal app start -r web
 
 * deployment on fly.io (10$ /month)
 https://fly.io/docs/
