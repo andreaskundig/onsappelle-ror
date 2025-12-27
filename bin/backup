@@ -3,36 +3,20 @@ set -e
 
 # Configuration
 BUCKET="onsap"
-ENDPOINT="bb8a87f8807f5db69772b62703b97916.r2.cloudflarestorage.com"
 DB_PATH="/rails/storage/production.sqlite3"
 BACKUP_NAME="backup-$(date +%Y-%m-%d-%H%M%S).sqlite3"
 RETENTION_DAYS=30
-
-# Configure rclone for R2
-cat > /tmp/rclone.conf <<EOF
-[r2]
-type = s3
-provider = Cloudflare
-access_key_id = ${AWS_ACCESS_KEY_ID}
-secret_access_key = ${AWS_SECRET_ACCESS_KEY}
-endpoint = ${ENDPOINT}
-acl = private
-EOF
 
 # Create temporary backup
 cp "$DB_PATH" "/tmp/$BACKUP_NAME"
 
 # Upload to R2
-rclone --config /tmp/rclone.conf copy "/tmp/$BACKUP_NAME" "r2:$BUCKET/"
+rclone copy "/tmp/$BACKUP_NAME" "r2:$BUCKET/"
 
 # Clean up local temp file
 rm "/tmp/$BACKUP_NAME"
 
 # Delete old backups (older than RETENTION_DAYS)
-cutoff_date=$(date -d "$RETENTION_DAYS days ago" +%Y-%m-%d)
-rclone --config /tmp/rclone.conf delete "r2:$BUCKET/" --min-age ${RETENTION_DAYS}d --include "backup-*.sqlite3"
+rclone delete "r2:$BUCKET/" --min-age ${RETENTION_DAYS}d --include "backup-*.sqlite3"
 
-rm "/tmp/rclone.conf"
-
-echo "Backup completed: $BACKUP_NAME"
 echo "Backup completed: $BACKUP_NAME"

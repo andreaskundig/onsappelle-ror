@@ -2,6 +2,18 @@
 
 # Add any container initialization steps here
 
+# Configure rclone
+mkdir -p ~/.config/rclone
+cat > ~/.config/rclone/rclone.conf <<EOF
+[r2]
+type = s3
+provider = Cloudflare
+access_key_id = ${AWS_ACCESS_KEY_ID}
+secret_access_key = ${AWS_SECRET_ACCESS_KEY}
+endpoint = https://bb8a87f8807f5db69772b62703b97916.r2.cloudflarestorage.com
+acl = private
+EOF
+
 # If running the rails server then create or migrate existing database
 if [ "${1}" == "./bin/rails" ] && [ "${2}" == "server" ]; then
   ./bin/rails db:prepare
