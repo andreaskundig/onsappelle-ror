@@ -25,7 +25,7 @@ FROM base as build
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y build-essential libpq-dev nodejs npm pkg-config libreadline-dev sqlite3
+    apt-get install --no-install-recommends -y build-essential libpq-dev nodejs npm pkg-config libreadline-dev
 
 # Install application gems
 COPY --link Gemfile Gemfile.lock ./
