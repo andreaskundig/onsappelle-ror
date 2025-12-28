@@ -161,7 +161,20 @@ bin/rails test:system
 updating a library after dependabot warning
 bundle upgrade rexml
 bin/rails test:system
+* migrating postgres to sqlite
+solveit wrote script [[file:lib/tasks/migrate_to_sqlite.rake][migrate_to_sqlite.rake]] 
+and gives these instructions
+To use it:
 
+    Add gem 'sequel' to your Gemfile and run bundle install
+    Set your Postgres connection: export SOURCE_DATABASE_URL="postgresql://user:pass@host/dbname"
+    Run: rails db:migrate_to_sqlite
+
+The script will copy all tables, data, and Rails metadata from Postgres to SQLite
+
+using the [[file:deployment.org::*connect to db by proxy][fly db proxy]]
+export SOURCE_DATABASE_URL="postgresql://onsappelle_ror:quHoTrP4sQl34mXskRBKiDK@localhost:15432/onsappelle_ror"
+rails db:migrate_to_sqlite
 * show page: edit date, more validation
 activate reminder
 - validation: date + emails > 0

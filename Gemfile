@@ -83,3 +83,6 @@ gem "readline-ext", "~> 0.2.0"
 gem "font-awesome-sass", "~> 6.5.1"
 # https://github.com/svenfuchs/rails-i18n
 gem 'rails-i18n', '~> 8.0.0' # For 8.0.0
+
+#migration from postgres to sqlite
+gem 'sequel'

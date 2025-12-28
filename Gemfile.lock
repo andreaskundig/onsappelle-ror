@@ -236,6 +236,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    sequel (5.99.0)
+      bigdecimal
     sorbet-runtime (0.5.11164)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
@@ -295,6 +297,7 @@ DEPENDENCIES
   readline-ext (~> 0.2.0)
   ruby-lsp-rails
   selenium-webdriver
+  sequel
   sprockets-rails
   sqlite3 (~> 1.4)
   stimulus-rails
