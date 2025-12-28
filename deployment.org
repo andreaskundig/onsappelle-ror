@@ -6,6 +6,8 @@ rails generate dockerfile
 docker build -t onsappelle .
 docker run -p 3000:3000 -e SECRET_KEY_BASE=$(openssl rand -hex 64) -e RAILS_ASSUME_SSL=false onsappelle
 * kamal
+windows docker desktop should be running
+** overview
 #+begin_src shell :results code
 gem install kamal
 #+end_src
@@ -65,6 +67,7 @@ kamal jobshell
 ** restore latest backup
 
 BACKUP=$(rclone ls r2:onsap | tail -1 | sed 's/.*\(backup.*\)/\1/')
+echo $BACKUP
 kamal app stop -r web
 kamal app exec -r job "rclone copyto r2:onsap/$BACKUP /rails/storage/production.sqlite3"
 kamal app start -r web
