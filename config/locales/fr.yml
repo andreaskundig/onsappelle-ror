@@ -47,7 +47,7 @@ fr:
       website: "mon site web"
     remind_email:
       subject: "Email super impersonnel pour rappeller de s'appeler"
-      day: "Eh ouais, je suis juste une application qui envoie un message prémâché à la date prévue. Et c'est vous qui avez choisi le %{date}, parce que vous vouliez vous revoir."
+      day: "Eh ouais, je suis juste une application qui envoie un message prémâché à la date prévue."
       reply: "Vous voulez vous revoir? Y a qu'à répondre à cet email pour contacter tout ce beau monde:"
 
   passwordless:

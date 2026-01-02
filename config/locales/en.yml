@@ -72,8 +72,8 @@ en:
       disagree: "If this reminder no longer suits you, you can change it on"
       website: "my website"
     remind_email:
-      subject: "Very impersonal reminder to keep in touch"
-      day: "Yeah I'm just an application that sends a precooked email on a specific date. It was you who chose the %{date}, because you wanted to see each other again."
+      subject: "Impersonal reminder to keep in touch"
+      day: "Yeah I'm just an application that sends a precooked email on a specific date."
       reply: "Want to see each other again? Just reply to this email to write to all these fine people:"
 
   passwordless:

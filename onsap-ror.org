@@ -12,6 +12,13 @@ bin/rails test test/system/reminders_test -n"/can_create_a/"
 bin/rails test test/integration/reminder_flow_test -n"/can create a/"
 * rails console
 bin/rails console
+* send due emails
+#+begin_src sh
+rake notification:send_due_reminders
+#+end_src
+
+#+RESULTS:
+
 * debug
 write 'debugger' in the code to set a breakpoint
 * passwordless authentication by email
